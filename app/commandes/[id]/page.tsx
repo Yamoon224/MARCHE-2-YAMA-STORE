@@ -5,6 +5,7 @@ import { CancelOrderButton } from "@/components/orders/CancelOrderButton";
 import { StatusBadge } from "@/components/orders/StatusBadge";
 import { TrackingPanel } from "@/components/orders/TrackingPanel";
 import { formatQuantity } from "@/lib/cart/cart";
+import { CLAIM_STATUS_LABEL, ISSUE_LABEL, RESOLUTION_LABEL, type Issue } from "@/lib/claims/claims";
 import { formatXof } from "@/lib/format";
 import { canCancel, canPay, statusLabel } from "@/lib/orders/status";
 import { shouldShowTracking } from "@/lib/tracking/tracking";
@@ -21,7 +22,7 @@ const PAYMENT_NOTICE: Record<string, string> = {
   erreur: "Votre commande est enregistrée, mais le paiement n'a pas pu démarrer. Vous pouvez réessayer depuis cette page.",
 };
 
-type Props = { params: Promise<{ id: string }>; searchParams: Promise<{ paiement?: string | string[] }> };
+type Props = { params: Promise<{ id: string }>; searchParams: Promise<{ paiement?: string | string[]; reclamation?: string | string[] }> };
 
 export default function CommandePage(props: Props) {
   return (
@@ -35,11 +36,15 @@ export default function CommandePage(props: Props) {
 
 async function OrderDetail({ params, searchParams }: Props) {
   const { id } = await params;
-  const { paiement } = await searchParams;
+  const { paiement, reclamation } = await searchParams;
+  const reclamationOk = reclamation === "ok";
   if (!/^\d+$/.test(id)) notFound();
 
   const api = await serverApi();
-  const result = await api.GET("/api/v1/orders/{order}", { params: { path: { order: Number(id) } } }).catch(() => null);
+  const [result, claimsResult] = await Promise.all([
+    api.GET("/api/v1/orders/{order}", { params: { path: { order: Number(id) } } }).catch(() => null),
+    api.GET("/api/v1/claims").catch(() => null),
+  ]);
 
   if (result?.response.status === 401) redirect(`/connexion?next=/commandes/${id}`);
   if (result?.response.status === 403 || result?.response.status === 404) notFound();
@@ -49,6 +54,7 @@ async function OrderDetail({ params, searchParams }: Props) {
     return <p role="status" className="rounded-lg bg-black/5 p-3">Service momentanément indisponible. Réessayez dans un instant.</p>;
   }
 
+  const claim = claimsResult?.data?.data.find((c) => c.order_id === order.id);
   const notice = typeof paiement === "string" ? PAYMENT_NOTICE[paiement] : undefined;
 
   return (
@@ -58,11 +64,38 @@ async function OrderDetail({ params, searchParams }: Props) {
         <StatusBadge status={order.status} />
       </div>
 
+      {paiement === undefined && reclamationOk && <p role="status" className="mt-4 rounded-lg bg-brand-green/10 p-3 text-sm">Votre réclamation a bien été enregistrée : nous l&apos;examinons et revenons vers vous.</p>}
+
       {notice && order.status === "awaiting_payment" && (
         <p role="status" className="mt-4 rounded-lg bg-brand-green/10 p-3 text-sm">{notice}</p>
       )}
 
       {shouldShowTracking(order.status, order.fulfillment) && <TrackingPanel orderId={order.id} />}
+
+      {claim && (
+        <section aria-labelledby="reclamation" className="mt-6 rounded-xl border border-black/10 p-4">
+          <h2 id="reclamation" className="text-lg font-semibold">Votre réclamation</h2>
+          <p className="mt-1 text-sm">
+            Statut : <strong>{CLAIM_STATUS_LABEL[claim.status] ?? claim.status}</strong>
+            {claim.resolution ? ` — ${RESOLUTION_LABEL[claim.resolution] ?? claim.resolution}` : ""}
+          </p>
+          <ul className="mt-2 text-sm text-black/70">
+            {claim.items.map((item) => <li key={item.id}>{item.name} : {ISSUE_LABEL[item.issue as Issue] ?? item.issue}</li>)}
+          </ul>
+          {claim.status === "accepted" && claim.refund_amount_minor > 0 && (
+            <p className="mt-2 text-sm">
+              Remboursement de <strong>{formatXof(claim.refund_amount_minor)}</strong>{claim.refund_completed ? " effectué." : " en cours de traitement."}
+            </p>
+          )}
+          {claim.decision_note && <p className="mt-2 rounded-lg bg-black/5 p-3 text-sm">{claim.decision_note}</p>}
+        </section>
+      )}
+      {!claim && order.status === "delivered" && (
+        <p className="mt-6 text-sm">
+          Un souci avec votre commande ?{" "}
+          <Link href={`/commandes/${order.id}/reclamation`} className="font-medium text-brand-red underline">Signaler un problème</Link>
+        </p>
+      )}
 
       <section aria-labelledby="articles" className="mt-6">
         <h2 id="articles" className="mb-2 text-lg font-semibold">Articles</h2>

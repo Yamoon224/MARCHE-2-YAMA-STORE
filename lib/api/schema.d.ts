@@ -56,6 +56,108 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/orders/{orderId}/claims": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Déclarer un produit manquant, abîmé, périmé ou non conforme (photos jointes) */
+        post: operations["335a13cccac4cbcc701c221dad14f3ad"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/claims": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Mes réclamations (toutes pour le personnel habilité) */
+        get: operations["e92c83ce41857008941c416e4cf412d4"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/claims/{claim}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Détail d'une réclamation */
+        get: operations["91919d15567a2aa13b008906c3730cb3"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/claims/{claim}/photos/{photo}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Photo d'une réclamation (réservée à son auteur et au personnel habilité) */
+        get: operations["780c12c85e3cae39db12292e7d79fd0b"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/claims/{claim}/decision": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Décider une réclamation : rejet motivé, ou remboursement / nouvel envoi avec imputation du coût */
+        post: operations["5bed4320040e19885901dbd7c0db13ae"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/claims/quality-stats": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Statistiques de qualité : produits les plus réclamés, causes, coûts par imputation */
+        get: operations["7ec08ca0291fc978b1160afd7ebd7089"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/delivery/my-tour": {
         parameters: {
             query?: never;
@@ -465,6 +567,41 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/inventory/lots": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Lots en stock (filtrables : produit, bloqués, péremption proche) */
+        get: operations["c88f239a5d3614b1540c62da06fdd7d1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/inventory/lots/{lot}/recall": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Rapport de rappel : clients ayant reçu le lot et commandes en attente qui le réservent */
+        get: operations["4ba1bf9b588a589608a918e05e1a3d46"];
+        put?: never;
+        /** Rappeler un lot (alerte sanitaire) : blocage immédiat et traçabilité des commandes concernées */
+        post: operations["f21d628befc74f7019e684e2fbfcfce0"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/orders/{orderId}/invoice": {
         parameters: {
             query?: never;
@@ -634,6 +771,44 @@ export interface components {
                 total?: number;
             };
         };
+        ClaimItem: {
+            id: number;
+            order_line_id: number;
+            name: string;
+            /** @enum {string} */
+            issue: "missing" | "damaged" | "expired" | "non_conforming";
+            /** @description Pièces, grammes ou millilitres */
+            quantity: number;
+            /** @description Plafond remboursable pour cette ligne */
+            claimable_minor: number;
+            note?: string | null;
+        };
+        ClaimPhoto: {
+            id: number;
+            /** @description Route autorisée qui sert la photo */
+            url: string;
+            mime?: string;
+        };
+        Claim: {
+            id: number;
+            order_id: number;
+            /** @enum {string} */
+            status: "open" | "accepted" | "rejected";
+            description?: string | null;
+            /** @description Plafond remboursable de toute la réclamation */
+            claimable_minor: number;
+            /** @enum {string|null} */
+            resolution?: "refund" | "redelivery" | null;
+            /** @enum {string|null} */
+            cost_bearer?: "supplier" | "preparation" | "delivery" | "store" | null;
+            refund_amount_minor: number;
+            /** @description Faux tant que le remboursement accordé n'est pas parti */
+            refund_completed: boolean;
+            decision_note?: string | null;
+            decided_at?: string | null;
+            items: components["schemas"]["ClaimItem"][];
+            photos: components["schemas"]["ClaimPhoto"][];
+        };
         Delivery: {
             id: number;
             order_id: number;
@@ -707,6 +882,34 @@ export interface components {
             user: components["schemas"]["User"];
             token: string;
         };
+        StockLot: {
+            id: number;
+            product_id: number;
+            lot_code: string;
+            /** @example 2026-12-01 */
+            expires_on?: string | null;
+            /** @description Pièces, grammes ou millilitres */
+            quantity_on_hand: number;
+            quantity_reserved?: number;
+            /** @description Physique - réservé */
+            available: number;
+            is_blocked: boolean;
+            recalled?: boolean;
+        };
+        LotRecallOrder: {
+            order_id: number;
+            customer_id?: number | null;
+            quantity: number;
+        };
+        LotRecallReport: {
+            lot: components["schemas"]["StockLot"];
+            reason: string;
+            recalled_at?: string | null;
+            /** @description Clients ayant reçu le lot : à prévenir */
+            delivered: components["schemas"]["LotRecallOrder"][];
+            /** @description Commandes en attente qui réservent le lot : à réallouer */
+            reserved: components["schemas"]["LotRecallOrder"][];
+        };
         InvoiceLine: {
             name: string;
             sku?: string | null;
@@ -742,6 +945,8 @@ export interface components {
             reason: string;
         };
         OrderLine: {
+            /** @description Identifiant de la ligne (nécessaire pour déclarer une réclamation) */
+            id: number;
             product_id: number;
             sku?: string;
             name: string;
@@ -750,6 +955,8 @@ export interface components {
             quantity: number;
             unit_price_minor: number;
             line_total_minor: number;
+            /** @description Quantité réellement servie après préparation (null tant que non préparée) */
+            received_quantity?: number | null;
         };
         OrderHistoryEntry: {
             from_status?: string | null;
@@ -810,7 +1017,7 @@ export interface components {
             /** @enum {string} */
             status: "pending" | "succeeded" | "failed";
             /** @enum {string} */
-            kind: "adjustment" | "cancellation" | "manual" | "late_payment";
+            kind: "adjustment" | "cancellation" | "manual" | "claim" | "late_payment";
             reason: string;
         };
     };
@@ -944,6 +1151,243 @@ export interface operations {
             };
             /** @description Introuvable */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "335a13cccac4cbcc701c221dad14f3ad": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                orderId: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": {
+                    items: {
+                        order_line_id: number;
+                        /** @enum {string} */
+                        issue: "missing" | "damaged" | "expired" | "non_conforming";
+                        /** @description Pièces, grammes ou millilitres */
+                        quantity: number;
+                        note?: string | null;
+                    }[];
+                    description?: string | null;
+                    photos?: string[];
+                };
+            };
+        };
+        responses: {
+            /** @description Réclamation enregistrée */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["Claim"];
+                    };
+                };
+            };
+            /** @description Commande introuvable */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Délai dépassé, quantité ou photo invalide, réclamation déjà déposée */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    e92c83ce41857008941c416e4cf412d4: {
+        parameters: {
+            query?: {
+                status?: "open" | "accepted" | "rejected";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Réclamations */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["Claim"][];
+                    };
+                };
+            };
+        };
+    };
+    "91919d15567a2aa13b008906c3730cb3": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                claim: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Réclamation */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["Claim"];
+                    };
+                };
+            };
+            /** @description Introuvable */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "780c12c85e3cae39db12292e7d79fd0b": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                claim: number;
+                photo: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Image */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Introuvable */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "5bed4320040e19885901dbd7c0db13ae": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                claim: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @enum {string} */
+                    decision: "accept" | "reject";
+                    /** @description Motif de la décision (obligatoire, même pour un rejet) */
+                    note: string;
+                    /** @enum {string|null} */
+                    resolution?: "refund" | "redelivery" | null;
+                    /** @enum {string|null} */
+                    cost_bearer?: "supplier" | "preparation" | "delivery" | "store" | null;
+                    /** @description Montant remboursé, au plus la valeur des articles réclamés */
+                    amount_minor?: number | null;
+                };
+            };
+        };
+        responses: {
+            /** @description Réclamation décidée */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["Claim"];
+                    };
+                };
+            };
+            /** @description Interdit */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Déjà décidée, montant excessif ou remboursement impossible */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "7ec08ca0291fc978b1160afd7ebd7089": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Statistiques */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        claims_total: number;
+                        accepted: number;
+                        rejected: number;
+                        open: number;
+                        refunded_minor: number;
+                        by_product: {
+                            product_id: number;
+                            name: string;
+                            claims: number;
+                            units: number;
+                        }[];
+                        by_issue: {
+                            issue: string;
+                            items: number;
+                        }[];
+                        by_cost_bearer: {
+                            cost_bearer: string;
+                            claims: number;
+                            refunded_minor: number;
+                        }[];
+                    };
+                };
+            };
+            /** @description Interdit */
+            403: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1785,6 +2229,104 @@ export interface operations {
         responses: {
             /** @description Jeton révoqué */
             204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    c88f239a5d3614b1540c62da06fdd7d1: {
+        parameters: {
+            query?: {
+                product_id?: number;
+                blocked?: boolean;
+                expiring_in_days?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Lots */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["StockLot"][];
+                    };
+                };
+            };
+        };
+    };
+    "4ba1bf9b588a589608a918e05e1a3d46": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                lot: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Rapport */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LotRecallReport"];
+                };
+            };
+            /** @description Ce lot n'a pas été rappelé */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    f21d628befc74f7019e684e2fbfcfce0: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                lot: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @example Listeria détectée chez le fournisseur */
+                    reason: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Lot rappelé et rapport de traçabilité */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LotRecallReport"];
+                };
+            };
+            /** @description Interdit */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Motif manquant */
+            422: {
                 headers: {
                     [name: string]: unknown;
                 };

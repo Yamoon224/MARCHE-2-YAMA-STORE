@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { Suspense } from "react";
 import { CategoryGrid } from "@/components/CategoryGrid";
 import { Hero } from "@/components/Hero";
@@ -26,6 +27,8 @@ function PromoRail({ products }: { products: typeof promotions }) {
 }
 
 async function LivePromoRail() {
+  // Contenu propre à la requête : le build n'appelle jamais l'API, la page statique garde la sélection de repli.
+  await connection();
   const fromApi = await fetchProducts();
 
   return <PromoRail products={fromApi && fromApi.length > 0 ? fromApi : promotions} />;

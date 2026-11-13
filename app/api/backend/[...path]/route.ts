@@ -16,16 +16,19 @@ async function relay(request: NextRequest, ctx: { params: Promise<{ path: string
     upstream = await fetch(`${BACKEND_URL}/${path.join("/")}${request.nextUrl.search}`, {
       method: request.method,
       headers: buildUpstreamHeaders(request.headers, await getToken()),
-      body: hasBody ? await request.text() : undefined,
+      // Octets bruts (et non du texte) : les photos d'une réclamation sont envoyées en multipart binaire.
+      body: hasBody ? await request.arrayBuffer() : undefined,
       cache: "no-store",
     });
   } catch {
     return NextResponse.json({ message: "Service momentanément indisponible." }, { status: 503 });
   }
 
-  return new NextResponse(upstream.status === 204 ? null : await upstream.text(), {
+  // Octets bruts : les photos servies par l'API ne doivent pas être altérées par un décodage en texte.
+  return new NextResponse(upstream.status === 204 ? null : await upstream.arrayBuffer(), {
     status: upstream.status,
-    headers: { "Content-Type": upstream.headers.get("content-type") ?? "application/json" },
+    // nosniff : une image reste une image, un navigateur ne la réinterprète jamais comme un autre type.
+    headers: { "Content-Type": upstream.headers.get("content-type") ?? "application/json", "X-Content-Type-Options": "nosniff" },
   });
 }
 

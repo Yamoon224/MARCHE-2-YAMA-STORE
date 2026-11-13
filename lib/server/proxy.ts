@@ -2,7 +2,7 @@
  * Liste blanche des routes de l'API accessibles depuis le navigateur via le relais.
  * Les routes d'authentification (qui renvoient un jeton) et les webhooks n'en font volontairement pas partie.
  */
-const ALLOWED_PREFIXES = ["api/v1/products", "api/v1/delivery/zones", "api/v1/orders", "api/v1/auth/me"];
+const ALLOWED_PREFIXES = ["api/v1/products", "api/v1/delivery/zones", "api/v1/orders", "api/v1/claims", "api/v1/auth/me"];
 
 const FORWARDED_REQUEST_HEADERS = ["content-type", "accept", "idempotency-key"];
 
