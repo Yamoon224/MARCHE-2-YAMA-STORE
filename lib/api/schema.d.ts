@@ -158,6 +158,58 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/delivery/cash": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Espèces détenues par chaque livreur (encaissées, non remises) */
+        get: operations["fabf2e4b1cb9f95c81a99c5394148b89"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/delivery/cash/handovers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Historique des remises de fonds */
+        get: operations["af0ec6c4499eb97264cda206404d9485"];
+        put?: never;
+        /** Enregistrer la remise de fonds d'un livreur (solde tout ce qu'il détient) */
+        post: operations["dc1d67c5c3d4d18c0ce8d0213d8d1dea"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/delivery/my-cash": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Espèces que le livreur connecté détient encore */
+        get: operations["a9c741f9f4d7ae9b269750060e4e3a46"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/delivery/my-tour": {
         parameters: {
             query?: never;
@@ -619,6 +671,57 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/notifications": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Mes notifications (les plus récentes en premier) */
+        get: operations["5b53bd74797f3a0e106256967b9fac94"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/notifications/{notification}/read": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Marquer une notification comme lue */
+        post: operations["b3cf83092a857a1ed5615f98c00d1cd3"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/notifications/read-all": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Tout marquer comme lu */
+        post: operations["919b6fbd09537b0fc87293db1f64ef4a"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/orders": {
         parameters: {
             query?: never;
@@ -809,6 +912,25 @@ export interface components {
             items: components["schemas"]["ClaimItem"][];
             photos: components["schemas"]["ClaimPhoto"][];
         };
+        CourierCash: {
+            /** @description Remise de fonds : ce que chaque livreur détient en espèces, et le comptage à son retour au magasin. */
+            courier_id: number;
+            courier_name?: string | null;
+            held_minor: number;
+            deliveries_count: number;
+        };
+        CashHandover: {
+            id: number;
+            courier_id: number;
+            received_by?: number;
+            expected_minor: number;
+            counted_minor: number;
+            /** @description Compté - attendu : négatif = manquant */
+            variance_minor: number;
+            deliveries_count: number;
+            note?: string | null;
+            created_at?: string | null;
+        };
         Delivery: {
             id: number;
             order_id: number;
@@ -943,6 +1065,14 @@ export interface components {
             vat_minor?: number;
             net_minor?: number;
             reason: string;
+        };
+        UserNotification: {
+            id: number;
+            type: string;
+            title: string;
+            body: string;
+            read: boolean;
+            created_at: string;
         };
         OrderLine: {
             /** @description Identifiant de la ligne (nécessaire pour déclarer une réclamation) */
@@ -1392,6 +1522,121 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    fabf2e4b1cb9f95c81a99c5394148b89: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Soldes par livreur */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["CourierCash"][];
+                    };
+                };
+            };
+        };
+    };
+    af0ec6c4499eb97264cda206404d9485: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Remises (les plus récentes en premier) */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["CashHandover"][];
+                    };
+                };
+            };
+        };
+    };
+    dc1d67c5c3d4d18c0ce8d0213d8d1dea: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    courier_id: number;
+                    /** @description Montant compté en F CFA */
+                    counted_minor: number;
+                    /** @description Obligatoire s'il y a un écart */
+                    note?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description Remise enregistrée */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["CashHandover"];
+                    };
+                };
+            };
+            /** @description Interdit */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Rien à remettre, pas un livreur, ou écart non expliqué */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    a9c741f9f4d7ae9b269750060e4e3a46: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Solde du livreur */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: {
+                            held_minor: number;
+                            deliveries_count: number;
+                        };
+                    };
+                };
             };
         };
     };
@@ -2362,6 +2607,86 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    "5b53bd74797f3a0e106256967b9fac94": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Notifications et nombre de non lues */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["UserNotification"][];
+                        meta: {
+                            unread_count: number;
+                        };
+                    };
+                };
+            };
+        };
+    };
+    b3cf83092a857a1ed5615f98c00d1cd3: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                notification: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Notification lue */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["UserNotification"];
+                    };
+                };
+            };
+            /** @description Introuvable (ou celle d'un autre client) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "919b6fbd09537b0fc87293db1f64ef4a": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Marquées lues */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: {
+                            marked: number;
+                        };
+                    };
+                };
             };
         };
     };

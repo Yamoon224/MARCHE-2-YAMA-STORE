@@ -14,6 +14,9 @@ describe("isAllowedPath", () => {
     ["api/v1/orders/12/claims"],
     ["api/v1/claims"],
     ["api/v1/claims/4/photos/9"],
+    ["api/v1/notifications"],
+    ["api/v1/notifications/5/read"],
+    ["api/v1/notifications/read-all"],
     ["api/v1/auth/me"],
   ])("allows %s", (path) => {
     expect(isAllowedPath(path.split("/"))).toBe(true);
@@ -29,6 +32,7 @@ describe("isAllowedPath", () => {
     ["api/v1/delivery/slots"],
     ["api/v1/inventory/lots"],
     ["api/v1/claimsx"],
+    ["api/v1/notificationsx"],
     ["api/v1/productsx"],
     ["up"],
     [""],

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 import { AccountMenu } from "./account/AccountMenu";
 import { CartLink } from "./cart/CartLink";
 
@@ -25,7 +26,9 @@ export function Header() {
             className="w-full rounded-full border border-black/20 px-4 py-2 outline-none focus:border-brand-green"
           />
         </form>
-        <AccountMenu />
+        <Suspense fallback={<span className="w-24" aria-hidden="true" />}>
+          <AccountMenu />
+        </Suspense>
         <CartLink />
       </div>
       <nav aria-label="Navigation principale" className="bg-brand-green">

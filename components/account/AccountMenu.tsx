@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { badgeLabel } from "@/lib/notifications/notifications";
 
 type User = { name: string } | null;
 
@@ -23,6 +24,27 @@ export function AccountMenu() {
       cancelled = true;
     };
   }, []);
+
+  // Le nombre de non lues se relit à chaque page : une erreur réseau n'affiche simplement pas de pastille.
+  const pathname = usePathname();
+  const [unread, setUnread] = useState(0);
+  const loggedIn = Boolean(user);
+
+  useEffect(() => {
+    if (!loggedIn) return;
+    let cancelled = false;
+
+    fetch("/api/backend/api/v1/notifications", { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((body: { meta?: { unread_count?: number } } | null) => !cancelled && setUnread(body?.meta?.unread_count ?? 0))
+      .catch(() => !cancelled && setUnread(0));
+
+    return () => {
+      cancelled = true;
+    };
+  }, [loggedIn, pathname]);
+
+  const badge = badgeLabel(unread);
 
   async function logout() {
     await fetch("/api/session", { method: "DELETE" });
@@ -45,6 +67,10 @@ export function AccountMenu() {
     <span className="flex items-center gap-3 text-sm">
       <Link href="/commandes" className="font-medium hover:text-brand-red">
         Mes commandes
+      </Link>
+      <Link href="/notifications" className="font-medium hover:text-brand-red" aria-label={badge ? `Notifications, ${unread} non lue(s)` : "Notifications"}>
+        Notifications
+        {badge && <span className="ml-1 rounded-full bg-brand-red px-1.5 py-0.5 text-xs text-white">{badge}</span>}
       </Link>
       <button type="button" onClick={logout} className="text-black/60 hover:text-brand-red" title={user.name}>
         Déconnexion
