@@ -38,9 +38,11 @@ export function CartView() {
               <div className="flex items-center gap-2" role="group" aria-label={`Quantité de ${line.name}`}>
                 <button
                   type="button"
-                  onClick={() => setQuantity(base, line.quantity - step)}
+                  onClick={() => setQuantity(base, Math.max(step, line.quantity - step))}
+                  disabled={line.quantity <= step}
+                  title={line.quantity <= step ? "Quantité minimale atteinte : utilisez « Retirer » pour supprimer le produit" : undefined}
                   aria-label={`Diminuer la quantité de ${line.name}`}
-                  className="h-8 w-8 rounded-full border-2 border-line bg-white font-bold"
+                  className="h-8 w-8 rounded-full border-2 border-line bg-white font-bold disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   −
                 </button>
