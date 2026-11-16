@@ -967,6 +967,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/orders/lookup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Suivre une commande avec son numéro et l'e-mail de la commande (sans compte) */
+        post: operations["a6405961adb22b4952ff61c1862b712f"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/orders/{order}": {
         parameters: {
             query?: never;
@@ -3766,6 +3783,51 @@ export interface operations {
             };
             /** @description Validation ou produit indisponible */
             422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    a6405961adb22b4952ff61c1862b712f: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @example CMD-00000123 */
+                    number: string;
+                    /** @example awa@example.com */
+                    email: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Commande */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Order"];
+                    };
+                };
+            };
+            /** @description Aucune commande ne correspond */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Trop de tentatives */
+            429: {
                 headers: {
                     [name: string]: unknown;
                 };

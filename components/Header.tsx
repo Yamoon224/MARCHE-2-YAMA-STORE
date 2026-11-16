@@ -8,6 +8,7 @@ const NAV = [
   { href: "/", label: "Accueil" },
   { href: "/rayons", label: "Nos rayons" },
   { href: "/commandes", label: "Mes commandes" },
+  { href: "/suivi", label: "Suivre ma commande" },
 ];
 
 export function Header() {

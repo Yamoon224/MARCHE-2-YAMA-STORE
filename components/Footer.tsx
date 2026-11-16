@@ -13,6 +13,7 @@ export function Footer() {
           <ul className="grid text-sm leading-8 text-[#b7c7b9]">
             <li><Link href="/rayons" className="hover:text-white">Tous les produits</Link></li>
             <li><Link href="/panier" className="hover:text-white">Mon panier</Link></li>
+            <li><Link href="/suivi" className="hover:text-white">Suivre ma commande</Link></li>
           </ul>
         </nav>
         <nav aria-label="Mon compte">

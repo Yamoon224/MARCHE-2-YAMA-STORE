@@ -59,6 +59,10 @@ async function OrderDetail({ params, searchParams }: Props) {
     <>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-3xl font-bold">{order.number ?? `Commande ${order.id}`}</h1>
+          <p className="mt-1 text-sm text-black/60">
+            Conservez ce numéro : avec l&apos;e-mail de votre commande, il permet de la suivre à tout moment sur{" "}
+            <Link href="/suivi" className="text-brand-red underline">la page de suivi</Link>, même sans compte.
+          </p>
         <StatusBadge status={order.status} />
       </div>
 
