@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { AccountMenu } from "./account/AccountMenu";
 import { CartLink } from "./cart/CartLink";
+import { SearchForm } from "./SearchForm";
 
 const NAV = [
   { href: "/", label: "Accueil" },
@@ -32,22 +33,9 @@ export function Header() {
               className="h-[58px] w-[80px] object-contain md:h-[76px] md:w-[104px]"
             />
           </Link>
-          <form
-            role="search"
-            action="/rayons"
-            className="order-last col-span-3 flex h-11 rounded-full bg-white py-1 pl-4 pr-1 md:order-none md:col-span-1"
-          >
-            <input
-              type="search"
-              name="q"
-              placeholder="Rechercher un produit…"
-              aria-label="Rechercher un produit"
-              className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none"
-            />
-            <button type="submit" aria-label="Lancer la recherche" className="w-9 rounded-full bg-brand-green text-lg text-white">
-              ⌕
-            </button>
-          </form>
+          <Suspense fallback={<div className="order-last col-span-3 h-11 rounded-full bg-white md:order-none md:col-span-1" aria-hidden="true" />}>
+            <SearchForm />
+          </Suspense>
           <div className="flex items-center gap-2 justify-self-end">
             <Suspense fallback={<span className="w-24" aria-hidden="true" />}>
               <AccountMenu />
