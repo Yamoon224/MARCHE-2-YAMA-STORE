@@ -78,10 +78,10 @@ export function ClaimForm({ orderId, lines }: { orderId: number; lines: Claimabl
                     </select>
                   </label>
                   <label className="text-sm font-medium">Quantité concernée ({unitSuffix(line.saleUnit)})
-                    <input value={line.quantity} onChange={(e) => patch(index, { quantity: e.target.value })} inputMode="numeric" className={`${field} mt-1 block w-full`} />
+                    <input value={line.quantity} onChange={(e) => patch(index, { quantity: e.target.value })} inputMode="numeric" placeholder="Ex. 1" className={`${field} mt-1 block w-full`} />
                   </label>
                   <label className="text-sm font-medium">Précision (facultatif)
-                    <input value={line.note} onChange={(e) => patch(index, { note: e.target.value })} maxLength={255} className={`${field} mt-1 block w-full`} />
+                    <input value={line.note} onChange={(e) => patch(index, { note: e.target.value })} maxLength={255} placeholder="Ex. emballage percé" className={`${field} mt-1 block w-full`} />
                   </label>
                 </div>
               )}
@@ -98,7 +98,7 @@ export function ClaimForm({ orderId, lines }: { orderId: number; lines: Claimabl
         </label>
         {photos.length > 0 && <p className="mt-1 text-xs text-black/60">{photos.length} photo(s) sélectionnée(s).</p>}
         <label className="mt-3 block text-sm font-medium">Description (facultatif)
-          <textarea value={description} onChange={(e) => setDescription(e.target.value)} maxLength={1000} rows={3} className={`${field} mt-1 block w-full`} />
+          <textarea value={description} onChange={(e) => setDescription(e.target.value)} maxLength={1000} rows={3} placeholder="Décrivez ce qui s'est passé…" className={`${field} mt-1 block w-full`} />
         </label>
       </fieldset>
 

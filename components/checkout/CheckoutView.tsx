@@ -160,7 +160,7 @@ export function CheckoutView() {
 
               <label className="text-sm font-medium">
                 Quartier
-                <input className={input} value={form.neighborhood} onChange={(e) => patch({ neighborhood: e.target.value })} autoComplete="address-level2" />
+                <input className={input} value={form.neighborhood} onChange={(e) => patch({ neighborhood: e.target.value })} autoComplete="address-level2" placeholder="Ex. Cocody Angré" />
               </label>
 
               <label className="text-sm font-medium">

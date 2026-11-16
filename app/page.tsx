@@ -43,7 +43,15 @@ async function LiveCategories() {
 
 async function LiveRail({ id, title, query }: { id: string; title: string; query: Parameters<typeof fetchProducts>[0] }) {
   await connection();
-  const products = (await fetchProducts(query)) ?? [];
+  const products = await fetchProducts(query);
+
+  if (products === null) {
+    return id === "promos" ? (
+      <p role="status" className="mx-auto my-8 w-[min(1200px,calc(100%-28px))] rounded-lg border border-line bg-white p-4 text-sm">
+        Le catalogue est momentanément indisponible. Réessayez dans un instant.
+      </p>
+    ) : null;
+  }
 
   return products.length > 0 ? <ProductRail id={id} title={title} href="/rayons" products={products} /> : null;
 }

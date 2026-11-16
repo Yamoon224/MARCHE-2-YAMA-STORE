@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
+import { PasswordInput } from "@/components/PasswordInput";
 import { extractApiError, safeNext } from "@/lib/checkout/checkout";
 
 type Mode = "login" | "register";
@@ -58,20 +59,20 @@ export function AuthForm({ next }: { next?: string }) {
       {mode === "register" && (
         <label className="text-sm font-medium">
           Nom complet
-          <input name="name" required autoComplete="name" className={field} />
+          <input name="name" required autoComplete="name" placeholder="Ex. Awa Koné" className={field} />
         </label>
       )}
 
       <label className="text-sm font-medium">
         {mode === "login" ? "E-mail ou téléphone" : "E-mail ou téléphone (+225…)"}
-        <input name="login" required autoComplete="username" className={field} />
+        <input name="login" required autoComplete="username" placeholder={mode === "login" ? "E-mail ou téléphone" : "Ex. awa@exemple.com ou +225 07 00 00 00 00"} className={field} />
       </label>
 
       <label className="text-sm font-medium">
         Mot de passe
-        <input
+        <PasswordInput
           name="password"
-          type="password"
+          placeholder={mode === "login" ? "Votre mot de passe" : "8 caractères minimum"}
           required
           minLength={mode === "register" ? 8 : undefined}
           autoComplete={mode === "login" ? "current-password" : "new-password"}
