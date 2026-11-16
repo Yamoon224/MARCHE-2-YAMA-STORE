@@ -1,24 +1,116 @@
-const PROMISES = [
-  { title: "Livraison rapide", text: "Choisissez votre créneau : matin, après-midi ou soir." },
-  { title: "Fraîcheur garantie", text: "Produits frais suivis par lot et date limite." },
-  { title: "Paiement flexible", text: "Mobile money, carte ou espèces à la livraison." },
+"use client";
+
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
+const SLIDES = [
+  {
+    title: "Les meilleurs produits, aux meilleurs prix",
+    text: "Vos courses livrées à domicile à Yama, ou à retirer en magasin.",
+    cta: { label: "Acheter maintenant", href: "/rayons" },
+    bg: "from-[#3b2a1a] via-[#7a3b12] to-[#c9001b]",
+    emoji: "🛒",
+  },
+  {
+    title: "Du frais, tous les jours",
+    text: "Fruits, légumes, viandes et poissons suivis par lot et date limite.",
+    cta: { label: "Voir les rayons", href: "/rayons" },
+    bg: "from-[#154d2b] via-[#087b35] to-[#3f7d2c]",
+    emoji: "🥬",
+  },
+  {
+    title: "Cuisinez comme chez nous",
+    text: "Sauce graine, kèdjenou, alloco : tous les ingrédients en un clic.",
+    cta: { label: "Découvrir les recettes", href: "/#recettes" },
+    bg: "from-[#4a2b00] via-[#a35a00] to-[#f2b705]",
+    emoji: "🍲",
+  },
+];
+
+const PERKS = [
+  "🚚 Livraison : choisissez votre créneau",
+  "💶 Paiement : mobile money, carte ou espèces",
+  "🌿 Fraîcheur garantie, suivi par lot",
 ];
 
 export function Hero() {
+  const [current, setCurrent] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const timer = window.setInterval(() => setCurrent((c) => (c + 1) % SLIDES.length), 5000);
+    return () => window.clearInterval(timer);
+  }, [paused]);
+
+  const go = (n: number) => setCurrent((n + SLIDES.length) % SLIDES.length);
+
   return (
-    <section className="bg-brand-red text-white">
-      <div className="mx-auto max-w-6xl px-4 py-10">
-        <h1 className="text-3xl font-extrabold sm:text-4xl">Les meilleurs produits, aux meilleurs prix.</h1>
-        <p className="mt-2 max-w-xl text-white/90">Vos courses livrées à domicile à Yama, ou à retirer en magasin.</p>
-        <ul className="mt-6 grid gap-3 sm:grid-cols-3">
-          {PROMISES.map((p) => (
-            <li key={p.title} className="rounded-lg bg-white/10 p-4">
-              <p className="font-semibold">{p.title}</p>
-              <p className="text-sm text-white/90">{p.text}</p>
-            </li>
+    <>
+      <section
+        aria-roledescription="carrousel"
+        aria-label="Offres"
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        className="relative mx-auto mt-5 h-[430px] w-[min(1200px,calc(100%-28px))] overflow-hidden rounded-[18px] bg-[#3b2a1a] shadow-soft sm:h-[clamp(400px,50vw,520px)] sm:rounded-3xl"
+      >
+        {SLIDES.map((s, i) => (
+          <div
+            key={s.title}
+            aria-hidden={i !== current}
+            className={`absolute inset-0 bg-gradient-to-br ${s.bg} transition-[opacity,visibility] duration-700 ${i === current ? "visible opacity-100" : "invisible opacity-0"}`}
+          >
+            <span aria-hidden="true" className="absolute right-[8%] top-1/2 -translate-y-1/2 text-[160px] opacity-30 sm:text-[260px]">
+              {s.emoji}
+            </span>
+            <div className="absolute inset-x-5 bottom-12 z-10 text-white sm:inset-x-auto sm:bottom-auto sm:left-[6%] sm:top-1/2 sm:max-w-[540px] sm:-translate-y-1/2">
+              <h1 className="mb-3.5 text-[clamp(30px,4.6vw,56px)] font-extrabold">{s.title}</h1>
+              <p className="mb-6 max-w-[440px] text-[#fff0dd] sm:text-[17px]">{s.text}</p>
+              <Link
+                href={s.cta.href}
+                className="inline-flex rounded-full bg-brand-gold px-6 py-3 font-extrabold text-[#4a2b00] transition hover:-translate-y-0.5"
+              >
+                {s.cta.label}
+              </Link>
+            </div>
+          </div>
+        ))}
+        <button
+          type="button"
+          aria-label="Précédent"
+          onClick={() => go(current - 1)}
+          className="absolute left-3.5 top-1/2 z-20 hidden h-[42px] w-[42px] -translate-y-1/2 rounded-full bg-white/80 text-2xl sm:block"
+        >
+          ‹
+        </button>
+        <button
+          type="button"
+          aria-label="Suivant"
+          onClick={() => go(current + 1)}
+          className="absolute right-3.5 top-1/2 z-20 hidden h-[42px] w-[42px] -translate-y-1/2 rounded-full bg-white/80 text-2xl sm:block"
+        >
+          ›
+        </button>
+        <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 gap-2">
+          {SLIDES.map((s, i) => (
+            <button
+              key={s.title}
+              type="button"
+              aria-label={`Diapositive ${i + 1}`}
+              aria-current={i === current}
+              onClick={() => setCurrent(i)}
+              className={`h-2.5 rounded-full ${i === current ? "w-7 bg-brand-gold" : "w-2.5 bg-white/60"}`}
+            />
           ))}
-        </ul>
-      </div>
-    </section>
+        </div>
+      </section>
+      <ul className="mx-auto my-4 grid w-[min(1200px,calc(100%-28px))] gap-2 text-sm sm:grid-cols-3 sm:gap-3">
+        {PERKS.map((p) => (
+          <li key={p} className="rounded-[14px] border border-line bg-white px-4 py-3">
+            {p}
+          </li>
+        ))}
+      </ul>
+    </>
   );
 }

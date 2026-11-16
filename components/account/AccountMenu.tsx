@@ -57,22 +57,22 @@ export function AccountMenu() {
 
   if (user === null) {
     return (
-      <Link href="/connexion" className="text-sm font-medium hover:text-brand-red">
+      <Link href="/connexion" className="rounded-full border border-white/30 bg-white/20 px-4 py-2.5 text-sm font-bold text-white hover:bg-white/30">
         Connexion
       </Link>
     );
   }
 
   return (
-    <span className="flex items-center gap-3 text-sm">
-      <Link href="/commandes" className="font-medium hover:text-brand-red">
+    <span className="hidden items-center gap-3 text-sm text-white md:flex">
+      <Link href="/commandes" className="font-bold hover:underline">
         Mes commandes
       </Link>
-      <Link href="/notifications" className="font-medium hover:text-brand-red" aria-label={badge ? `Notifications, ${unread} non lue(s)` : "Notifications"}>
+      <Link href="/notifications" className="font-bold hover:underline" aria-label={badge ? `Notifications, ${unread} non lue(s)` : "Notifications"}>
         Notifications
-        {badge && <span className="ml-1 rounded-full bg-brand-red px-1.5 py-0.5 text-xs text-white">{badge}</span>}
+        {badge && <span className="ml-1 rounded-full bg-[#ffdc37] px-1.5 py-0.5 text-xs font-extrabold text-[#4a2700]">{badge}</span>}
       </Link>
-      <button type="button" onClick={logout} className="text-black/60 hover:text-brand-red" title={user.name}>
+      <button type="button" onClick={logout} className="text-white/80 hover:text-white hover:underline" title={user.name}>
         Déconnexion
       </button>
     </span>

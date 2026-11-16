@@ -23,9 +23,9 @@ export function AddToCartButton({ product }: { product: Product }) {
       disabled={product.soldOut}
       onClick={handleClick}
       aria-label={`Ajouter ${step} de ${product.name} au panier`}
-      className="mt-auto rounded-full bg-brand-green py-1.5 text-sm font-medium text-white disabled:bg-black/20"
+      className="mt-auto rounded-full bg-brand-green px-3.5 py-2 text-[13px] font-extrabold text-white hover:bg-brand-green-dark disabled:cursor-not-allowed disabled:bg-black/20"
     >
-      {added ? "Ajouté ✓" : "Ajouter +"}
+      {added ? "Ajouté ✓" : "＋ Ajouter"}
     </button>
   );
 }

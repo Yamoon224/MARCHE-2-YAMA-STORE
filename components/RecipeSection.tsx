@@ -3,21 +3,29 @@ import { recipes } from "@/lib/mock";
 
 export function RecipeSection() {
   return (
-    <section className="mx-auto max-w-6xl px-4 py-8" aria-labelledby="recettes">
-      <h2 id="recettes" className="mb-4 text-2xl font-bold">
+    <section
+      id="recettes"
+      className="mx-auto my-8 w-[min(1200px,calc(100%-28px))] rounded-3xl bg-[#eaf4e4] p-4 sm:my-11 sm:p-7"
+      aria-labelledby="recettes-titre"
+    >
+      <h2 id="recettes-titre" className="mb-1 text-[21px] font-extrabold text-[#154d2b] sm:text-[30px]">
         En cuisine avec Yama
       </h2>
-      <ul className="grid gap-3 sm:grid-cols-3">
+      <p className="mb-5 text-sm text-[#3e5a44]">Tous les ingrédients d&apos;un plat, en un clic.</p>
+      <ul className="grid gap-3.5 sm:grid-cols-3">
         {recipes.map((r) => (
-          <li key={r.slug} className="rounded-xl border border-black/10 p-4">
+          <li key={r.slug} className="rounded-[18px] border border-line bg-white p-4">
             <p className="text-5xl" aria-hidden="true">
               {r.emoji}
             </p>
-            <h3 className="mt-2 font-semibold">{r.name}</h3>
-            <p className="text-sm text-black/60">
+            <h3 className="mt-2 font-extrabold">{r.name}</h3>
+            <p className="text-sm text-muted">
               {r.ingredients} ingrédients · {formatXof(r.totalMinor)}
             </p>
-            <button type="button" className="mt-3 w-full rounded-full bg-brand-red py-2 text-sm font-medium text-white">
+            <button
+              type="button"
+              className="mt-3 w-full rounded-full bg-brand-red py-2.5 text-sm font-extrabold text-white transition hover:bg-brand-red-dark"
+            >
               Ajouter tous les ingrédients
             </button>
           </li>
