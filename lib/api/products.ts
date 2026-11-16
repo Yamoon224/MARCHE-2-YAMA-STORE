@@ -34,11 +34,14 @@ export type ProductQuery = {
   category?: string;
   featured?: boolean;
   promo?: boolean;
+  page?: number;
   perPage?: number;
 };
 
-/** Produits de l'API, ou `null` si l'API est injoignable : l'appelant affiche alors un état d'indisponibilité. */
-export async function fetchProducts(query?: ProductQuery, client: ApiClient = api): Promise<Product[] | null> {
+export type ProductPage = { products: Product[]; page: number; lastPage: number; total: number };
+
+/** Une page de produits avec sa pagination, ou `null` si l'API est injoignable (l'appelant affiche alors un état d'indisponibilité). */
+export async function fetchProductPage(query?: ProductQuery, client: ApiClient = api): Promise<ProductPage | null> {
   try {
     const { data, error } = await client.GET("/api/v1/products", {
       params: {
@@ -48,6 +51,7 @@ export async function fetchProducts(query?: ProductQuery, client: ApiClient = ap
           category: query?.category,
           featured: query?.featured,
           promo: query?.promo,
+          page: query?.page,
           per_page: query?.perPage,
         },
       },
@@ -56,10 +60,21 @@ export async function fetchProducts(query?: ProductQuery, client: ApiClient = ap
       signal: AbortSignal.timeout(CATALOG_TIMEOUT_MS),
     });
     if (error || !data) return null;
-    return data.data.map(toProduct);
+
+    return {
+      products: data.data.map(toProduct),
+      page: data.meta?.current_page ?? 1,
+      lastPage: data.meta?.last_page ?? 1,
+      total: data.meta?.total ?? data.data.length,
+    };
   } catch {
     return null;
   }
+}
+
+/** Produits de l'API (première page par défaut), ou `null` si l'API est injoignable. */
+export async function fetchProducts(query?: ProductQuery, client: ApiClient = api): Promise<Product[] | null> {
+  return (await fetchProductPage(query, client))?.products ?? null;
 }
 /** Une fiche produit : `null` si l'API est injoignable ou si le produit n'existe pas (ou plus). */
 export async function fetchProduct(slug: string, client: ApiClient = api): Promise<Product | null> {

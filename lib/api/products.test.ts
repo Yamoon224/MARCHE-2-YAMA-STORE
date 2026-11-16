@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { createApiClient } from "./client";
-import { fetchProduct, fetchProducts } from "./products";
+import { fetchProduct, fetchProductPage, fetchProducts } from "./products";
 
 const apiProduct = {
   id: 7, category_id: 1, sku: "FL-001", barcode: null, name: "Tomates", slug: "tomates", description: null,
@@ -98,5 +98,25 @@ describe("fetchProduct", () => {
   it("retourne null pour un produit inconnu ou une API en panne", async () => {
     expect(await fetchProduct("absent", clientWith(async () => Response.json({ message: "x" }, { status: 404 })))).toBeNull();
     expect(await fetchProduct("x", clientWith(async () => { throw new Error("réseau"); }))).toBeNull();
+  });
+});
+describe("fetchProductPage", () => {
+  it("renvoie la pagination de l'API et transmet la page demandée", async () => {
+    let url = "";
+    const client = clientWith(async (input) => {
+      url = (input as Request).url;
+      return Response.json({ data: [apiProduct], meta: { current_page: 3, last_page: 8, total: 150 } });
+    });
+
+    const result = await fetchProductPage({ page: 3, perPage: 20 }, client);
+
+    expect(result).toMatchObject({ page: 3, lastPage: 8, total: 150 });
+    expect(result?.products).toHaveLength(1);
+    expect(url).toContain("page=3");
+    expect(url).toContain("per_page=20");
+  });
+
+  it("retourne null si l'API est injoignable", async () => {
+    expect(await fetchProductPage(undefined, clientWith(async () => { throw new Error("réseau"); }))).toBeNull();
   });
 });

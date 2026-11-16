@@ -25,7 +25,7 @@ export function Footer() {
         <div>
           <h3 className="mb-2 text-[15px] font-extrabold text-white">Paiement</h3>
           <p className="text-sm leading-7 text-[#b7c7b9]">
-            Orange Money · MTN MoMo · Moov Money · Wave · Carte · Espèces à la livraison
+            Paiement sécurisé par carte bancaire Visa ou Mastercard
           </p>
         </div>
       </div>

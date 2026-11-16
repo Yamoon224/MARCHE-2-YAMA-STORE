@@ -1,14 +1,16 @@
 import Link from "next/link";
 import { ProductCard } from "@/components/ProductCard";
 import { fetchCategories } from "@/lib/api/content";
-import { fetchProducts } from "@/lib/api/products";
+import { fetchProductPage } from "@/lib/api/products";
+import { Pagination } from "./Pagination";
 
 /** Liste de produits d'un rayon et/ou d'une recherche, lue dans l'API (aucune donnée de remplacement). */
-export async function ProductResults({ term, categorySlug }: { term: string; categorySlug?: string }) {
-  const [products, categories] = await Promise.all([
-    fetchProducts({ q: term || undefined, category: categorySlug, perPage: 50 }),
+export async function ProductResults({ term, categorySlug, page = 1 }: { term: string; categorySlug?: string; page?: number }) {
+  const [result, categories] = await Promise.all([
+    fetchProductPage({ q: term || undefined, category: categorySlug, page, perPage: PER_PAGE }),
     fetchCategories(),
   ]);
+  const products = result?.products ?? null;
 
   const category = categorySlug ? categories?.find((c) => c.slug === categorySlug) : undefined;
   const title = term ? `Résultats pour « ${term} »` : (category?.name ?? "Tous nos produits");
@@ -16,6 +18,11 @@ export async function ProductResults({ term, categorySlug }: { term: string; cat
   return (
     <>
       <h1 className="text-[26px] font-extrabold sm:text-[32px]">{title}</h1>
+      {result && result.total > 0 && (
+        <p className="mt-1 text-sm text-muted">
+          {result.total} produit{result.total > 1 ? "s" : ""} · page {result.page} sur {result.lastPage}
+        </p>
+      )}
 
       {categories && categories.length > 0 && (
         <nav aria-label="Rayons" className="mt-4 flex flex-wrap gap-2">
@@ -45,9 +52,20 @@ export async function ProductResults({ term, categorySlug }: { term: string; cat
           ))}
         </ul>
       )}
+
+      {result && (
+        <Pagination
+          page={result.page}
+          lastPage={result.lastPage}
+          basePath={categorySlug ? `/rayons/${categorySlug}` : "/rayons"}
+          params={term ? { q: term } : {}}
+        />
+      )}
     </>
   );
 }
+
+const PER_PAGE = 20;
 
 const chip = (on: boolean) =>
   `rounded-full border px-4 py-2 text-[13px] font-bold ${on ? "border-brand-green bg-brand-green text-white" : "border-line bg-white hover:border-brand-green"}`;

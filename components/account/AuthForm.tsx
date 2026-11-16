@@ -64,8 +64,8 @@ export function AuthForm({ next }: { next?: string }) {
       )}
 
       <label className="text-sm font-medium">
-        {mode === "login" ? "E-mail ou téléphone" : "E-mail ou téléphone (+225…)"}
-        <input name="login" required autoComplete="username" placeholder={mode === "login" ? "E-mail ou téléphone" : "Ex. awa@exemple.com ou +225 07 00 00 00 00"} className={field} />
+        {mode === "login" ? "E-mail ou téléphone" : "E-mail ou téléphone (+33…)"}
+        <input name="login" required autoComplete="username" placeholder={mode === "login" ? "E-mail ou téléphone" : "Ex. awa@exemple.com ou +33 6 12 34 56 78"} className={field} />
       </label>
 
       <label className="text-sm font-medium">

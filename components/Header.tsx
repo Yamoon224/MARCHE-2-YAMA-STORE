@@ -16,7 +16,7 @@ export function Header() {
       <div className="bg-[#8f0013] text-xs text-white">
         <div className="mx-auto flex h-[34px] max-w-[1200px] items-center justify-between gap-3 px-4">
           <b>Les meilleurs produits, aux meilleurs prix</b>
-          <span className="hidden sm:inline">🚚 Livraison à domicile ou retrait en magasin</span>
+          <span className="hidden sm:inline">🚚 Livraison à Paris et en Île-de-France</span>
         </div>
       </div>
       <header className="sticky top-0 z-30 bg-gradient-to-br from-[#bd0019] to-[#e3132c] text-white shadow-[0_5px_22px_#7f001a30]">

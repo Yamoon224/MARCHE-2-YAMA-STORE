@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { fetchCategories } from "@/lib/api/content";
 import { fetchProduct } from "@/lib/api/products";
-import { formatXof } from "@/lib/format";
+import { formatMoney } from "@/lib/format";
 
 export const metadata = { title: "Produit — Marché de Yama" };
 
@@ -54,16 +54,16 @@ async function Detail({ params }: { params: Params }) {
         <div className="flex flex-col items-start gap-3">
           <h1 className="text-[clamp(28px,3.4vw,40px)] font-extrabold">{product.name}</h1>
           <p className="font-display text-3xl font-extrabold text-brand-red">
-            {formatXof(product.priceMinor)} <span className="text-base font-normal text-muted">{product.unit}</span>
-            {promo && <s className="ml-3 text-lg font-normal text-muted">{formatXof(product.oldPriceMinor!)}</s>}
+            {formatMoney(product.priceMinor)} <span className="text-base font-normal text-muted">{product.unit}</span>
+            {promo && <s className="ml-3 text-lg font-normal text-muted">{formatMoney(product.oldPriceMinor!)}</s>}
           </p>
           {product.description && <p className="max-w-[46ch] text-[#444b44]">{product.description}</p>}
           <div className="w-full max-w-60">
             <AddToCartButton product={product} />
           </div>
           <ul className="mt-3 grid gap-1.5 text-sm text-muted">
-            <li>🚚 Livraison à domicile ou retrait en magasin</li>
-            <li>💶 Paiement : mobile money, carte ou espèces à la livraison</li>
+            <li>🚚 Livraison à Paris et en Île-de-France</li>
+            <li>💳 Paiement sécurisé par carte Visa ou Mastercard</li>
           </ul>
         </div>
       </section>

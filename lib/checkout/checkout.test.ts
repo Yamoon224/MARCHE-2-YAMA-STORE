@@ -1,25 +1,25 @@
 import { describe, expect, it } from "vitest";
 import { addLine, EMPTY_CART } from "@/lib/cart/cart";
 import {
-  belowMinimum, buildOrderPayload, estimateDeliveryFee, extractApiError, safeNext, validateForm,
+  belowMinimum, buildOrderPayload, estimateDeliveryFee, extractApiError, safeNext, validateContact, validateForm,
   type CheckoutForm, type Zone,
 } from "./checkout";
 
-const zone: Zone = { id: 3, name: "Cocody", fee_minor: 1500, free_above_minor: 20000, min_order_minor: 2000 };
+const zone: Zone = { id: 3, name: "Paris (75)", fee_minor: 490, free_above_minor: 5000, min_order_minor: 2000 };
 const complete: CheckoutForm = {
-  fulfillment: "delivery", zoneId: 3, slotId: 9, neighborhood: " Cocody ", landmark: "", phone: "+225 07 00 11 22 33",
+  fulfillment: "delivery", zoneId: 3, slotId: 9, neighborhood: " 12 rue de Rivoli, 75004 Paris ", landmark: "", phone: "+33 6 12 34 56 78",
 };
 
 describe("delivery fee estimate", () => {
   it("charges the zone fee below the free threshold and nothing above or at it", () => {
-    expect(estimateDeliveryFee(zone, 19999)).toBe(1500);
+    expect(estimateDeliveryFee(zone, 4999)).toBe(490);
+    expect(estimateDeliveryFee(zone, 5000)).toBe(0);
     expect(estimateDeliveryFee(zone, 20000)).toBe(0);
-    expect(estimateDeliveryFee(zone, 50000)).toBe(0);
   });
 
   it("charges the fee when the zone has no free threshold, and nothing without a zone", () => {
-    expect(estimateDeliveryFee({ ...zone, free_above_minor: null }, 999999)).toBe(1500);
-    expect(estimateDeliveryFee(undefined, 5000)).toBe(0);
+    expect(estimateDeliveryFee({ ...zone, free_above_minor: null }, 999999)).toBe(490);
+    expect(estimateDeliveryFee(undefined, 500)).toBe(0);
   });
 
   it("detects an order below the zone minimum", () => {
@@ -38,7 +38,7 @@ describe("validateForm", () => {
   it.each([
     [{ zoneId: null }, "zone"],
     [{ slotId: null }, "créneau"],
-    [{ neighborhood: "  " }, "quartier"],
+    [{ neighborhood: "  " }, "adresse"],
     [{ phone: "abc" }, "téléphone"],
     [{ phone: "123" }, "téléphone"],
   ] as const)("rejects %j", (override, keyword) => {
@@ -57,11 +57,11 @@ describe("buildOrderPayload", () => {
   });
 
   it("cleans the phone number and address for delivery", () => {
-    const payload = buildOrderPayload(cart, { ...complete, landmark: "  Derrière la pharmacie " });
+    const payload = buildOrderPayload(cart, { ...complete, landmark: "  Bâtiment B, 3e étage " });
 
     expect(payload).toMatchObject({
       fulfillment: "delivery",
-      delivery: { zone_id: 3, slot_id: 9, phone: "+2250700112233", address: { neighborhood: "Cocody", landmark: "Derrière la pharmacie" } },
+      delivery: { zone_id: 3, slot_id: 9, phone: "+33612345678", address: { neighborhood: "12 rue de Rivoli, 75004 Paris", landmark: "Bâtiment B, 3e étage" } },
     });
   });
 
@@ -97,5 +97,22 @@ describe("safeNext", () => {
 
   it("uses the given fallback", () => {
     expect(safeNext("//evil.test", "/commandes")).toBe("/commandes");
+  });
+});
+
+describe("validateContact", () => {
+  const ok = { name: "Awa Koné", email: "awa@example.com", phone: "+33 6 12 34 56 78" };
+
+  it("accepts complete contact details", () => {
+    expect(validateContact(ok)).toBeNull();
+  });
+
+  it.each([
+    [{ name: " " }, "nom"],
+    [{ email: "awa" }, "e-mail"],
+    [{ email: "awa@exemple" }, "e-mail"],
+    [{ phone: "12" }, "téléphone"],
+  ])("rejects %j", (change, keyword) => {
+    expect(validateContact({ ...ok, ...change })).toContain(keyword);
   });
 });

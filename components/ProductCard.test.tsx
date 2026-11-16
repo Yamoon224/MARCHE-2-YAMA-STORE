@@ -26,13 +26,13 @@ describe("ProductCard", () => {
   it("affiche le nom, le prix et l'unité", () => {
     renderCard(base);
     expect(screen.getByRole("heading", { name: "Tomates" })).toBeInTheDocument();
-    expect(screen.getByText("900 F CFA")).toBeInTheDocument();
+    expect(screen.getByText("9,00 €")).toBeInTheDocument();
     expect(screen.getByText("le kg")).toBeInTheDocument();
   });
 
   it("affiche l'ancien prix barré en promotion", () => {
     renderCard({ ...base, oldPriceMinor: 1200 });
-    expect(screen.getByText("1 200 F CFA")).toHaveClass("line-through");
+    expect(screen.getByText("12,00 €")).toHaveClass("line-through");
   });
 
   it("désactive l'ajout quand le produit est épuisé", () => {

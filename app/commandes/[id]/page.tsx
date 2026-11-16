@@ -6,7 +6,7 @@ import { StatusBadge } from "@/components/orders/StatusBadge";
 import { TrackingPanel } from "@/components/orders/TrackingPanel";
 import { formatQuantity } from "@/lib/cart/cart";
 import { CLAIM_STATUS_LABEL, ISSUE_LABEL, RESOLUTION_LABEL, type Issue } from "@/lib/claims/claims";
-import { formatXof } from "@/lib/format";
+import { formatMoney } from "@/lib/format";
 import { canCancel, canPay, statusLabel } from "@/lib/orders/status";
 import { shouldShowTracking } from "@/lib/tracking/tracking";
 import { serverApi } from "@/lib/server/backend";
@@ -16,9 +16,7 @@ export const metadata = { title: "Suivi de commande — Marché de Yama" };
 const dateTime = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long", timeStyle: "short" });
 
 const PAYMENT_NOTICE: Record<string, string> = {
-  mobile_money: "Validez le paiement sur votre téléphone : votre commande passera en « Payée » dès la confirmation de l'opérateur.",
   card: "Votre paiement par carte est en cours de confirmation.",
-  cash_on_delivery: "Un conseiller vous contactera pour valider votre commande. Vous réglerez à la livraison.",
   erreur: "Votre commande est enregistrée, mais le paiement n'a pas pu démarrer. Vous pouvez réessayer depuis cette page.",
 };
 
@@ -84,7 +82,7 @@ async function OrderDetail({ params, searchParams }: Props) {
           </ul>
           {claim.status === "accepted" && claim.refund_amount_minor > 0 && (
             <p className="mt-2 text-sm">
-              Remboursement de <strong>{formatXof(claim.refund_amount_minor)}</strong>{claim.refund_completed ? " effectué." : " en cours de traitement."}
+              Remboursement de <strong>{formatMoney(claim.refund_amount_minor)}</strong>{claim.refund_completed ? " effectué." : " en cours de traitement."}
             </p>
           )}
           {claim.decision_note && <p className="mt-2 rounded-lg bg-black/5 p-3 text-sm">{claim.decision_note}</p>}
@@ -108,17 +106,17 @@ async function OrderDetail({ params, searchParams }: Props) {
                   ({formatQuantity({ saleUnit: (line.sale_unit ?? "piece") as "piece" | "kg" | "l", quantity: line.quantity })})
                 </span>
               </span>
-              <span>{formatXof(line.line_total_minor)}</span>
+              <span>{formatMoney(line.line_total_minor)}</span>
             </li>
           ))}
         </ul>
         <dl className="mt-3 grid grid-cols-[1fr_auto] gap-1 text-sm">
           <dt>Sous-total</dt>
-          <dd className="text-right">{formatXof(order.subtotal_minor ?? 0)}</dd>
+          <dd className="text-right">{formatMoney(order.subtotal_minor ?? 0)}</dd>
           <dt>{order.fulfillment === "delivery" ? "Livraison" : "Retrait en magasin"}</dt>
-          <dd className="text-right">{order.delivery_fee_minor ? formatXof(order.delivery_fee_minor) : "Offert"}</dd>
+          <dd className="text-right">{order.delivery_fee_minor ? formatMoney(order.delivery_fee_minor) : "Offert"}</dd>
           <dt className="font-bold">Total TTC</dt>
-          <dd className="text-right font-bold">{formatXof(order.total_minor)}</dd>
+          <dd className="text-right font-bold">{formatMoney(order.total_minor)}</dd>
         </dl>
       </section>
 

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatXof } from "@/lib/format";
+import { formatMoney } from "@/lib/format";
 import type { Product } from "@/lib/catalog/types";
 import { AddToCartButton } from "./cart/AddToCartButton";
 
@@ -30,9 +30,9 @@ export function ProductCard({ product }: { product: Product }) {
           </Link>
         </h3>
         <p className="flex-1">
-          <span className="text-lg font-extrabold text-brand-red">{formatXof(product.priceMinor)}</span>{" "}
+          <span className="text-lg font-extrabold text-brand-red">{formatMoney(product.priceMinor)}</span>{" "}
           {product.oldPriceMinor && (
-            <span className="text-xs text-muted line-through">{formatXof(product.oldPriceMinor)}</span>
+            <span className="text-xs text-muted line-through">{formatMoney(product.oldPriceMinor)}</span>
           )}
           <span className="block text-xs text-muted">{product.unit}</span>
         </p>

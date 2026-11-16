@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { StatusBadge } from "@/components/orders/StatusBadge";
-import { formatXof } from "@/lib/format";
+import { formatMoney } from "@/lib/format";
 import { serverApi } from "@/lib/server/backend";
 
 export const metadata = { title: "Mes commandes — Marché de Yama" };
@@ -47,7 +47,7 @@ async function OrderList() {
           <Link href={`/commandes/${order.id}`} className="flex items-center justify-between gap-3 p-4 hover:bg-black/5">
             <span className="font-medium">{order.number ?? `Commande ${order.id}`}</span>
             <StatusBadge status={order.status} />
-            <span className="font-semibold">{formatXof(order.total_minor)}</span>
+            <span className="font-semibold">{formatMoney(order.total_minor)}</span>
           </Link>
         </li>
       ))}

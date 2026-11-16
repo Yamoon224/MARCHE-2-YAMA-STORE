@@ -14,7 +14,7 @@ async function readJson(request: Request): Promise<Credentials | null> {
 }
 
 /** Appelle l'API d'authentification ; en cas de succès, le jeton va dans le cookie httpOnly et n'est PAS renvoyé au navigateur. */
-export async function startSession(request: Request, endpoint: "login" | "register"): Promise<NextResponse> {
+export async function startSession(request: Request, endpoint: "login" | "register" | "guest"): Promise<NextResponse> {
   const body = await readJson(request);
   if (!body) return NextResponse.json({ message: "Requête invalide." }, { status: 400 });
 

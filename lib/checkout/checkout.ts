@@ -11,7 +11,8 @@ export type CheckoutForm = {
   phone: string;
 };
 
-export type PaymentMethod = "mobile_money" | "card" | "cash_on_delivery";
+/** Paiement en ligne par carte bancaire (Visa, Mastercard) uniquement. */
+export type PaymentMethod = "card";
 
 /** Estimation affichée au client ; le serveur recalcule toujours le montant réel. */
 export function estimateDeliveryFee(zone: Zone | undefined, subtotalMinor: number): number {
@@ -30,7 +31,7 @@ export function validateForm(form: CheckoutForm): string | null {
 
   if (form.zoneId === null) return "Choisissez votre zone de livraison.";
   if (form.slotId === null) return "Choisissez un créneau de livraison.";
-  if (form.neighborhood.trim() === "") return "Indiquez votre quartier.";
+  if (form.neighborhood.trim() === "") return "Indiquez votre adresse de livraison.";
   if (!/^\+?[0-9]{8,15}$/.test(form.phone.replace(/[\s.-]/g, ""))) return "Indiquez un numéro de téléphone valide.";
 
   return null;
@@ -74,4 +75,15 @@ export function extractApiError(error: unknown, fallback = "Une erreur est surve
 export function safeNext(next: string | null | undefined, fallback = "/"): string {
   if (!next || !next.startsWith("/") || next.startsWith("//") || next.includes("\\") || /[\r\n]/.test(next)) return fallback;
   return next;
+}
+
+export type GuestContact = { name: string; email: string; phone: string };
+
+/** Premier problème des coordonnées d'un client sans compte, ou `null`. */
+export function validateContact(contact: GuestContact): string | null {
+  if (contact.name.trim().length < 2) return "Indiquez votre nom.";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(contact.email.trim())) return "Indiquez une adresse e-mail valide.";
+  if (!/^\+?[0-9]{8,15}$/.test(contact.phone.replace(/[\s.-]/g, ""))) return "Indiquez un numéro de téléphone valide.";
+
+  return null;
 }

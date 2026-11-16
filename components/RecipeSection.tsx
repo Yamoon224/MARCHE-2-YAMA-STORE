@@ -1,4 +1,4 @@
-import { formatXof } from "@/lib/format";
+import { formatMoney } from "@/lib/format";
 import type { Recipe } from "@/lib/catalog/types";
 import { RecipeAddButton } from "./cart/RecipeAddButton";
 
@@ -23,7 +23,7 @@ export function RecipeSection({ recipes }: { recipes: Recipe[] }) {
             </p>
             <h3 className="mt-2 font-extrabold">{r.name}</h3>
             <p className="text-sm text-muted">
-              {r.ingredients.length} ingrédients · {formatXof(r.totalMinor)}
+              {r.ingredients.length} ingrédients · {formatMoney(r.totalMinor)}
             </p>
             <RecipeAddButton recipe={r} />
           </li>

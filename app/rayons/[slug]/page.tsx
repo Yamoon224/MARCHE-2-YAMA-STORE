@@ -1,10 +1,11 @@
 import { Suspense } from "react";
 import { ProductResults } from "@/components/catalog/ProductResults";
+import { toPage } from "@/lib/catalog/pagination";
 
 export const metadata = { title: "Rayon — Marché de Yama" };
 
 type Params = Promise<{ slug: string }>;
-type SearchParams = Promise<{ q?: string | string[] }>;
+type SearchParams = Promise<{ q?: string | string[]; page?: string | string[] }>;
 
 export default function RayonPage({ params, searchParams }: { params: Params; searchParams: SearchParams }) {
   return (
@@ -17,7 +18,7 @@ export default function RayonPage({ params, searchParams }: { params: Params; se
 }
 
 async function Results({ params, searchParams }: { params: Params; searchParams: SearchParams }) {
-  const [{ slug }, { q }] = await Promise.all([params, searchParams]);
+  const [{ slug }, { q, page }] = await Promise.all([params, searchParams]);
 
-  return <ProductResults term={typeof q === "string" ? q.trim() : ""} categorySlug={slug} />;
+  return <ProductResults term={typeof q === "string" ? q.trim() : ""} categorySlug={slug} page={toPage(page)} />;
 }

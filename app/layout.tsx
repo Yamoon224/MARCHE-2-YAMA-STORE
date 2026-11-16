@@ -18,7 +18,7 @@ const manrope = Manrope({
 
 export const metadata: Metadata = {
   title: "Marché de Yama",
-  description: "Supermarché en ligne : les meilleurs produits, aux meilleurs prix",
+  description: "Supermarché en ligne livré à Paris et en Île-de-France : les meilleurs produits, aux meilleurs prix",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

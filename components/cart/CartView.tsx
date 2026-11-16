@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { QUANTITY_STEP, formatQuantity, lineTotalMinor } from "@/lib/cart/cart";
 import { useCart } from "@/lib/cart/CartProvider";
-import { formatXof } from "@/lib/format";
+import { formatMoney } from "@/lib/format";
 
 export function CartView() {
   const { cart, ready, subtotalMinor, setQuantity, remove, clear } = useCart();
@@ -32,7 +32,7 @@ export function CartView() {
             <li key={line.productId} className="flex flex-wrap items-center gap-3 rounded-2xl border border-line bg-white p-3.5">
               <div className="min-w-40 flex-1">
                 <p className="font-medium">{line.name}</p>
-                <p className="text-sm text-muted">{formatXof(line.unitPriceMinor)} {line.saleUnit === "piece" ? "l'unité" : line.saleUnit === "kg" ? "le kg" : "le litre"}</p>
+                <p className="text-sm text-muted">{formatMoney(line.unitPriceMinor)} {line.saleUnit === "piece" ? "l'unité" : line.saleUnit === "kg" ? "le kg" : "le litre"}</p>
               </div>
 
               <div className="flex items-center gap-2" role="group" aria-label={`Quantité de ${line.name}`}>
@@ -55,7 +55,7 @@ export function CartView() {
                 </button>
               </div>
 
-              <p className="w-28 text-right font-semibold">{formatXof(lineTotalMinor(line))}</p>
+              <p className="w-28 text-right font-semibold">{formatMoney(lineTotalMinor(line))}</p>
               <button type="button" onClick={() => remove(line.productId)} className="text-sm text-brand-red hover:underline">
                 Retirer
               </button>
@@ -66,7 +66,7 @@ export function CartView() {
 
       <aside className="sticky top-40 h-fit rounded-[20px] border border-line bg-white p-5">
         <h2 className="font-display text-xl font-extrabold">Récapitulatif</h2>
-        <p className="mt-3 flex justify-between"><span>Sous-total TTC</span><strong className="text-lg text-brand-red">{formatXof(subtotalMinor)}</strong></p>
+        <p className="mt-3 flex justify-between"><span>Sous-total TTC</span><strong className="text-lg text-brand-red">{formatMoney(subtotalMinor)}</strong></p>
         <p className="mt-1 text-xs text-muted">Frais de livraison calculés à l&apos;étape suivante, selon votre zone.</p>
         <Link href="/commande" className="mt-4 block rounded-full bg-brand-red py-3 text-center font-extrabold text-white transition hover:bg-brand-red-dark">
           Passer la commande

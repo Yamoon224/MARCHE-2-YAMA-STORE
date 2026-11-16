@@ -54,7 +54,7 @@ describe("totals", () => {
   const line = (over: Partial<CartLine>): CartLine => ({ ...rice, quantity: 1, ...over });
 
   it("matches the server rounding for weighted products", () => {
-    // 900 F CFA / kg, mêmes cas que LineTotalCalculatorTest côté backend
+    // 9,00 € / kg, mêmes cas que LineTotalCalculatorTest côté backend
     expect(lineTotalMinor(line({ ...tomatoes, quantity: 1000 }))).toBe(900);
     expect(lineTotalMinor(line({ ...tomatoes, quantity: 250 }))).toBe(225);
     expect(lineTotalMinor(line({ ...tomatoes, quantity: 1500 }))).toBe(1350);

@@ -8,16 +8,14 @@ import { formatQuantity, lineTotalMinor } from "@/lib/cart/cart";
 import { useCart } from "@/lib/cart/CartProvider";
 import {
   belowMinimum, buildOrderPayload, estimateDeliveryFee, extractApiError, validateForm,
-  type CheckoutForm, type PaymentMethod, type Zone,
+  type CheckoutForm, type GuestContact, type PaymentMethod, type Zone, validateContact,
 } from "@/lib/checkout/checkout";
-import { formatXof } from "@/lib/format";
+import { formatMoney } from "@/lib/format";
 
 type Slot = { id: number; starts_at: string; ends_at: string; remaining: number };
 
 const PAYMENT_LABELS: Record<PaymentMethod, string> = {
-  mobile_money: "Mobile money (Orange, MTN, Moov, Wave)",
-  card: "Carte bancaire",
-  cash_on_delivery: "Paiement à la livraison",
+  card: "Carte bancaire — Visa ou Mastercard",
 };
 
 const slotFormat = new Intl.DateTimeFormat("fr-FR", { weekday: "long", day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" });
@@ -32,7 +30,8 @@ export function CheckoutView() {
   const [zones, setZones] = useState<Zone[]>([]);
   const [slots, setSlots] = useState<Slot[]>([]);
   const [form, setForm] = useState<CheckoutForm>({ fulfillment: "pickup", zoneId: null, slotId: null, neighborhood: "", landmark: "", phone: "" });
-  const [method, setMethod] = useState<PaymentMethod>("mobile_money");
+  const [contact, setContact] = useState<GuestContact>({ name: "", email: "", phone: "" });
+  const [method, setMethod] = useState<PaymentMethod>("card");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -43,11 +42,10 @@ export function CheckoutView() {
     fetch("/api/session", { cache: "no-store" })
       .then((r) => r.json())
       .then((body: { user: unknown }) => {
-        if (body.user) setSignedIn(true);
-        else router.replace("/connexion?next=/commande");
+        setSignedIn(Boolean(body.user));
       })
       .catch(() => setSignedIn(false));
-  }, [router]);
+  }, []);
 
   useEffect(() => {
     api.GET("/api/v1/delivery/zones").then(({ data }) => setZones((data?.data ?? []) as Zone[]));
@@ -80,12 +78,23 @@ export function CheckoutView() {
     event.preventDefault();
     setError(null);
 
-    const problem = validateForm(form) ?? (tooSmall && zone ? `Le montant minimum pour cette zone est de ${formatXof(zone.min_order_minor)}.` : null);
+    const problem = (signedIn ? null : validateContact(contact)) ?? validateForm(form) ?? (tooSmall && zone ? `Le montant minimum pour cette zone est de ${formatMoney(zone.min_order_minor)}.` : null);
     if (problem) return setError(problem);
 
     setBusy(true);
     const key = (attempt.current ??= crypto.randomUUID());
     try {
+      // Sans compte : une session invité est ouverte d'abord (cookie httpOnly), puis la commande suit le parcours habituel.
+      if (!signedIn) {
+        const guest = await fetch("/api/session/guest", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(contact),
+        });
+        if (!guest.ok) return setError(extractApiError(await guest.json().catch(() => null), "Impossible de continuer sans compte."));
+        setSignedIn(true);
+      }
+
       const order = await api.POST("/api/v1/orders", {
         body: buildOrderPayload(cart, form),
         params: { header: { "Idempotency-Key": key } },
@@ -125,6 +134,30 @@ export function CheckoutView() {
   return (
     <form onSubmit={submit} className="grid gap-6 lg:grid-cols-[1fr_20rem]" noValidate>
       <div className="flex flex-col gap-6">
+        {!signedIn && (
+          <fieldset className="rounded-xl border border-black/10 p-4">
+            <legend className="px-1 font-semibold">Vos coordonnées</legend>
+            <p className="mt-1 text-sm text-black/60">
+              Pas besoin de compte pour commander.{" "}
+              <Link href="/connexion?next=/commande" className="text-brand-red underline">J&apos;ai déjà un compte</Link>
+            </p>
+            <div className="mt-3 grid gap-4 sm:grid-cols-2">
+              <label className="text-sm font-medium sm:col-span-2">
+                Nom complet
+                <input className={input} value={contact.name} onChange={(e) => setContact({ ...contact, name: e.target.value })} autoComplete="name" placeholder="Ex. Awa Koné" />
+              </label>
+              <label className="text-sm font-medium">
+                E-mail
+                <input className={input} type="email" value={contact.email} onChange={(e) => setContact({ ...contact, email: e.target.value })} autoComplete="email" placeholder="Ex. awa@exemple.com" />
+              </label>
+              <label className="text-sm font-medium">
+                Téléphone
+                <input className={input} value={contact.phone} onChange={(e) => setContact({ ...contact, phone: e.target.value })} inputMode="tel" autoComplete="tel" placeholder="+33 6 12 34 56 78" />
+              </label>
+            </div>
+          </fieldset>
+        )}
+
         <fieldset className="rounded-xl border border-black/10 p-4">
           <legend className="px-1 font-semibold">1. Réception</legend>
           <div className="mt-2 flex gap-4">
@@ -142,7 +175,7 @@ export function CheckoutView() {
                 Zone
                 <select className={input} value={form.zoneId ?? ""} onChange={(e) => patch({ zoneId: e.target.value ? Number(e.target.value) : null, slotId: null })}>
                   <option value="">Choisir…</option>
-                  {zones.map((z) => <option key={z.id} value={z.id}>{z.name} — {formatXof(z.fee_minor)}</option>)}
+                  {zones.map((z) => <option key={z.id} value={z.id}>{z.name} — {formatMoney(z.fee_minor)}</option>)}
                 </select>
               </label>
 
@@ -159,18 +192,18 @@ export function CheckoutView() {
               </label>
 
               <label className="text-sm font-medium">
-                Quartier
-                <input className={input} value={form.neighborhood} onChange={(e) => patch({ neighborhood: e.target.value })} autoComplete="address-level2" placeholder="Ex. Cocody Angré" />
+                Adresse de livraison
+                <input className={input} value={form.neighborhood} onChange={(e) => patch({ neighborhood: e.target.value })} autoComplete="street-address" placeholder="Ex. 12 rue de Rivoli, 75004 Paris" />
               </label>
 
               <label className="text-sm font-medium">
                 Téléphone du destinataire
-                <input className={input} value={form.phone} onChange={(e) => patch({ phone: e.target.value })} inputMode="tel" autoComplete="tel" placeholder="+225 07 00 00 00 00" />
+                <input className={input} value={form.phone} onChange={(e) => patch({ phone: e.target.value })} inputMode="tel" autoComplete="tel" placeholder="+33 6 12 34 56 78" />
               </label>
 
               <label className="text-sm font-medium sm:col-span-2">
-                Repère (facultatif)
-                <input className={input} value={form.landmark} onChange={(e) => patch({ landmark: e.target.value })} placeholder="Ex. derrière la pharmacie, portail bleu" />
+                Complément d&apos;adresse (facultatif)
+                <input className={input} value={form.landmark} onChange={(e) => patch({ landmark: e.target.value })} placeholder="Ex. bâtiment B, 3e étage, digicode 1234A" />
               </label>
             </div>
           )}
@@ -195,17 +228,17 @@ export function CheckoutView() {
           {cart.lines.map((l) => (
             <li key={l.productId} className="flex justify-between gap-2">
               <span>{l.name} <span className="text-black/50">({formatQuantity(l)})</span></span>
-              <span>{formatXof(lineTotalMinor(l))}</span>
+              <span>{formatMoney(lineTotalMinor(l))}</span>
             </li>
           ))}
         </ul>
-        <p className="mt-3 flex justify-between border-t border-black/10 pt-3"><span>Sous-total</span><span>{formatXof(subtotalMinor)}</span></p>
-        <p className="flex justify-between"><span>Livraison</span><span>{delivery && !zone ? "—" : fee === 0 ? "Offerte" : formatXof(fee)}</span></p>
-        <p className="mt-1 flex justify-between text-lg font-bold"><span>Total TTC</span><span>{formatXof(subtotalMinor + fee)}</span></p>
+        <p className="mt-3 flex justify-between border-t border-black/10 pt-3"><span>Sous-total</span><span>{formatMoney(subtotalMinor)}</span></p>
+        <p className="flex justify-between"><span>Livraison</span><span>{delivery && !zone ? "—" : fee === 0 ? "Offerte" : formatMoney(fee)}</span></p>
+        <p className="mt-1 flex justify-between text-lg font-bold"><span>Total TTC</span><span>{formatMoney(subtotalMinor + fee)}</span></p>
         <p className="mt-1 text-xs text-black/60">Montant définitif calculé par le serveur à la validation.</p>
 
         {tooSmall && zone && (
-          <p role="alert" className="mt-3 text-sm text-brand-red">Minimum de commande pour cette zone : {formatXof(zone.min_order_minor)}.</p>
+          <p role="alert" className="mt-3 text-sm text-brand-red">Minimum de commande pour cette zone : {formatMoney(zone.min_order_minor)}.</p>
         )}
         {error && <p role="alert" className="mt-3 rounded-lg bg-brand-red/10 p-3 text-sm text-brand-red">{error}</p>}
 
