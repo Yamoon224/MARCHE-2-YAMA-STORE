@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { categories } from "@/lib/mock";
+import type { Category } from "@/lib/catalog/types";
 
-export function CategoryGrid() {
+export function CategoryGrid({ categories }: { categories: Category[] }) {
+  if (categories.length === 0) return null;
+
   return (
     <section className="mx-auto my-8 w-[min(1200px,calc(100%-28px))] sm:my-11" aria-labelledby="rayons">
       <div className="mb-4 flex items-end justify-between gap-3.5">
@@ -23,10 +25,15 @@ export function CategoryGrid() {
               className="flex flex-col items-center gap-2 rounded-[18px] border border-line bg-white px-2 pb-3.5 pt-2 text-center transition hover:-translate-y-1 hover:shadow-soft"
             >
               <span
-                className="grid aspect-square w-full place-items-center rounded-xl bg-gradient-to-br from-[#fff0d5] to-[#f3d49b] text-5xl"
+                className="grid aspect-square w-full place-items-center overflow-hidden rounded-xl bg-gradient-to-br from-[#fff0d5] to-[#f3d49b] text-5xl"
                 aria-hidden="true"
               >
-                {c.emoji}
+                {c.imageUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- images de l'API, domaines inconnus à la compilation
+                  <img src={c.imageUrl} alt="" loading="lazy" className="h-full w-full object-cover" />
+                ) : (
+                  (c.icon ?? "🛒")
+                )}
               </span>
               <span className="text-sm font-bold">{c.name}</span>
             </Link>

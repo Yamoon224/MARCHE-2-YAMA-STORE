@@ -1,7 +1,10 @@
 import { formatXof } from "@/lib/format";
-import { recipes } from "@/lib/mock";
+import type { Recipe } from "@/lib/catalog/types";
+import { RecipeAddButton } from "./cart/RecipeAddButton";
 
-export function RecipeSection() {
+export function RecipeSection({ recipes }: { recipes: Recipe[] }) {
+  if (recipes.length === 0) return null;
+
   return (
     <section
       id="recettes"
@@ -16,18 +19,13 @@ export function RecipeSection() {
         {recipes.map((r) => (
           <li key={r.slug} className="rounded-[18px] border border-line bg-white p-4">
             <p className="text-5xl" aria-hidden="true">
-              {r.emoji}
+              {r.icon ?? "🍲"}
             </p>
             <h3 className="mt-2 font-extrabold">{r.name}</h3>
             <p className="text-sm text-muted">
-              {r.ingredients} ingrédients · {formatXof(r.totalMinor)}
+              {r.ingredients.length} ingrédients · {formatXof(r.totalMinor)}
             </p>
-            <button
-              type="button"
-              className="mt-3 w-full rounded-full bg-brand-red py-2.5 text-sm font-extrabold text-white transition hover:bg-brand-red-dark"
-            >
-              Ajouter tous les ingrédients
-            </button>
+            <RecipeAddButton recipe={r} />
           </li>
         ))}
       </ul>

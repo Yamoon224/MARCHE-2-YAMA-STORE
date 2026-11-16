@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { QUANTITY_STEP, formatQuantity } from "@/lib/cart/cart";
 import { useCart } from "@/lib/cart/CartProvider";
-import type { Product } from "@/lib/mock";
+import type { Product } from "@/lib/catalog/types";
 
 export function AddToCartButton({ product }: { product: Product }) {
   const { add } = useCart();

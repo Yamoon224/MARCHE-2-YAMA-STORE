@@ -4,32 +4,51 @@ import { CategoryGrid } from "@/components/CategoryGrid";
 import { Hero } from "@/components/Hero";
 import { ProductRail } from "@/components/ProductRail";
 import { RecipeSection } from "@/components/RecipeSection";
+import { fetchBanners, fetchCategories, fetchRecipes } from "@/lib/api/content";
 import { fetchProducts } from "@/lib/api/products";
-import { bestSellers, promotions } from "@/lib/mock";
 
+// Tout le contenu vient de l'API. Chaque section se charge en flux et disparaît si l'API ne répond pas :
+// le build n'appelle jamais l'API et aucune donnée de remplacement n'est affichée.
 export default function Home() {
   return (
     <main>
-      <Hero />
-      <CategoryGrid />
-      {/* Le catalogue réel arrive en flux ; en attendant (ou si l'API est indisponible) on montre la sélection. */}
-      <Suspense fallback={<PromoRail products={promotions} />}>
-        <LivePromoRail />
+      <Suspense fallback={<Hero banners={[]} />}>
+        <LiveHero />
       </Suspense>
-      <ProductRail id="best" title="Les best sellers" href="/rayons" products={bestSellers} />
-      <RecipeSection />
+      <Suspense>
+        <LiveCategories />
+      </Suspense>
+      <Suspense>
+        <LiveRail id="promos" title="Les bons plans Yama" query={{ promo: true, perPage: 12 }} />
+      </Suspense>
+      <Suspense>
+        <LiveRail id="best" title="Les best sellers" query={{ featured: true, perPage: 12 }} />
+      </Suspense>
+      <Suspense>
+        <LiveRecipes />
+      </Suspense>
     </main>
   );
 }
 
-function PromoRail({ products }: { products: typeof promotions }) {
-  return <ProductRail id="promos" title="Les bons plans Yama" href="/rayons" products={products} />;
+async function LiveHero() {
+  await connection();
+  return <Hero banners={(await fetchBanners()) ?? []} />;
 }
 
-async function LivePromoRail() {
-  // Contenu propre à la requête : le build n'appelle jamais l'API, la page statique garde la sélection de repli.
+async function LiveCategories() {
   await connection();
-  const fromApi = await fetchProducts();
+  return <CategoryGrid categories={(await fetchCategories()) ?? []} />;
+}
 
-  return <PromoRail products={fromApi && fromApi.length > 0 ? fromApi : promotions} />;
+async function LiveRail({ id, title, query }: { id: string; title: string; query: Parameters<typeof fetchProducts>[0] }) {
+  await connection();
+  const products = (await fetchProducts(query)) ?? [];
+
+  return products.length > 0 ? <ProductRail id={id} title={title} href="/rayons" products={products} /> : null;
+}
+
+async function LiveRecipes() {
+  await connection();
+  return <RecipeSection recipes={(await fetchRecipes()) ?? []} />;
 }

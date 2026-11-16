@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Product } from "@/lib/mock";
+import type { Product } from "@/lib/catalog/types";
 import { ProductCard } from "./ProductCard";
 
 type Props = { id: string; title: string; href: string; products: Product[] };

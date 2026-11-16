@@ -2,10 +2,10 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it } from "vitest";
 import { CartProvider, useCart } from "@/lib/cart/CartProvider";
-import type { Product } from "@/lib/mock";
+import type { Product } from "@/lib/catalog/types";
 import { ProductCard } from "./ProductCard";
 
-const base: Product = { id: 1, name: "Tomates", emoji: "🍅", priceMinor: 900, unit: "le kg", saleUnit: "kg" };
+const base: Product = { id: 1, slug: "tomates", name: "Tomates", priceMinor: 900, unit: "le kg", saleUnit: "kg" };
 
 function CartProbe() {
   const { cart, subtotalMinor } = useCart();

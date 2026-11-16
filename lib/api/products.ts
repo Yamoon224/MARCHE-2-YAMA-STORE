@@ -1,4 +1,4 @@
-import type { Product } from "@/lib/mock";
+import type { Product } from "@/lib/catalog/types";
 import { api, type ApiClient } from "./client";
 import type { components } from "./schema";
 
@@ -13,9 +13,13 @@ const UNIT_LABEL: Record<ApiProduct["sale_unit"], string> = {
 function toProduct(p: ApiProduct): Product {
   return {
     id: p.id,
+    slug: p.slug,
     name: p.name,
-    emoji: "🛒",
+    imageUrl: p.image_url ?? null,
+    description: p.description ?? null,
+    categoryId: p.category_id,
     priceMinor: p.price_minor,
+    oldPriceMinor: p.compare_at_price_minor ?? undefined,
     unit: UNIT_LABEL[p.sale_unit],
     saleUnit: p.sale_unit,
   };
@@ -23,20 +27,49 @@ function toProduct(p: ApiProduct): Product {
 
 const CATALOG_TIMEOUT_MS = 3000;
 
-/** Produits de l'API, ou `null` si l'API est injoignable (la page garde alors ses données de repli). */
-export async function fetchProducts(
-  query?: { q?: string; categoryId?: number },
-  client: ApiClient = api,
-): Promise<Product[] | null> {
+export type ProductQuery = {
+  q?: string;
+  categoryId?: number;
+  /** Slug du rayon. */
+  category?: string;
+  featured?: boolean;
+  promo?: boolean;
+  perPage?: number;
+};
+
+/** Produits de l'API, ou `null` si l'API est injoignable : l'appelant affiche alors un état d'indisponibilité. */
+export async function fetchProducts(query?: ProductQuery, client: ApiClient = api): Promise<Product[] | null> {
   try {
     const { data, error } = await client.GET("/api/v1/products", {
-      params: { query: { q: query?.q, category_id: query?.categoryId } },
+      params: {
+        query: {
+          q: query?.q,
+          category_id: query?.categoryId,
+          category: query?.category,
+          featured: query?.featured,
+          promo: query?.promo,
+          per_page: query?.perPage,
+        },
+      },
       next: { revalidate: 60 },
-      // Une API lente ne doit jamais bloquer le rendu ni le build : au-delà, la page garde ses données de repli.
+      // Une API lente ne doit jamais bloquer le rendu ni le build.
       signal: AbortSignal.timeout(CATALOG_TIMEOUT_MS),
     });
     if (error || !data) return null;
     return data.data.map(toProduct);
+  } catch {
+    return null;
+  }
+}
+/** Une fiche produit : `null` si l'API est injoignable ou si le produit n'existe pas (ou plus). */
+export async function fetchProduct(slug: string, client: ApiClient = api): Promise<Product | null> {
+  try {
+    const { data, error } = await client.GET("/api/v1/products/{slug}", {
+      params: { path: { slug } },
+      next: { revalidate: 60 },
+      signal: AbortSignal.timeout(CATALOG_TIMEOUT_MS),
+    });
+    return error || !data?.data ? null : toProduct(data.data);
   } catch {
     return null;
   }
