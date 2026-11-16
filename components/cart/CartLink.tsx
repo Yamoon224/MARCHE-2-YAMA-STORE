@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCart } from "@/lib/cart/CartProvider";
+import { CartIcon } from "./CartIcon";
 
 export function CartLink() {
   const { itemCount, ready } = useCart();
@@ -11,7 +12,7 @@ export function CartLink() {
       href="/panier"
       className="relative flex items-center gap-2 rounded-full border border-white/30 bg-white/20 px-4 py-2.5 text-sm font-bold text-white hover:bg-white/30"
     >
-      <span aria-hidden="true">🛒</span> Panier
+      <CartIcon className="h-[18px] w-[18px]" /> Panier
       {ready && itemCount > 0 && (
         <span
           aria-label={`${itemCount} article${itemCount > 1 ? "s" : ""} dans le panier`}

@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
+import { GuestAccountPrompt } from "@/components/account/GuestAccountPrompt";
+import { PayByCardButton } from "@/components/orders/PayByCardButton";
 import { CancelOrderButton } from "@/components/orders/CancelOrderButton";
 import { StatusBadge } from "@/components/orders/StatusBadge";
 import { TrackingPanel } from "@/components/orders/TrackingPanel";
@@ -17,6 +19,8 @@ const dateTime = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long", timeStyle
 
 const PAYMENT_NOTICE: Record<string, string> = {
   card: "Votre paiement par carte est en cours de confirmation.",
+  cash_on_delivery: "Commande enregistrée. Un conseiller la valide rapidement ; vous réglerez en espèces à la livraison ou au retrait en magasin (prévoyez l'appoint si possible).",
+  annule: "Paiement annulé. Votre commande est enregistrée : vous pouvez payer par carte maintenant ou plus tard depuis cette page.",
   erreur: "Votre commande est enregistrée, mais le paiement n'a pas pu démarrer. Vous pouvez réessayer depuis cette page.",
 };
 
@@ -63,6 +67,7 @@ async function OrderDetail({ params, searchParams }: Props) {
             Conservez ce numéro : avec l&apos;e-mail de votre commande, il permet de la suivre à tout moment sur{" "}
             <Link href="/suivi" className="text-brand-red underline">la page de suivi</Link>, même sans compte.
           </p>
+          <div className="mt-4"><GuestAccountPrompt /></div>
         <StatusBadge status={order.status} />
       </div>
 
@@ -140,7 +145,12 @@ async function OrderDetail({ params, searchParams }: Props) {
       </section>
 
       <div className="mt-8 flex flex-wrap items-center gap-3">
-        {canPay(order.status) && <p className="text-sm text-black/70">Paiement en attente : votre commande est réservée quelques minutes.</p>}
+        {canPay(order.status) && (
+          <div className="flex flex-col gap-3">
+            <p className="text-sm text-black/70">Paiement en attente : votre commande est réservée quelques minutes.</p>
+            <PayByCardButton orderId={order.id} />
+          </div>
+        )}
         {canCancel(order.status) && <CancelOrderButton orderId={order.id} />}
         <Link href="/commandes" className="text-sm text-brand-green underline">Toutes mes commandes</Link>
       </div>

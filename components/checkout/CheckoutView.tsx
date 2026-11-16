@@ -16,6 +16,7 @@ type Slot = { id: number; starts_at: string; ends_at: string; remaining: number 
 
 const PAYMENT_LABELS: Record<PaymentMethod, string> = {
   card: "Carte bancaire — Visa ou Mastercard",
+  cash_on_delivery: "Espèces — à la livraison ou au retrait en magasin",
 };
 
 const slotFormat = new Intl.DateTimeFormat("fr-FR", { weekday: "long", day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" });
@@ -109,6 +110,14 @@ export function CheckoutView() {
       });
 
       clear();
+
+      // Carte : on envoie le client sur la page de paiement sécurisée (Stripe) ; il revient sur le suivi de commande ensuite.
+      const payUrl = payment.data?.data?.action_url;
+      if (payUrl) {
+        window.location.assign(payUrl);
+        return;
+      }
+
       // La commande existe même si l'ouverture du paiement échoue : le client peut le relancer depuis son suivi.
       router.push(`/commandes/${orderId}${payment.error ? "?paiement=erreur" : `?paiement=${method}`}`);
     } catch {

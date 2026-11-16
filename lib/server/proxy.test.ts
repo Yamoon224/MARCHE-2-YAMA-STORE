@@ -18,6 +18,7 @@ describe("isAllowedPath", () => {
     ["api/v1/notifications/5/read"],
     ["api/v1/notifications/read-all"],
     ["api/v1/auth/me"],
+  ["api/v1/auth/claim-account"],
   ])("allows %s", (path) => {
     expect(isAllowedPath(path.split("/"))).toBe(true);
   });

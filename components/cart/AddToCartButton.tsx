@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { QUANTITY_STEP, formatQuantity } from "@/lib/cart/cart";
 import { useCart } from "@/lib/cart/CartProvider";
+import { CartIcon } from "./CartIcon";
 import type { Product } from "@/lib/catalog/types";
 
 export function AddToCartButton({ product }: { product: Product }) {
@@ -23,9 +24,10 @@ export function AddToCartButton({ product }: { product: Product }) {
       disabled={product.soldOut}
       onClick={handleClick}
       aria-label={`Ajouter ${step} de ${product.name} au panier`}
-      className="mt-auto rounded-full bg-brand-green px-3.5 py-2 text-[13px] font-extrabold text-white hover:bg-brand-green-dark disabled:cursor-not-allowed disabled:bg-black/20"
+      className="mt-auto inline-flex items-center justify-center gap-1.5 rounded-full bg-brand-green px-3.5 py-2 text-[13px] font-extrabold text-white hover:bg-brand-green-dark disabled:cursor-not-allowed disabled:bg-black/20"
     >
-      {added ? "Ajouté ✓" : "＋ Ajouter"}
+      <CartIcon />
+      {added ? "Ajouté ✓" : "Ajouter"}
     </button>
   );
 }

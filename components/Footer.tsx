@@ -26,7 +26,7 @@ export function Footer() {
         <div>
           <h3 className="mb-2 text-[15px] font-extrabold text-white">Paiement</h3>
           <p className="text-sm leading-7 text-[#b7c7b9]">
-            Paiement sécurisé par carte bancaire Visa ou Mastercard
+            Carte bancaire Visa ou Mastercard, ou espèces à la livraison et au retrait
           </p>
         </div>
       </div>

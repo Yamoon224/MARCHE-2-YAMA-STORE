@@ -12,7 +12,7 @@ const GRADIENTS = [
 
 const PERKS = [
   "🚚 Livraison à Paris et en Île-de-France",
-  "💳 Paiement sécurisé par carte Visa ou Mastercard",
+  "💳 Carte Visa / Mastercard ou espèces à la réception",
   "🌿 Fraîcheur garantie, suivi par lot",
 ];
 

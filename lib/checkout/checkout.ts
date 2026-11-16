@@ -11,8 +11,8 @@ export type CheckoutForm = {
   phone: string;
 };
 
-/** Paiement en ligne par carte bancaire (Visa, Mastercard) uniquement. */
-export type PaymentMethod = "card";
+/** Carte bancaire (Visa, Mastercard) ou espèces à la réception (livraison ou retrait en magasin). */
+export type PaymentMethod = "card" | "cash_on_delivery";
 
 /** Estimation affichée au client ; le serveur recalcule toujours le montant réel. */
 export function estimateDeliveryFee(zone: Zone | undefined, subtotalMinor: number): number {

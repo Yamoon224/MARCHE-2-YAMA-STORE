@@ -63,7 +63,7 @@ async function Detail({ params }: { params: Params }) {
           </div>
           <ul className="mt-3 grid gap-1.5 text-sm text-muted">
             <li>🚚 Livraison à Paris et en Île-de-France</li>
-            <li>💳 Paiement sécurisé par carte Visa ou Mastercard</li>
+            <li>💳 Carte Visa / Mastercard ou espèces à la réception</li>
           </ul>
         </div>
       </section>

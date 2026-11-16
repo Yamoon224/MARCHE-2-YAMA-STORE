@@ -795,6 +795,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/auth/claim-account": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Transformer une session invité en compte (e-mail de la commande + mot de passe choisi) */
+        post: operations["1e9145af49124db5a3781b7f14d0aa4a"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/auth/login": {
         parameters: {
             query?: never;
@@ -1558,6 +1575,8 @@ export interface components {
             amount_minor: number;
             /** @example EUR */
             currency: string;
+            /** @description Page de paiement hébergée où rediriger le client (paiement par carte en attente) */
+            action_url?: string | null;
         };
         Refund: {
             id: number;
@@ -3406,6 +3425,49 @@ export interface operations {
             };
         };
     };
+    "1e9145af49124db5a3781b7f14d0aa4a": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @example secret1234 */
+                    password: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Compte créé */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["User"];
+                    };
+                };
+            };
+            /** @description Non authentifié */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Mot de passe invalide, déjà un compte, ou e-mail déjà utilisé */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     "488c2daac977b1c161dc751145d9dfe3": {
         parameters: {
             query?: never;
@@ -3965,6 +4027,13 @@ export interface operations {
                 };
                 content?: never;
             };
+            /** @description Paiement par carte indisponible (agrégateur non configuré ou injoignable) */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
         };
     };
     a66850b785f36d0cce03c779a1e552d5: {
@@ -4097,8 +4166,9 @@ export interface operations {
     "6d549f1934115ff1af2f0a74f39509a4": {
         parameters: {
             query?: never;
-            header: {
-                "X-Signature": string;
+            header?: {
+                /** @description Signature HMAC (simulateur) ; Stripe envoie Stripe-Signature */
+                "X-Signature"?: string;
             };
             path: {
                 provider: string;
