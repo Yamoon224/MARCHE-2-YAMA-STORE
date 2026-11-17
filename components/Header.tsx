@@ -7,8 +7,11 @@ import { SearchForm } from "./SearchForm";
 
 const NAV = [
   { href: "/", label: "Accueil" },
-  { href: "/rayons", label: "Nos rayons" },
-  { href: "/commandes", label: "Mes commandes" },
+  { href: "/#categories", label: "Catégories" },
+  { href: "/#combos", label: "Combos africains" },
+  { href: "/#huiles", label: "Nos huiles" },
+  { href: "/#populaires", label: "Nos produits" },
+  { href: "/#livraison", label: "Livraison" },
   { href: "/suivi", label: "Suivre ma commande" },
 ];
 
@@ -17,8 +20,11 @@ export function Header() {
     <>
       <div className="bg-[#8f0013] text-xs text-white">
         <div className="mx-auto flex h-[34px] max-w-[1200px] items-center justify-between gap-3 px-4">
-          <b>Les meilleurs produits, aux meilleurs prix</b>
-          <span className="hidden sm:inline">🚚 Livraison à Paris et en Île-de-France</span>
+          <strong>Marché de Yama — les saveurs de l&apos;Afrique à portée de main.</strong>
+          <span className="hidden gap-5 sm:flex">
+            <span>🚚 Livraison à Paris &amp; en Île-de-France</span>
+            <span>✦ Produits sélectionnés</span>
+          </span>
         </div>
       </div>
       <header className="sticky top-0 z-30 bg-gradient-to-br from-[#bd0019] to-[#e3132c] text-white shadow-[0_5px_22px_#7f001a30]">

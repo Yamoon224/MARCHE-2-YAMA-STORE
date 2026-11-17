@@ -1,41 +1,38 @@
 import Link from "next/link";
 import type { Category } from "@/lib/catalog/types";
+import { ImageWithFallback } from "./ImageWithFallback";
+import { SectionHead } from "./SectionHead";
 
 export function CategoryGrid({ categories }: { categories: Category[] }) {
   if (categories.length === 0) return null;
 
   return (
-    <section className="mx-auto my-8 w-[min(1200px,calc(100%-28px))] sm:my-11" aria-labelledby="rayons">
-      <div className="mb-4 flex items-end justify-between gap-3.5">
-        <div>
-          <h2 id="rayons" className="text-[21px] font-extrabold sm:text-[26px]">
-            Nos rayons
-          </h2>
-          <p className="mt-1 text-sm text-muted">Choisissez un rayon, trouvez vos produits.</p>
-        </div>
-        <Link href="/rayons" className="whitespace-nowrap text-xs font-extrabold text-brand-green hover:underline sm:text-sm">
-          Voir tout →
-        </Link>
-      </div>
-      <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3 lg:grid-cols-5">
+    <section id="categories" className="mx-auto mb-8 mt-10 w-[min(1200px,calc(100%-22px))] sm:mt-[54px] sm:w-[min(1200px,calc(100%-44px))]" aria-labelledby="categories-titre">
+      <SectionHead
+        id="categories-titre"
+        title="Nos catégories"
+        subtitle="Tout ce qu’il faut pour retrouver les saveurs du pays."
+        href="/rayons"
+        linkLabel="Voir les produits →"
+      />
+      <ul className="grid grid-cols-3 gap-2.5 sm:gap-[15px] lg:grid-cols-6">
         {categories.map((c) => (
           <li key={c.slug}>
             <Link
               href={`/rayons/${c.slug}`}
-              className="flex flex-col items-center gap-2 rounded-[18px] border border-line bg-white px-2 pb-3.5 pt-2 text-center transition hover:-translate-y-1 hover:shadow-soft"
+              className="block rounded-[15px] border border-line bg-white px-1.5 pb-2.5 pt-2 text-center shadow-[0_4px_14px_#1a30100a] transition hover:-translate-y-1.5 hover:border-[#b9dfc3] hover:shadow-soft sm:rounded-[19px] sm:px-[9px] sm:pb-[13px] sm:pt-2.5"
             >
-              <span
-                className="grid aspect-square w-full place-items-center overflow-hidden rounded-xl bg-gradient-to-br from-[#fff0d5] to-[#f3d49b] text-5xl"
-                aria-hidden="true"
-              >
-                {c.imageUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element -- images de l'API, domaines inconnus à la compilation
-                  <img src={c.imageUrl} alt="" loading="lazy" className="h-full w-full object-cover" />
-                ) : (
-                  (c.icon ?? "🛒")
-                )}
-              </span>
-              <span className="text-sm font-bold">{c.name}</span>
+              {c.imageUrl ? (
+                <ImageWithFallback src={c.imageUrl} className="mb-2.5 h-[83px] w-full rounded-[10px] sm:h-[110px] sm:rounded-[13px]" />
+              ) : (
+                <span
+                  aria-hidden="true"
+                  className="mb-2.5 grid h-[83px] w-full place-items-center rounded-[10px] bg-gradient-to-br from-[#fff0d5] to-[#f3d49b] text-4xl sm:h-[110px] sm:rounded-[13px]"
+                >
+                  {c.icon ?? "🛒"}
+                </span>
+              )}
+              <b className="text-[11px] sm:text-[13px]">{c.name}</b>
             </Link>
           </li>
         ))}

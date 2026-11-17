@@ -22,9 +22,9 @@ export function RecipeAddButton({ recipe }: { recipe: Recipe }) {
       type="button"
       onClick={handleClick}
       disabled={recipe.ingredients.length === 0}
-      className="mt-3 w-full rounded-full bg-brand-red py-2.5 text-sm font-extrabold text-white transition hover:bg-brand-red-dark disabled:bg-black/20"
+      className="mt-auto w-full rounded-full bg-brand-green px-2 py-2 text-[10px] font-extrabold text-white transition hover:bg-brand-green-dark disabled:bg-black/20 sm:py-2.5 sm:text-xs"
     >
-      {added ? "Ajoutés au panier ✓" : "Ajouter tous les ingrédients"}
+      {added ? "Ajouté au panier ✓" : "＋ Ajouter au panier"}
     </button>
   );
 }
