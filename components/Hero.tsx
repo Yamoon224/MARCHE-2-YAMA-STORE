@@ -4,8 +4,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Banner } from "@/lib/catalog/types";
 
-const NOTES = ["✓ Sélection de qualité", "✓ Commande facile", "✓ Paris & Île-de-France"];
-
 // Voile crème de la maquette : le texte reste lisible quelle que soit l'image de la bannière.
 const VEIL = "linear-gradient(90deg, rgba(255,244,211,.98) 0%, rgba(255,237,192,.9) 43%, rgba(255,226,174,.08) 78%)";
 
@@ -40,10 +38,12 @@ export function Hero({ banners }: { banners: Banner[] }) {
           style={{ backgroundImage: s.imageUrl ? `${VEIL}, url(${s.imageUrl})` : VEIL }}
         >
           <div className="relative z-10 max-w-[620px] px-[22px] py-[34px] sm:px-[6%] sm:py-[58px]">
-            <div className="inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[1.5px] text-brand-green">
-              <span aria-hidden="true" className="h-[3px] w-6 rounded bg-brand-green" />
-              Authentique &amp; savoureux
-            </div>
+            {s.eyebrow && (
+              <div className="inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[1.5px] text-brand-green">
+                <span aria-hidden="true" className="h-[3px] w-6 rounded bg-brand-green" />
+                {s.eyebrow}
+              </div>
+            )}
             {i === 0 ? (
               <h1 className="mb-3.5 mt-4 max-w-[330px] text-[37px] font-extrabold leading-[1.02] tracking-[-1.8px] text-[#154d2b] sm:max-w-[550px] sm:text-[clamp(38px,5vw,62px)] sm:tracking-[-2.5px]">
                 {s.title}
@@ -60,11 +60,6 @@ export function Hero({ banners }: { banners: Banner[] }) {
             >
               {s.ctaLabel} <span aria-hidden="true">→</span>
             </Link>
-            <p className="mt-5 flex flex-wrap gap-x-4 gap-y-1 text-[10px] font-bold text-[#3d6043] sm:text-xs">
-              {NOTES.map((n) => (
-                <span key={n}>{n}</span>
-              ))}
-            </p>
           </div>
         </div>
       ))}

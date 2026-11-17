@@ -1201,9 +1201,13 @@ export interface components {
             image_url?: string | null;
             position?: number;
             is_active?: boolean;
+            show_on_home?: boolean;
+            home_title?: string | null;
+            home_subtitle?: string | null;
         };
         BannerInput: {
             title: string;
+            eyebrow?: string | null;
             text?: string | null;
             cta_label: string;
             cta_url: string;
@@ -1242,6 +1246,7 @@ export interface components {
         Banner: {
             id: number;
             title: string;
+            eyebrow?: string | null;
             text?: string | null;
             cta_label: string;
             cta_url: string;
@@ -1257,6 +1262,9 @@ export interface components {
             image_url?: string | null;
             position?: number;
             is_active?: boolean;
+            show_on_home?: boolean;
+            home_title?: string | null;
+            home_subtitle?: string | null;
         };
         Product: {
             id: number;

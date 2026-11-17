@@ -9,7 +9,6 @@ const NAV = [
   { href: "/", label: "Accueil" },
   { href: "/#categories", label: "Catégories" },
   { href: "/#combos", label: "Combos africains" },
-  { href: "/#huiles", label: "Nos huiles" },
   { href: "/#populaires", label: "Nos produits" },
   { href: "/#livraison", label: "Livraison" },
   { href: "/suivi", label: "Suivre ma commande" },

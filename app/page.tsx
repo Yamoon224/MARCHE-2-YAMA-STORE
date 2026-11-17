@@ -24,13 +24,7 @@ export default function Home() {
         <LiveRecipes />
       </Suspense>
       <Suspense>
-        <LiveRail
-          id="huiles"
-          title="Nos huiles & beurres"
-          subtitle="Des indispensables pour cuisiner et prendre soin de soi."
-          href="/rayons?q=huile"
-          query={{ q: "huile", perPage: 4 }}
-        />
+        <LiveHomeCategories />
       </Suspense>
       <Suspense>
         <LiveRail id="populaires" title="Produits populaires" subtitle="Les indispensables de votre cuisine." href="/rayons" query={{ featured: true, perPage: 4 }} />
@@ -95,4 +89,25 @@ async function LiveCatalogue() {
   return products && products.length > 0 ? (
     <ProductList id="catalogue" title="Tous nos produits" subtitle="Retrouvez facilement vos essentiels et spécialités africaines." products={products} />
   ) : null;
+}
+
+/** Une section par rayon marqué « à la une » dans le backoffice (titre et sous-titre éditables). */
+async function LiveHomeCategories() {
+  await connection();
+  const categories = ((await fetchCategories()) ?? []).filter((c) => c.showOnHome);
+
+  return (
+    <>
+      {categories.map((c) => (
+        <LiveRail
+          key={c.slug}
+          id={`rayon-${c.slug}`}
+          title={c.homeTitle || c.name}
+          subtitle={c.homeSubtitle ?? undefined}
+          href={`/rayons/${c.slug}`}
+          query={{ category: c.slug, perPage: 4 }}
+        />
+      ))}
+    </>
+  );
 }

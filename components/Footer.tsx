@@ -15,7 +15,6 @@ export function Footer() {
           <ul className="grid text-sm leading-8 text-[#b7c7b9]">
             <li><Link href="/#categories" className="hover:text-white">Nos catégories</Link></li>
             <li><Link href="/#combos" className="hover:text-white">Combos africains</Link></li>
-            <li><Link href="/#huiles" className="hover:text-white">Nos huiles &amp; beurres</Link></li>
             <li><Link href="/rayons" className="hover:text-white">Tous les produits</Link></li>
             <li><Link href="/panier" className="hover:text-white">Mon panier</Link></li>
             <li><Link href="/suivi" className="hover:text-white">Suivre ma commande</Link></li>

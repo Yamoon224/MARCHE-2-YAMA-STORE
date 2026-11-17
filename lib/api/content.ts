@@ -10,7 +10,7 @@ export async function fetchCategories(client: ApiClient = api): Promise<Category
   try {
     const { data, error } = await client.GET("/api/v1/categories", { ...REQUEST, signal: signal() });
     if (error || !data) return null;
-    return (data.data ?? []).map((c) => ({ id: c.id, slug: c.slug, name: c.name, icon: c.icon, imageUrl: c.image_url }));
+    return (data.data ?? []).map((c) => ({ id: c.id, slug: c.slug, name: c.name, icon: c.icon, imageUrl: c.image_url, showOnHome: c.show_on_home ?? false, homeTitle: c.home_title, homeSubtitle: c.home_subtitle }));
   } catch {
     return null;
   }
@@ -22,7 +22,7 @@ export async function fetchBanners(client: ApiClient = api): Promise<Banner[] | 
     const { data, error } = await client.GET("/api/v1/banners", { ...REQUEST, signal: signal() });
     if (error || !data) return null;
     return (data.data ?? []).map((b) => ({
-      id: b.id, title: b.title, text: b.text, ctaLabel: b.cta_label, ctaUrl: b.cta_url, imageUrl: b.image_url,
+      id: b.id, title: b.title, eyebrow: b.eyebrow, text: b.text, ctaLabel: b.cta_label, ctaUrl: b.cta_url, imageUrl: b.image_url,
     }));
   } catch {
     return null;
