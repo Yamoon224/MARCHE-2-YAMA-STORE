@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { ProductResults } from "@/components/catalog/ProductResults";
 import { toPage } from "@/lib/catalog/pagination";
 
-export const metadata = { title: "Nos rayons — Marché de Yama" };
+export const metadata = { title: "Nos rayons - Marché de Yama" };
 
 type SearchParams = Promise<{ q?: string | string[]; page?: string | string[] }>;
 

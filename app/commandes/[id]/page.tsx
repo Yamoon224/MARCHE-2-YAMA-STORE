@@ -13,7 +13,7 @@ import { canCancel, canPay, statusLabel } from "@/lib/orders/status";
 import { shouldShowTracking } from "@/lib/tracking/tracking";
 import { serverApi } from "@/lib/server/backend";
 
-export const metadata = { title: "Suivi de commande — Marché de Yama" };
+export const metadata = { title: "Suivi de commande - Marché de Yama" };
 
 const dateTime = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long", timeStyle: "short" });
 
@@ -84,7 +84,7 @@ async function OrderDetail({ params, searchParams }: Props) {
           <h2 id="reclamation" className="text-lg font-semibold">Votre réclamation</h2>
           <p className="mt-1 text-sm">
             Statut : <strong>{CLAIM_STATUS_LABEL[claim.status] ?? claim.status}</strong>
-            {claim.resolution ? ` — ${RESOLUTION_LABEL[claim.resolution] ?? claim.resolution}` : ""}
+            {claim.resolution ? ` - ${RESOLUTION_LABEL[claim.resolution] ?? claim.resolution}` : ""}
           </p>
           <ul className="mt-2 text-sm text-black/70">
             {claim.items.map((item) => <li key={item.id}>{item.name} : {ISSUE_LABEL[item.issue as Issue] ?? item.issue}</li>)}
@@ -137,7 +137,7 @@ async function OrderDetail({ params, searchParams }: Props) {
               <p className="font-medium">{statusLabel(entry.to_status)}</p>
               <p className="text-xs text-black/60">
                 {entry.created_at ? dateTime.format(new Date(entry.created_at)) : ""}
-                {entry.reason ? ` — ${entry.reason}` : ""}
+                {entry.reason ? ` - ${entry.reason}` : ""}
               </p>
             </li>
           ))}

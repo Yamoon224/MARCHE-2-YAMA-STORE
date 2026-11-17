@@ -5,7 +5,7 @@ import { StatusBadge } from "@/components/orders/StatusBadge";
 import { formatMoney } from "@/lib/format";
 import { serverApi } from "@/lib/server/backend";
 
-export const metadata = { title: "Mes commandes — Marché de Yama" };
+export const metadata = { title: "Mes commandes - Marché de Yama" };
 
 export default function CommandesPage() {
   return (

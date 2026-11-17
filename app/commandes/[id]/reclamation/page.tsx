@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { ClaimForm } from "@/components/orders/ClaimForm";
 import { serverApi } from "@/lib/server/backend";
 
-export const metadata = { title: "Signaler un problème — Marché de Yama" };
+export const metadata = { title: "Signaler un problème - Marché de Yama" };
 
 type Props = { params: Promise<{ id: string }> };
 

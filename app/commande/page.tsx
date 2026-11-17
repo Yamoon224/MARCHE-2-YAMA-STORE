@@ -1,6 +1,6 @@
 import { CheckoutView } from "@/components/checkout/CheckoutView";
 
-export const metadata = { title: "Valider ma commande — Marché de Yama" };
+export const metadata = { title: "Valider ma commande - Marché de Yama" };
 
 export default function CommandePage() {
   return (

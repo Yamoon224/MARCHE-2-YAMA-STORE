@@ -1,6 +1,6 @@
 import { CartView } from "@/components/cart/CartView";
 
-export const metadata = { title: "Mon panier — Marché de Yama" };
+export const metadata = { title: "Mon panier - Marché de Yama" };
 
 export default function PanierPage() {
   return (

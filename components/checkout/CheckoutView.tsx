@@ -12,11 +12,13 @@ import {
 } from "@/lib/checkout/checkout";
 import { formatMoney } from "@/lib/format";
 
+import { CardIcon, CashIcon, ScooterIcon, StoreIcon } from "./icons";
+
 type Slot = { id: number; starts_at: string; ends_at: string; remaining: number };
 
 const PAYMENT_LABELS: Record<PaymentMethod, string> = {
-  card: "Carte bancaire — Visa ou Mastercard",
-  cash_on_delivery: "Espèces — à la livraison ou au retrait en magasin",
+  card: "Carte bancaire - Visa ou Mastercard",
+  cash_on_delivery: "Espèces - à la livraison ou au retrait en magasin",
 };
 
 const slotFormat = new Intl.DateTimeFormat("fr-FR", { weekday: "long", day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" });
@@ -173,6 +175,9 @@ export function CheckoutView() {
             {(["pickup", "delivery"] as const).map((value) => (
               <label key={value} className="flex items-center gap-2">
                 <input type="radio" name="fulfillment" checked={form.fulfillment === value} onChange={() => patch({ fulfillment: value })} />
+                <span aria-hidden="true" className="text-brand-green">
+                  {value === "pickup" ? <StoreIcon /> : <ScooterIcon />}
+                </span>
                 {value === "pickup" ? "Retrait en magasin (gratuit)" : "Livraison à domicile"}
               </label>
             ))}
@@ -184,7 +189,7 @@ export function CheckoutView() {
                 Zone
                 <select className={input} value={form.zoneId ?? ""} onChange={(e) => patch({ zoneId: e.target.value ? Number(e.target.value) : null, slotId: null })}>
                   <option value="">Choisir…</option>
-                  {zones.map((z) => <option key={z.id} value={z.id}>{z.name} — {formatMoney(z.fee_minor)}</option>)}
+                  {zones.map((z) => <option key={z.id} value={z.id}>{z.name} - {formatMoney(z.fee_minor)}</option>)}
                 </select>
               </label>
 
@@ -224,6 +229,9 @@ export function CheckoutView() {
             {(Object.keys(PAYMENT_LABELS) as PaymentMethod[]).map((value) => (
               <label key={value} className="flex items-center gap-2">
                 <input type="radio" name="method" checked={method === value} onChange={() => setMethod(value)} />
+                <span aria-hidden="true" className="text-brand-green">
+                  {value === "card" ? <CardIcon /> : <CashIcon />}
+                </span>
                 {PAYMENT_LABELS[value]}
               </label>
             ))}
@@ -242,7 +250,7 @@ export function CheckoutView() {
           ))}
         </ul>
         <p className="mt-3 flex justify-between border-t border-black/10 pt-3"><span>Sous-total</span><span>{formatMoney(subtotalMinor)}</span></p>
-        <p className="flex justify-between"><span>Livraison</span><span>{delivery && !zone ? "—" : fee === 0 ? "Offerte" : formatMoney(fee)}</span></p>
+        <p className="flex justify-between"><span>Livraison</span><span>{delivery && !zone ? "-" : fee === 0 ? "Offerte" : formatMoney(fee)}</span></p>
         <p className="mt-1 flex justify-between text-lg font-bold"><span>Total TTC</span><span>{formatMoney(subtotalMinor + fee)}</span></p>
         <p className="mt-1 text-xs text-black/60">Montant définitif calculé par le serveur à la validation.</p>
 

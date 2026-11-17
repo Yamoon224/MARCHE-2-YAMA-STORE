@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { AuthForm } from "@/components/account/AuthForm";
 
-export const metadata = { title: "Connexion — Marché de Yama" };
+export const metadata = { title: "Connexion - Marché de Yama" };
 
 type SearchParams = Promise<{ next?: string | string[] }>;
 

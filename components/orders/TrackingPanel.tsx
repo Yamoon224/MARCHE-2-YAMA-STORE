@@ -76,7 +76,7 @@ export function TrackingPanel({ orderId }: { orderId: number }) {
 
       {tracking.location && (
         <p className="mt-3 text-sm">
-          Dernière position {formatAge(tracking.location.recorded_at, now)} —{" "}
+          Dernière position {formatAge(tracking.location.recorded_at, now)} -{" "}
           <a href={mapsUrl(tracking.location.latitude, tracking.location.longitude)} target="_blank" rel="noopener noreferrer" className="font-medium text-brand-green underline">
             voir sur la carte
           </a>

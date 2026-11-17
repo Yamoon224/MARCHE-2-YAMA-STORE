@@ -3,23 +3,15 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { AccountMenu } from "./account/AccountMenu";
 import { CartLink } from "./cart/CartLink";
+import { MainNav } from "./MainNav";
 import { SearchForm } from "./SearchForm";
-
-const NAV = [
-  { href: "/", label: "Accueil" },
-  { href: "/#categories", label: "Catégories" },
-  { href: "/#combos", label: "Combos africains" },
-  { href: "/#populaires", label: "Nos produits" },
-  { href: "/#livraison", label: "Livraison" },
-  { href: "/suivi", label: "Suivre ma commande" },
-];
 
 export function Header() {
   return (
     <>
       <div className="bg-[#8f0013] text-xs text-white">
         <div className="mx-auto flex h-[34px] max-w-[1200px] items-center justify-between gap-3 px-4">
-          <strong>Marché de Yama — les saveurs de l&apos;Afrique à portée de main.</strong>
+          <strong>Marché de Yama - les saveurs de l&apos;Afrique à portée de main.</strong>
           <span className="hidden gap-5 sm:flex">
             <span>🚚 Livraison à Paris &amp; en Île-de-France</span>
             <span>✦ Produits sélectionnés</span>
@@ -48,20 +40,9 @@ export function Header() {
             <CartLink />
           </div>
         </div>
-        <nav aria-label="Navigation principale" className="border-t border-white/20 bg-[#b90018]">
-          <ul className="mx-auto flex max-w-[1200px] gap-9 overflow-x-auto px-4 md:justify-center">
-            {NAV.map((item) => (
-              <li key={item.href} className="shrink-0">
-                <Link
-                  href={item.href}
-                  className="block border-b-2 border-transparent py-2.5 text-[13px] font-bold text-[#ffe3e6] hover:border-brand-gold hover:text-white"
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <Suspense fallback={<div className="h-[43px] border-t border-white/20 bg-[#b90018]" aria-hidden="true" />}>
+          <MainNav />
+        </Suspense>
       </header>
     </>
   );

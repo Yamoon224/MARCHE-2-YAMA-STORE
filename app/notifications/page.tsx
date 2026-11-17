@@ -4,7 +4,7 @@ import { MarkAllRead } from "@/components/notifications/MarkAllRead";
 import { formatWhen } from "@/lib/notifications/notifications";
 import { serverApi } from "@/lib/server/backend";
 
-export const metadata = { title: "Mes notifications — Marché de Yama" };
+export const metadata = { title: "Mes notifications - Marché de Yama" };
 
 export default function NotificationsPage() {
   return (

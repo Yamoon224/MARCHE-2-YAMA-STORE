@@ -1,6 +1,6 @@
 import { OrderLookup } from "@/components/orders/OrderLookup";
 
-export const metadata = { title: "Suivre ma commande — Marché de Yama" };
+export const metadata = { title: "Suivre ma commande - Marché de Yama" };
 
 export default function SuiviPage() {
   return (

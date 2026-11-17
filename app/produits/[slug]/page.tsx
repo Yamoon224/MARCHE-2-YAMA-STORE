@@ -7,7 +7,7 @@ import { fetchCategories } from "@/lib/api/content";
 import { fetchProduct } from "@/lib/api/products";
 import { formatMoney } from "@/lib/format";
 
-export const metadata = { title: "Produit — Marché de Yama" };
+export const metadata = { title: "Produit - Marché de Yama" };
 
 type Params = Promise<{ slug: string }>;
 
