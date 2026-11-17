@@ -20,7 +20,7 @@ const DESCRIPTION = "Supermarché en ligne livré à Paris et en Île-de-France 
 
 export const metadata: Metadata = {
   // URL publique du site (obligatoire pour que les images de partage soient en URL absolue).
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(siteUrl()),
   title: "Marché de Yama",
   description: DESCRIPTION,
   // L'image de partage vient de app/opengraph-image.png et app/twitter-image.png.
@@ -40,4 +40,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </body>
     </html>
   );
+}
+
+/** URL publique : variable explicite, sinon domaine de production Vercel, sinon développement local. */
+function siteUrl(): string {
+  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  return "http://localhost:3000";
 }
