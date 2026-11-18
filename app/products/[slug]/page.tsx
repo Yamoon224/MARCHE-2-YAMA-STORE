@@ -37,7 +37,7 @@ async function Detail({ params }: { params: Params }) {
         <Link href="/" className="hover:underline">Accueil</Link> ›{" "}
         {category ? (
           <>
-            <Link href={`/rayons/${category.slug}`} className="hover:underline">{category.name}</Link> ›{" "}
+            <Link href={`/aisles/${category.slug}`} className="hover:underline">{category.name}</Link> ›{" "}
           </>
         ) : null}
         <span aria-current="page">{product.name}</span>

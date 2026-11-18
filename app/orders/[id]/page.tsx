@@ -48,7 +48,7 @@ async function OrderDetail({ params, searchParams }: Props) {
     api.GET("/api/v1/claims").catch(() => null),
   ]);
 
-  if (result?.response.status === 401) redirect(`/connexion?next=/commandes/${id}`);
+  if (result?.response.status === 401) redirect(`/login?next=/orders/${id}`);
   if (result?.response.status === 403 || result?.response.status === 404) notFound();
 
   const order = result?.data?.data;
@@ -65,7 +65,7 @@ async function OrderDetail({ params, searchParams }: Props) {
         <h1 className="text-3xl font-bold">{order.number ?? `Commande ${order.id}`}</h1>
           <p className="mt-1 text-sm text-black/60">
             Conservez ce numéro : avec l&apos;e-mail de votre commande, il permet de la suivre à tout moment sur{" "}
-            <Link href="/suivi" className="text-brand-red underline">la page de suivi</Link>, même sans compte.
+            <Link href="/tracking" className="text-brand-red underline">la page de suivi</Link>, même sans compte.
           </p>
           <div className="mt-4"><GuestAccountPrompt /></div>
         <StatusBadge status={order.status} />
@@ -100,7 +100,7 @@ async function OrderDetail({ params, searchParams }: Props) {
       {!claim && order.status === "delivered" && (
         <p className="mt-6 text-sm">
           Un souci avec votre commande ?{" "}
-          <Link href={`/commandes/${order.id}/reclamation`} className="font-medium text-brand-red underline">Signaler un problème</Link>
+          <Link href={`/orders/${order.id}/claim`} className="font-medium text-brand-red underline">Signaler un problème</Link>
         </p>
       )}
 
@@ -152,7 +152,7 @@ async function OrderDetail({ params, searchParams }: Props) {
           </div>
         )}
         {canCancel(order.status) && <CancelOrderButton orderId={order.id} />}
-        <Link href="/commandes" className="text-sm text-brand-green underline">Toutes mes commandes</Link>
+        <Link href="/orders" className="text-sm text-brand-green underline">Toutes mes commandes</Link>
       </div>
     </>
   );

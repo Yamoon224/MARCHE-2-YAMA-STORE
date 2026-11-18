@@ -10,7 +10,7 @@ const NAV = [
   { href: "/#combos", label: "Combos africains", section: "combos" },
   { href: "/#populaires", label: "Nos produits", section: "populaires" },
   { href: "/#livraison", label: "Livraison", section: "livraison" },
-  { href: "/suivi", label: "Suivre ma commande" },
+  { href: "/tracking", label: "Suivre ma commande" },
 ];
 
 /** Sections de l'accueil, dans l'ordre de la page, rattachées à l'entrée de menu qu'elles font vivre. */

@@ -12,14 +12,14 @@ export function CategoryGrid({ categories }: { categories: Category[] }) {
         id="categories-titre"
         title="Nos catégories"
         subtitle="Tout ce qu’il faut pour retrouver les saveurs du pays."
-        href="/rayons"
+        href="/aisles"
         linkLabel="Voir les produits →"
       />
       <ul className="grid grid-cols-3 gap-2.5 sm:gap-[15px] lg:grid-cols-6">
         {categories.map((c) => (
           <li key={c.slug}>
             <Link
-              href={`/rayons/${c.slug}`}
+              href={`/aisles/${c.slug}`}
               className="block rounded-[15px] border border-line bg-white px-1.5 pb-2.5 pt-2 text-center shadow-[0_4px_14px_#1a30100a] transition hover:-translate-y-1.5 hover:border-[#b9dfc3] hover:shadow-soft sm:rounded-[19px] sm:px-[9px] sm:pb-[13px] sm:pt-2.5"
             >
               {c.imageUrl ? (

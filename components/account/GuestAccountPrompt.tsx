@@ -67,7 +67,7 @@ export function GuestAccountPrompt() {
         </label>
         {error && (
           <p role="alert" className="rounded-lg bg-brand-red/10 p-3 text-sm text-brand-red">
-            {error} {error.includes("connectez-vous") && <Link href="/connexion" className="underline">Se connecter</Link>}
+            {error} {error.includes("connectez-vous") && <Link href="/login" className="underline">Se connecter</Link>}
           </p>
         )}
         <button type="submit" disabled={busy} className="w-fit rounded-full bg-brand-red px-6 py-2.5 font-extrabold text-white hover:bg-brand-red-dark disabled:opacity-60">

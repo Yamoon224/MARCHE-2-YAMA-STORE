@@ -21,7 +21,7 @@ async function Feed() {
   const api = await serverApi();
   const result = await api.GET("/api/v1/notifications").catch(() => null);
 
-  if (result?.response.status === 401) redirect("/connexion?next=/notifications");
+  if (result?.response.status === 401) redirect("/login?next=/notifications");
 
   if (!result?.data) {
     return <p role="status" className="rounded-lg bg-black/5 p-3 text-sm">Service momentanément indisponible. Réessayez dans un instant.</p>;

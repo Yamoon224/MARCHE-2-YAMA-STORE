@@ -9,7 +9,7 @@ export function CartLink() {
 
   return (
     <Link
-      href="/panier"
+      href="/cart"
       className="relative flex items-center gap-2 rounded-full border border-white/30 bg-white/20 px-4 py-2.5 text-sm font-bold text-white hover:bg-white/30"
     >
       <CartIcon className="h-[18px] w-[18px]" /> Panier

@@ -9,7 +9,7 @@ export function SearchForm() {
   return (
     <form
       role="search"
-      action="/rayons"
+      action="/aisles"
       className="order-last col-span-3 flex h-11 rounded-full bg-white py-1 pl-4 pr-1 md:order-none md:col-span-1"
     >
       {/* key : si la recherche change (retour arrière, nouveau lien), le champ reprend la valeur de l'adresse. */}

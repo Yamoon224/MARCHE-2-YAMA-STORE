@@ -49,7 +49,7 @@ export function ClaimForm({ orderId, lines }: { orderId: number; lines: Claimabl
 
       if (!response.ok) return setError(extractApiError(await response.json().catch(() => null)));
 
-      router.push(`/commandes/${orderId}?reclamation=ok`);
+      router.push(`/orders/${orderId}?reclamation=ok`);
       router.refresh();
     } catch {
       setError("Service momentanément indisponible. Vos informations sont conservées, réessayez.");

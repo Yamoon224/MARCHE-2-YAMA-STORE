@@ -14,7 +14,7 @@ export function CartView() {
     return (
       <div className="rounded-[18px] border border-line bg-white p-10 text-center">
         <p className="text-lg">Votre panier est vide.</p>
-        <Link href="/rayons" className="mt-4 inline-block rounded-full bg-brand-red px-6 py-3 font-extrabold text-white hover:bg-brand-red-dark">
+        <Link href="/aisles" className="mt-4 inline-block rounded-full bg-brand-red px-6 py-3 font-extrabold text-white hover:bg-brand-red-dark">
           Découvrir nos produits
         </Link>
       </div>
@@ -70,7 +70,7 @@ export function CartView() {
         <h2 className="font-display text-xl font-extrabold">Récapitulatif</h2>
         <p className="mt-3 flex justify-between"><span>Sous-total TTC</span><strong className="text-lg text-brand-red">{formatMoney(subtotalMinor)}</strong></p>
         <p className="mt-1 text-xs text-muted">Frais de livraison calculés à l&apos;étape suivante, selon votre zone.</p>
-        <Link href="/commande" className="mt-4 block rounded-full bg-brand-red py-3 text-center font-extrabold text-white transition hover:bg-brand-red-dark">
+        <Link href="/checkout" className="mt-4 block rounded-full bg-brand-red py-3 text-center font-extrabold text-white transition hover:bg-brand-red-dark">
           Passer la commande
         </Link>
         <button type="button" onClick={clear} className="mt-3 w-full text-sm text-muted hover:text-brand-red">

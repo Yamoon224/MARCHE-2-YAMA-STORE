@@ -121,7 +121,7 @@ export function CheckoutView() {
       }
 
       // La commande existe même si l'ouverture du paiement échoue : le client peut le relancer depuis son suivi.
-      router.push(`/commandes/${orderId}${payment.error ? "?paiement=erreur" : `?paiement=${method}`}`);
+      router.push(`/orders/${orderId}${payment.error ? "?paiement=erreur" : `?paiement=${method}`}`);
     } catch {
       setError("Service momentanément indisponible. Votre panier est conservé, réessayez.");
     } finally {
@@ -135,7 +135,7 @@ export function CheckoutView() {
     return (
       <p>
         Votre panier est vide.{" "}
-        <Link href="/rayons" className="text-brand-red underline">Voir nos produits</Link>
+        <Link href="/aisles" className="text-brand-red underline">Voir nos produits</Link>
       </p>
     );
   }
@@ -150,7 +150,7 @@ export function CheckoutView() {
             <legend className="px-1 font-semibold">Vos coordonnées</legend>
             <p className="mt-1 text-sm text-black/60">
               Pas besoin de compte pour commander.{" "}
-              <Link href="/connexion?next=/commande" className="text-brand-red underline">J&apos;ai déjà un compte</Link>
+              <Link href="/login?next=/checkout" className="text-brand-red underline">J&apos;ai déjà un compte</Link>
             </p>
             <div className="mt-3 grid gap-4 sm:grid-cols-2">
               <label className="text-sm font-medium sm:col-span-2">

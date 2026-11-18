@@ -27,10 +27,10 @@ export default function Home() {
         <LiveHomeCategories />
       </Suspense>
       <Suspense>
-        <LiveRail id="populaires" title="Produits populaires" subtitle="Les indispensables de votre cuisine." href="/rayons" query={{ featured: true, perPage: 4 }} />
+        <LiveRail id="populaires" title="Produits populaires" subtitle="Les indispensables de votre cuisine." href="/aisles" query={{ featured: true, perPage: 4 }} />
       </Suspense>
       <Suspense>
-        <LiveRail id="promos" title="Les bons plans Yama" subtitle="Des prix en baisse, tant qu'il y en a." href="/rayons" query={{ promo: true, perPage: 4 }} />
+        <LiveRail id="promos" title="Les bons plans Yama" subtitle="Des prix en baisse, tant qu'il y en a." href="/aisles" query={{ promo: true, perPage: 4 }} />
       </Suspense>
       <DeliveryBanner />
       <Suspense>
@@ -104,7 +104,7 @@ async function LiveHomeCategories() {
           id={`rayon-${c.slug}`}
           title={c.homeTitle || c.name}
           subtitle={c.homeSubtitle ?? undefined}
-          href={`/rayons/${c.slug}`}
+          href={`/aisles/${c.slug}`}
           query={{ category: c.slug, perPage: 4 }}
         />
       ))}

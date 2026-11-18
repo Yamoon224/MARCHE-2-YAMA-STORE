@@ -9,7 +9,7 @@ import { SectionHead } from "./SectionHead";
 export function ProductList({ id, title, subtitle, products }: { id: string; title: string; subtitle?: string; products: Product[] }) {
   return (
     <section id={id} className="mx-auto mb-12 mt-8 w-[min(1200px,calc(100%-22px))] sm:w-[min(1200px,calc(100%-44px))]" aria-labelledby={`${id}-titre`}>
-      <SectionHead id={`${id}-titre`} title={title} subtitle={subtitle} href="/rayons" linkLabel="Tous les produits →" />
+      <SectionHead id={`${id}-titre`} title={title} subtitle={subtitle} href="/aisles" linkLabel="Tous les produits →" />
       <ul className="grid gap-2.5 min-[620px]:grid-cols-2 min-[620px]:gap-3">
         {products.map((p) => (
           <li
@@ -18,7 +18,7 @@ export function ProductList({ id, title, subtitle, products }: { id: string; tit
           >
             <ImageWithFallback src={p.imageUrl} className="h-[68px] w-[68px] shrink-0 rounded-xl sm:h-[76px] sm:w-[76px]" />
             <div className="flex min-w-0 flex-1 flex-col gap-1">
-              <Link href={`/produits/${p.slug}`} className="text-xs font-bold leading-tight hover:underline sm:text-[13px]">
+              <Link href={`/products/${p.slug}`} className="text-xs font-bold leading-tight hover:underline sm:text-[13px]">
                 {p.name}
               </Link>
               {p.description && <small className="line-clamp-2 text-[10px] leading-snug text-muted">{p.description}</small>}

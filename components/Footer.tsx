@@ -15,16 +15,16 @@ export function Footer() {
           <ul className="grid text-sm leading-8 text-[#b7c7b9]">
             <li><Link href="/#categories" className="hover:text-white">Nos catégories</Link></li>
             <li><Link href="/#combos" className="hover:text-white">Combos africains</Link></li>
-            <li><Link href="/rayons" className="hover:text-white">Tous les produits</Link></li>
-            <li><Link href="/panier" className="hover:text-white">Mon panier</Link></li>
-            <li><Link href="/suivi" className="hover:text-white">Suivre ma commande</Link></li>
+            <li><Link href="/aisles" className="hover:text-white">Tous les produits</Link></li>
+            <li><Link href="/cart" className="hover:text-white">Mon panier</Link></li>
+            <li><Link href="/tracking" className="hover:text-white">Suivre ma commande</Link></li>
           </ul>
         </nav>
         <nav aria-label="Mon compte">
           <h3 className="mb-2 text-[15px] font-extrabold text-white">Mon compte</h3>
           <ul className="grid text-sm leading-8 text-[#b7c7b9]">
-            <li><Link href="/connexion" className="hover:text-white">Connexion</Link></li>
-            <li><Link href="/commandes" className="hover:text-white">Mes commandes</Link></li>
+            <li><Link href="/login" className="hover:text-white">Connexion</Link></li>
+            <li><Link href="/orders" className="hover:text-white">Mes commandes</Link></li>
           </ul>
         </nav>
         <div>

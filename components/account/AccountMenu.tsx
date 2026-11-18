@@ -57,7 +57,7 @@ export function AccountMenu() {
 
   if (user === null) {
     return (
-      <Link href="/connexion" className="rounded-full border border-white/30 bg-white/20 px-4 py-2.5 text-sm font-bold text-white hover:bg-white/30">
+      <Link href="/login" className="rounded-full border border-white/30 bg-white/20 px-4 py-2.5 text-sm font-bold text-white hover:bg-white/30">
         Connexion
       </Link>
     );
@@ -65,7 +65,7 @@ export function AccountMenu() {
 
   return (
     <span className="hidden items-center gap-3 text-sm text-white md:flex">
-      <Link href="/commandes" className="font-bold hover:underline">
+      <Link href="/orders" className="font-bold hover:underline">
         Mes commandes
       </Link>
       <Link href="/notifications" className="font-bold hover:underline" aria-label={badge ? `Notifications, ${unread} non lue(s)` : "Notifications"}>

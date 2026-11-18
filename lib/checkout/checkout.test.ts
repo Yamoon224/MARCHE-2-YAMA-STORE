@@ -84,8 +84,8 @@ describe("extractApiError", () => {
 
 describe("safeNext", () => {
   it("keeps internal paths", () => {
-    expect(safeNext("/commande")).toBe("/commande");
-    expect(safeNext("/commandes/12?paiement=card")).toBe("/commandes/12?paiement=card");
+    expect(safeNext("/checkout")).toBe("/checkout");
+    expect(safeNext("/orders/12?paiement=card")).toBe("/orders/12?paiement=card");
   });
 
   it.each(["https://evil.test", "//evil.test", "/\\evil.test", "javascript:alert(1)", "commande", "", null, undefined, "/ok\nSet-Cookie: x=1"])(
@@ -96,7 +96,7 @@ describe("safeNext", () => {
   );
 
   it("uses the given fallback", () => {
-    expect(safeNext("//evil.test", "/commandes")).toBe("/commandes");
+    expect(safeNext("//evil.test", "/orders")).toBe("/orders");
   });
 });
 

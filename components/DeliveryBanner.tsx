@@ -16,7 +16,7 @@ export function DeliveryBanner() {
           </p>
         </div>
       </div>
-      <Link href="/rayons" className="whitespace-nowrap rounded-full bg-[#ffdc37] px-3 py-2.5 text-[10px] font-extrabold text-[#5a3500] sm:px-[22px] sm:py-3.5 sm:text-base">
+      <Link href="/aisles" className="whitespace-nowrap rounded-full bg-[#ffdc37] px-3 py-2.5 text-[10px] font-extrabold text-[#5a3500] sm:px-[22px] sm:py-3.5 sm:text-base">
         Commander maintenant →
       </Link>
     </section>

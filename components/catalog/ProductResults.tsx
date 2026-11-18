@@ -26,11 +26,11 @@ export async function ProductResults({ term, categorySlug, page = 1 }: { term: s
 
       {categories && categories.length > 0 && (
         <nav aria-label="Rayons" className="mt-4 flex flex-wrap gap-2">
-          <Link href="/rayons" className={chip(!categorySlug)}>
+          <Link href="/aisles" className={chip(!categorySlug)}>
             Tout
           </Link>
           {categories.map((c) => (
-            <Link key={c.slug} href={`/rayons/${c.slug}`} className={chip(c.slug === categorySlug)}>
+            <Link key={c.slug} href={`/aisles/${c.slug}`} className={chip(c.slug === categorySlug)}>
               {c.name}
             </Link>
           ))}
@@ -57,7 +57,7 @@ export async function ProductResults({ term, categorySlug, page = 1 }: { term: s
         <Pagination
           page={result.page}
           lastPage={result.lastPage}
-          basePath={categorySlug ? `/rayons/${categorySlug}` : "/rayons"}
+          basePath={categorySlug ? `/aisles/${categorySlug}` : "/aisles"}
           params={term ? { q: term } : {}}
         />
       )}

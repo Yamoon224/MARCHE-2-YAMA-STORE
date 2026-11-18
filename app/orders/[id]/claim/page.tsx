@@ -29,20 +29,20 @@ async function Content({ params }: Props) {
     api.GET("/api/v1/claims").catch(() => null),
   ]);
 
-  if (order?.response.status === 401) redirect(`/connexion?next=/commandes/${id}/reclamation`);
+  if (order?.response.status === 401) redirect(`/login?next=/orders/${id}/claim`);
   if (order?.response.status === 403 || order?.response.status === 404) notFound();
 
   const data = order?.data?.data;
   if (!data) return <p role="status" className="rounded-lg bg-black/5 p-3">Service momentanément indisponible. Réessayez dans un instant.</p>;
 
   // Une seule réclamation par commande : si elle existe déjà, on renvoie vers son suivi.
-  if (claims?.data?.data.some((c) => c.order_id === data.id)) redirect(`/commandes/${id}`);
+  if (claims?.data?.data.some((c) => c.order_id === data.id)) redirect(`/orders/${id}`);
 
   if (data.status !== "delivered") {
     return (
       <p role="status" className="rounded-lg bg-black/5 p-3">
         Une réclamation n&apos;est possible qu&apos;une fois la commande livrée.{" "}
-        <Link href={`/commandes/${id}`} className="text-brand-green underline">Retour à la commande</Link>
+        <Link href={`/orders/${id}`} className="text-brand-green underline">Retour à la commande</Link>
       </p>
     );
   }
