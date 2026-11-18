@@ -140,13 +140,13 @@ export function CheckoutView() {
     );
   }
 
-  const input = "mt-1 w-full rounded-lg border border-black/20 px-3 py-2 outline-none focus:border-brand-green";
+  const input = "mt-1 min-h-11 w-full rounded-lg border border-black/20 bg-white px-3 py-2 outline-none focus:border-brand-green";
 
   return (
-    <form onSubmit={submit} className="grid gap-6 lg:grid-cols-[1fr_20rem]" noValidate>
+    <form onSubmit={submit} className="grid gap-5 lg:grid-cols-[1fr_20rem] lg:items-start lg:gap-6" noValidate>
       <div className="flex flex-col gap-6">
         {!signedIn && (
-          <fieldset className="rounded-xl border border-black/10 p-4">
+          <fieldset className="min-w-0 rounded-xl border border-black/10 p-3.5 sm:p-4">
             <legend className="px-1 font-semibold">Vos coordonnées</legend>
             <p className="mt-1 text-sm text-black/60">
               Pas besoin de compte pour commander.{" "}
@@ -159,21 +159,21 @@ export function CheckoutView() {
               </label>
               <label className="text-sm font-medium">
                 E-mail
-                <input className={input} type="email" value={contact.email} onChange={(e) => setContact({ ...contact, email: e.target.value })} autoComplete="email" placeholder="Ex. awa@exemple.com" />
+                <input className={input} type="email" value={contact.email} onChange={(e) => setContact({ ...contact, email: e.target.value })} inputMode="email" autoComplete="email" placeholder="Ex. awa@exemple.com" />
               </label>
               <label className="text-sm font-medium">
                 Téléphone
-                <input className={input} value={contact.phone} onChange={(e) => setContact({ ...contact, phone: e.target.value })} inputMode="tel" autoComplete="tel" placeholder="+33 6 12 34 56 78" />
+                <input className={input} type="tel" value={contact.phone} onChange={(e) => setContact({ ...contact, phone: e.target.value })} inputMode="tel" autoComplete="tel" placeholder="+33 6 12 34 56 78" />
               </label>
             </div>
           </fieldset>
         )}
 
-        <fieldset className="rounded-xl border border-black/10 p-4">
+        <fieldset className="min-w-0 rounded-xl border border-black/10 p-3.5 sm:p-4">
           <legend className="px-1 font-semibold">1. Réception</legend>
-          <div className="mt-2 flex gap-4">
+          <div className="mt-2 flex flex-col gap-1 sm:flex-row sm:gap-5">
             {(["pickup", "delivery"] as const).map((value) => (
-              <label key={value} className="flex items-center gap-2">
+              <label key={value} className="flex min-h-11 items-center gap-2">
                 <input type="radio" name="fulfillment" checked={form.fulfillment === value} onChange={() => patch({ fulfillment: value })} />
                 <span aria-hidden="true" className="text-brand-green">
                   {value === "pickup" ? <StoreIcon /> : <ScooterIcon />}
@@ -187,7 +187,7 @@ export function CheckoutView() {
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <label className="text-sm font-medium">
                 Zone
-                <select className={input} value={form.zoneId ?? ""} onChange={(e) => patch({ zoneId: e.target.value ? Number(e.target.value) : null, slotId: null })}>
+                <select className={`${input} pr-8`} value={form.zoneId ?? ""} onChange={(e) => patch({ zoneId: e.target.value ? Number(e.target.value) : null, slotId: null })}>
                   <option value="">Choisir…</option>
                   {zones.map((z) => <option key={z.id} value={z.id}>{z.name} - {formatMoney(z.fee_minor)}</option>)}
                 </select>
@@ -195,7 +195,7 @@ export function CheckoutView() {
 
               <label className="text-sm font-medium">
                 Créneau
-                <select className={input} value={form.slotId ?? ""} disabled={form.zoneId === null} onChange={(e) => patch({ slotId: e.target.value ? Number(e.target.value) : null })}>
+                <select className={`${input} pr-8`} value={form.slotId ?? ""} disabled={form.zoneId === null} onChange={(e) => patch({ slotId: e.target.value ? Number(e.target.value) : null })}>
                   <option value="">{form.zoneId === null ? "Choisissez d'abord une zone" : slots.length ? "Choisir…" : "Aucun créneau disponible"}</option>
                   {slots.map((s) => (
                     <option key={s.id} value={s.id}>
@@ -207,12 +207,12 @@ export function CheckoutView() {
 
               <label className="text-sm font-medium">
                 Adresse de livraison
-                <input className={input} value={form.neighborhood} onChange={(e) => patch({ neighborhood: e.target.value })} autoComplete="street-address" placeholder="Ex. 12 rue de Rivoli, 75004 Paris" />
+                <input className={input} value={form.neighborhood} onChange={(e) => patch({ neighborhood: e.target.value })} autoComplete="street-address" enterKeyHint="next" placeholder="Ex. 12 rue de Rivoli, 75004 Paris" />
               </label>
 
               <label className="text-sm font-medium">
                 Téléphone du destinataire
-                <input className={input} value={form.phone} onChange={(e) => patch({ phone: e.target.value })} inputMode="tel" autoComplete="tel" placeholder="+33 6 12 34 56 78" />
+                <input className={input} type="tel" value={form.phone} onChange={(e) => patch({ phone: e.target.value })} inputMode="tel" autoComplete="tel" placeholder="+33 6 12 34 56 78" />
               </label>
 
               <label className="text-sm font-medium sm:col-span-2">
@@ -223,11 +223,11 @@ export function CheckoutView() {
           )}
         </fieldset>
 
-        <fieldset className="rounded-xl border border-black/10 p-4">
+        <fieldset className="min-w-0 rounded-xl border border-black/10 p-3.5 sm:p-4">
           <legend className="px-1 font-semibold">2. Paiement</legend>
-          <div className="mt-2 flex flex-col gap-2">
+          <div className="mt-2 flex flex-col gap-1">
             {(Object.keys(PAYMENT_LABELS) as PaymentMethod[]).map((value) => (
-              <label key={value} className="flex items-center gap-2">
+              <label key={value} className="flex min-h-11 items-center gap-2">
                 <input type="radio" name="method" checked={method === value} onChange={() => setMethod(value)} />
                 <span aria-hidden="true" className="text-brand-green">
                   {value === "card" ? <CardIcon /> : <CashIcon />}
@@ -239,12 +239,12 @@ export function CheckoutView() {
         </fieldset>
       </div>
 
-      <aside className="h-fit rounded-xl border border-black/10 p-4">
+      <aside className="h-fit rounded-xl border border-black/10 bg-white p-4 lg:sticky lg:top-40">
         <h2 className="text-lg font-semibold">Votre commande</h2>
         <ul className="mt-3 flex flex-col gap-1 text-sm">
           {cart.lines.map((l) => (
-            <li key={l.productId} className="flex justify-between gap-2">
-              <span>{l.name} <span className="text-black/50">({formatQuantity(l)})</span></span>
+            <li key={l.productId} className="flex justify-between gap-3">
+              <span className="min-w-0 [overflow-wrap:anywhere]">{l.name} <span className="text-black/50">({formatQuantity(l)})</span></span>
               <span>{formatMoney(lineTotalMinor(l))}</span>
             </li>
           ))}
@@ -259,7 +259,7 @@ export function CheckoutView() {
         )}
         {error && <p role="alert" className="mt-3 rounded-lg bg-brand-red/10 p-3 text-sm text-brand-red">{error}</p>}
 
-        <button type="submit" disabled={busy} className="mt-4 w-full rounded-full bg-brand-red py-2.5 font-medium text-white disabled:opacity-60">
+        <button type="submit" disabled={busy} className="mt-4 min-h-12 w-full rounded-full bg-brand-red py-3 font-extrabold text-white hover:bg-brand-red-dark disabled:opacity-60">
           {busy ? "Validation…" : "Confirmer la commande"}
         </button>
       </aside>

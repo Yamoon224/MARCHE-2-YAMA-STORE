@@ -26,7 +26,7 @@ export function AddToCartButton({ product, variant = "wide" }: { product: Produc
         disabled={product.soldOut}
         onClick={handleClick}
         aria-label={label}
-        className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand-green p-0 text-[22px] font-bold leading-none text-white shadow-[0_3px_9px_#087b3525] hover:bg-brand-green-dark disabled:cursor-not-allowed disabled:bg-black/20"
+        className="relative z-10 grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand-green p-0 text-[22px] font-bold leading-none text-white shadow-[0_3px_9px_#087b3525] hover:bg-brand-green-dark disabled:cursor-not-allowed disabled:bg-black/20"
       >
         {added ? "✓" : "＋"}
       </button>
@@ -39,7 +39,7 @@ export function AddToCartButton({ product, variant = "wide" }: { product: Produc
       disabled={product.soldOut}
       onClick={handleClick}
       aria-label={label}
-      className="mt-auto flex w-full items-center justify-center gap-1.5 rounded-full bg-brand-green px-2 py-2 text-[10px] font-extrabold text-white hover:bg-brand-green-dark disabled:cursor-not-allowed disabled:bg-black/20 sm:px-3 sm:py-2.5 sm:text-xs"
+      className="mt-auto flex w-full items-center justify-center gap-1.5 min-h-11 rounded-full bg-brand-green px-2 py-2 text-xs font-extrabold text-white hover:bg-brand-green-dark disabled:cursor-not-allowed disabled:bg-black/20 sm:px-3 sm:py-2.5"
     >
       {added ? "Ajouté ✓" : "＋ Ajouter au panier"}
     </button>

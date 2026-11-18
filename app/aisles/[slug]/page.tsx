@@ -9,7 +9,7 @@ type SearchParams = Promise<{ q?: string | string[]; page?: string | string[] }>
 
 export default function RayonPage({ params, searchParams }: { params: Params; searchParams: SearchParams }) {
   return (
-    <main className="mx-auto w-[min(1200px,calc(100%-28px))] py-8">
+    <main className="mx-auto w-[min(1200px,calc(100%-28px))] py-5 sm:py-8">
       <Suspense fallback={<p className="text-muted">Chargement des produits…</p>}>
         <Results params={params} searchParams={searchParams} />
       </Suspense>

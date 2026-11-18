@@ -10,8 +10,8 @@ type Props = { params: Promise<{ id: string }> };
 
 export default function ReclamationPage(props: Props) {
   return (
-    <main className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="mb-6 text-3xl font-bold">Signaler un problème</h1>
+    <main className="mx-auto w-[min(768px,calc(100%-28px))] py-5 sm:py-8">
+      <h1 className="mb-5 text-[26px] font-extrabold sm:mb-6 sm:text-[32px]">Signaler un problème</h1>
       <Suspense fallback={<p className="text-black/60">Chargement…</p>}>
         <Content {...props} />
       </Suspense>

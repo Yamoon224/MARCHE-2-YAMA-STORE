@@ -5,6 +5,8 @@ export type Product = {
   slug: string;
   name: string;
   imageUrl?: string | null;
+  /** Galerie complète (couverture comprise) quand l'API en fournit plusieurs ; sinon seule `imageUrl` est affichée. */
+  images?: string[];
   description?: string | null;
   categoryId?: number;
   priceMinor: number;

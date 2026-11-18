@@ -8,7 +8,7 @@ import { PasswordInput } from "@/components/PasswordInput";
 
 type Session = { id: number; name: string; email?: string | null; is_guest?: boolean } | null;
 
-const field = "mt-1 w-full rounded-lg border border-black/20 bg-white px-3 py-2 outline-none focus:border-brand-green";
+const field = "mt-1 min-h-11 w-full rounded-lg border border-black/20 bg-white px-3 py-2 outline-none focus:border-brand-green";
 
 /** Proposé aux clients sans compte : choisir un mot de passe suffit pour garder leurs commandes. */
 export function GuestAccountPrompt() {
@@ -55,7 +55,7 @@ export function GuestAccountPrompt() {
   if (!user?.is_guest) return null;
 
   return (
-    <section aria-labelledby="creer-compte" className="rounded-[18px] border border-line bg-white p-5">
+    <section aria-labelledby="creer-compte" className="rounded-[18px] border border-line bg-white p-4 sm:p-5">
       <h2 id="creer-compte" className="font-display text-lg font-extrabold">Gardez vos commandes : créez votre compte</h2>
       <p className="mt-1 text-sm text-muted">
         Il suffit de choisir un mot de passe. Votre e-mail de commande servira d&apos;identifiant, et cette commande sera rattachée à votre compte.
@@ -70,7 +70,7 @@ export function GuestAccountPrompt() {
             {error} {error.includes("connectez-vous") && <Link href="/login" className="underline">Se connecter</Link>}
           </p>
         )}
-        <button type="submit" disabled={busy} className="w-fit rounded-full bg-brand-red px-6 py-2.5 font-extrabold text-white hover:bg-brand-red-dark disabled:opacity-60">
+        <button type="submit" disabled={busy} className="min-h-12 w-full rounded-full bg-brand-red px-6 py-3 font-extrabold text-white hover:bg-brand-red-dark disabled:opacity-60 sm:w-fit">
           {busy ? "Création…" : "Créer mon compte"}
         </button>
       </form>

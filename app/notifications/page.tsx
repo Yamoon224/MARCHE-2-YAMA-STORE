@@ -8,8 +8,8 @@ export const metadata = { title: "Mes notifications - Marché de Yama" };
 
 export default function NotificationsPage() {
   return (
-    <main className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="mb-6 text-3xl font-bold">Mes notifications</h1>
+    <main className="mx-auto w-[min(768px,calc(100%-28px))] py-5 sm:py-8">
+      <h1 className="mb-5 text-[26px] font-extrabold sm:mb-6 sm:text-[32px]">Mes notifications</h1>
       <Suspense fallback={<p className="text-black/60">Chargement…</p>}>
         <Feed />
       </Suspense>
@@ -41,7 +41,7 @@ async function Feed() {
       <ul className="divide-y divide-black/10 rounded-xl border border-black/10">
         {items.map((n) => (
           <li key={n.id} className={`p-4 ${n.read ? "" : "bg-brand-green/5"}`}>
-            <p className="flex items-center justify-between gap-3">
+            <p className="flex flex-wrap items-start justify-between gap-x-3 gap-y-1">
               <span className={n.read ? "font-medium" : "font-semibold"}>{!n.read && <span className="mr-2 inline-block h-2 w-2 rounded-full bg-brand-red" aria-label="Non lue" />}{n.title}</span>
               <time dateTime={n.created_at} className="shrink-0 text-xs text-black/50">{formatWhen(n.created_at)}</time>
             </p>

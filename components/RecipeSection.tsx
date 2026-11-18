@@ -26,8 +26,8 @@ export function RecipeSection({ recipes }: { recipes: Recipe[] }) {
               </span>
             )}
             <div className="flex flex-1 flex-col px-[3px] pb-0.5 pt-[9px] sm:px-[5px] sm:pt-[11px]">
-              <h3 className="text-xs font-extrabold leading-tight sm:text-sm">{r.name}</h3>
-              <p className="mt-[3px] text-[10px] leading-[1.4] text-muted sm:text-[11px]">
+              <h3 className="text-[13px] font-extrabold leading-tight sm:text-sm">{r.name}</h3>
+              <p className="mt-[3px] text-[11px] leading-[1.4] text-muted sm:text-xs">
                 {r.ingredients.length} ingrédient{r.ingredients.length > 1 ? "s" : ""} réunis dans un seul panier.
               </p>
               <p className="my-2 flex-1 text-sm font-extrabold text-brand-red sm:text-base">{formatMoney(r.totalMinor)}</p>

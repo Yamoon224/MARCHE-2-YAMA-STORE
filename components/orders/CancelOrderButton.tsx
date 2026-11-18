@@ -29,7 +29,7 @@ export function CancelOrderButton({ orderId }: { orderId: number }) {
 
   return (
     <div>
-      <button type="button" onClick={cancel} disabled={busy} className="rounded-full border border-brand-red px-4 py-2 text-sm font-medium text-brand-red disabled:opacity-60">
+      <button type="button" onClick={cancel} disabled={busy} className="min-h-11 w-full rounded-full border border-brand-red px-4 py-2 text-sm font-medium text-brand-red disabled:opacity-60 sm:w-auto">
         {busy ? "Annulation…" : "Annuler la commande"}
       </button>
       {error && <p role="alert" className="mt-2 text-sm text-brand-red">{error}</p>}

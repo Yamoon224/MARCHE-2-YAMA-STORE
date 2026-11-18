@@ -39,8 +39,8 @@ export function PayByCardButton({ orderId }: { orderId: number }) {
   }
 
   return (
-    <div className="flex flex-col items-start gap-2">
-      <button type="button" onClick={pay} disabled={busy} className="rounded-full bg-brand-red px-6 py-2.5 font-extrabold text-white hover:bg-brand-red-dark disabled:opacity-60">
+    <div className="flex flex-col items-stretch gap-2 sm:items-start">
+      <button type="button" onClick={pay} disabled={busy} className="min-h-12 w-full rounded-full bg-brand-red px-6 py-3 font-extrabold text-white hover:bg-brand-red-dark disabled:opacity-60 sm:w-auto">
         {busy ? "Redirection…" : "💳 Payer par carte (Visa, Mastercard)"}
       </button>
       {error && <p role="alert" className="rounded-lg bg-brand-red/10 p-3 text-sm text-brand-red">{error}</p>}

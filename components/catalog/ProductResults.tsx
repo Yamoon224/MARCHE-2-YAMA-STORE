@@ -25,7 +25,7 @@ export async function ProductResults({ term, categorySlug, page = 1 }: { term: s
       )}
 
       {categories && categories.length > 0 && (
-        <nav aria-label="Rayons" className="mt-4 flex flex-wrap gap-2">
+        <nav aria-label="Rayons" className="scroll-row -mx-[14px] mt-4 flex gap-2 overflow-x-auto px-[14px] pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
           <Link href="/aisles" className={chip(!categorySlug)}>
             Tout
           </Link>
@@ -44,7 +44,7 @@ export async function ProductResults({ term, categorySlug, page = 1 }: { term: s
       ) : products.length === 0 ? (
         <p className="mt-6 text-muted">Aucun produit ne correspond à votre recherche.</p>
       ) : (
-        <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5">
+        <ul className="mt-6 grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5">
           {products.map((product) => (
             <li key={product.id} className="flex justify-center [&>article]:w-full">
               <ProductCard product={product} />
@@ -68,4 +68,4 @@ export async function ProductResults({ term, categorySlug, page = 1 }: { term: s
 const PER_PAGE = 20;
 
 const chip = (on: boolean) =>
-  `rounded-full border px-4 py-2 text-[13px] font-bold ${on ? "border-brand-green bg-brand-green text-white" : "border-line bg-white hover:border-brand-green"}`;
+  `inline-flex min-h-11 shrink-0 items-center whitespace-nowrap rounded-full border px-4 text-[13px] font-bold ${on ? "border-brand-green bg-brand-green text-white" : "border-line bg-white hover:border-brand-green"}`;

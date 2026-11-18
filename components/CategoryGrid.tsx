@@ -32,7 +32,7 @@ export function CategoryGrid({ categories }: { categories: Category[] }) {
                   {c.icon ?? "🛒"}
                 </span>
               )}
-              <b className="text-[11px] sm:text-[13px]">{c.name}</b>
+              <b className="block text-xs leading-tight sm:text-[13px]">{c.name}</b>
             </Link>
           </li>
         ))}

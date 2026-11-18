@@ -22,7 +22,7 @@ export function RecipeAddButton({ recipe }: { recipe: Recipe }) {
       type="button"
       onClick={handleClick}
       disabled={recipe.ingredients.length === 0}
-      className="mt-auto w-full rounded-full bg-brand-green px-2 py-2 text-[10px] font-extrabold text-white transition hover:bg-brand-green-dark disabled:bg-black/20 sm:py-2.5 sm:text-xs"
+      className="mt-auto min-h-11 w-full rounded-full bg-brand-green px-2 py-2 text-xs font-extrabold text-white transition hover:bg-brand-green-dark disabled:bg-black/20 sm:py-2.5"
     >
       {added ? "Ajouté au panier ✓" : "＋ Ajouter au panier"}
     </button>

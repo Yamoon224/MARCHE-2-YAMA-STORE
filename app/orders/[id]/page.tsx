@@ -28,7 +28,7 @@ type Props = { params: Promise<{ id: string }>; searchParams: Promise<{ paiement
 
 export default function CommandePage(props: Props) {
   return (
-    <main className="mx-auto max-w-3xl px-4 py-8">
+    <main className="mx-auto w-[min(768px,calc(100%-28px))] py-5 sm:py-8">
       <Suspense fallback={<p className="text-black/60">Chargement de la commande…</p>}>
         <OrderDetail {...props} />
       </Suspense>
@@ -62,7 +62,7 @@ async function OrderDetail({ params, searchParams }: Props) {
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-3xl font-bold">{order.number ?? `Commande ${order.id}`}</h1>
+        <h1 className="text-[26px] font-extrabold sm:text-[32px]">{order.number ?? `Commande ${order.id}`}</h1>
           <p className="mt-1 text-sm text-black/60">
             Conservez ce numéro : avec l&apos;e-mail de votre commande, il permet de la suivre à tout moment sur{" "}
             <Link href="/tracking" className="text-brand-red underline">la page de suivi</Link>, même sans compte.
@@ -108,7 +108,7 @@ async function OrderDetail({ params, searchParams }: Props) {
         <h2 id="articles" className="mb-2 text-lg font-semibold">Articles</h2>
         <ul className="divide-y divide-black/10 rounded-xl border border-black/10">
           {(order.lines ?? []).map((line) => (
-            <li key={line.product_id} className="flex justify-between gap-3 p-3 text-sm">
+            <li key={line.product_id} className="flex justify-between gap-3 p-3 text-sm [&>span:first-child]:min-w-0 [&>span:first-child]:[overflow-wrap:anywhere] [&>span:last-child]:shrink-0">
               <span>
                 {line.name}{" "}
                 <span className="text-black/50">
@@ -144,7 +144,7 @@ async function OrderDetail({ params, searchParams }: Props) {
         </ol>
       </section>
 
-      <div className="mt-8 flex flex-wrap items-center gap-3">
+      <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center [&_button]:min-h-11 [&>a]:inline-flex [&>a]:min-h-11 [&>a]:items-center">
         {canPay(order.status) && (
           <div className="flex flex-col gap-3">
             <p className="text-sm text-black/70">Paiement en attente : votre commande est réservée quelques minutes.</p>

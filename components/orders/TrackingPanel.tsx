@@ -67,7 +67,7 @@ export function TrackingPanel({ orderId }: { orderId: number }) {
       {tracking.confirmation_code && (
         <div className="mt-3 rounded-lg bg-brand-green/10 p-3 text-center">
           <p className="text-sm">Donnez ce code au livreur à la remise de votre commande</p>
-          <p className="mt-1 font-mono text-3xl font-bold tracking-widest" aria-label={`Code de confirmation ${tracking.confirmation_code.split("").join(" ")}`}>
+          <p className="mt-1 font-mono text-2xl font-bold tracking-widest min-[400px]:text-3xl" aria-label={`Code de confirmation ${tracking.confirmation_code.split("").join(" ")}`}>
             {formatCode(tracking.confirmation_code)}
           </p>
           <p className="mt-1 text-xs text-black/60">Ne le communiquez qu&apos;en main propre, à votre livreur.</p>
@@ -77,7 +77,7 @@ export function TrackingPanel({ orderId }: { orderId: number }) {
       {tracking.location && (
         <p className="mt-3 text-sm">
           Dernière position {formatAge(tracking.location.recorded_at, now)} -{" "}
-          <a href={mapsUrl(tracking.location.latitude, tracking.location.longitude)} target="_blank" rel="noopener noreferrer" className="font-medium text-brand-green underline">
+          <a href={mapsUrl(tracking.location.latitude, tracking.location.longitude)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-medium text-brand-green underline">
             voir sur la carte
           </a>
         </p>

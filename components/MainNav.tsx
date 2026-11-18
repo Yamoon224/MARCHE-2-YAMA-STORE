@@ -3,15 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-
-const NAV = [
-  { href: "/", label: "Accueil" },
-  { href: "/#categories", label: "Catégories", section: "categories" },
-  { href: "/#combos", label: "Combos africains", section: "combos" },
-  { href: "/#populaires", label: "Nos produits", section: "populaires" },
-  { href: "/#livraison", label: "Livraison", section: "livraison" },
-  { href: "/tracking", label: "Suivre ma commande" },
-];
+import { NAV } from "./nav-items";
 
 /** Sections de l'accueil, dans l'ordre de la page, rattachées à l'entrée de menu qu'elles font vivre. */
 const SECTION_TO_ITEM: Array<[test: (id: string) => boolean, item: string]> = [
@@ -70,8 +62,8 @@ export function MainNav() {
   };
 
   return (
-    <nav aria-label="Navigation principale" className="border-t border-white/20 bg-[#b90018]">
-      <ul className="mx-auto flex max-w-[1200px] gap-9 overflow-x-auto px-4 md:justify-center">
+    <nav aria-label="Navigation principale" className="hidden border-t border-white/20 bg-[#b90018] md:block">
+      <ul className="mx-auto flex max-w-[1200px] scroll-row gap-9 overflow-x-auto px-4 md:justify-center">
         {NAV.map((item) => {
           const active = isActive(item);
           return (

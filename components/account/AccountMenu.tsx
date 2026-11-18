@@ -53,11 +53,11 @@ export function AccountMenu() {
     router.refresh();
   }
 
-  if (user === undefined) return <span className="w-24" aria-hidden="true" />;
+  if (user === undefined) return <span className="hidden w-24 md:block" aria-hidden="true" />;
 
   if (user === null) {
     return (
-      <Link href="/login" className="rounded-full border border-white/30 bg-white/20 px-4 py-2.5 text-sm font-bold text-white hover:bg-white/30">
+      <Link href="/login" className="hidden rounded-full border border-white/30 bg-white/20 px-4 py-2.5 text-sm font-bold text-white hover:bg-white/30 md:inline-block">
         Connexion
       </Link>
     );

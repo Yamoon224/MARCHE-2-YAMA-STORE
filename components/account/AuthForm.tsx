@@ -50,11 +50,11 @@ export function AuthForm({ next }: { next?: string }) {
     }
   }
 
-  const field = "mt-1 w-full rounded-lg border border-black/20 px-3 py-2 outline-none focus:border-brand-green";
+  const field = "mt-1 min-h-11 w-full rounded-lg border border-black/20 bg-white px-3 py-2 outline-none focus:border-brand-green";
 
   return (
-    <form onSubmit={submit} className="mx-auto flex max-w-sm flex-col gap-4" noValidate>
-      <h1 className="text-2xl font-bold">{mode === "login" ? "Connexion" : "Créer un compte"}</h1>
+    <form onSubmit={submit} className="mx-auto flex max-w-sm flex-col gap-4 rounded-[18px] border border-line bg-white p-5 shadow-soft sm:p-6" noValidate>
+      <h1 className="text-[26px] font-extrabold">{mode === "login" ? "Connexion" : "Créer un compte"}</h1>
 
       {mode === "register" && (
         <label className="text-sm font-medium">
@@ -65,7 +65,7 @@ export function AuthForm({ next }: { next?: string }) {
 
       <label className="text-sm font-medium">
         {mode === "login" ? "E-mail ou téléphone" : "E-mail ou téléphone (+33…)"}
-        <input name="login" required autoComplete="username" placeholder={mode === "login" ? "E-mail ou téléphone" : "Ex. awa@exemple.com ou +33 6 12 34 56 78"} className={field} />
+        <input name="login" required autoComplete="username" autoCapitalize="none" autoCorrect="off" spellCheck={false} placeholder={mode === "login" ? "E-mail ou téléphone" : "Ex. awa@exemple.com ou +33 6 12 34 56 78"} className={field} />
       </label>
 
       <label className="text-sm font-medium">
@@ -86,7 +86,7 @@ export function AuthForm({ next }: { next?: string }) {
         </p>
       )}
 
-      <button type="submit" disabled={busy} className="rounded-full bg-brand-red py-2.5 font-medium text-white disabled:opacity-60">
+      <button type="submit" disabled={busy} className="min-h-12 rounded-full bg-brand-red py-3 font-extrabold text-white hover:bg-brand-red-dark disabled:opacity-60">
         {busy ? "Patientez…" : mode === "login" ? "Se connecter" : "Créer mon compte"}
       </button>
 
@@ -96,7 +96,7 @@ export function AuthForm({ next }: { next?: string }) {
           setMode(mode === "login" ? "register" : "login");
           setError(null);
         }}
-        className="text-sm text-brand-green hover:underline"
+        className="min-h-11 text-sm text-brand-green hover:underline"
       >
         {mode === "login" ? "Pas encore de compte ? Créer un compte" : "Déjà un compte ? Se connecter"}
       </button>

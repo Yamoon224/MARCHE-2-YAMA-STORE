@@ -26,7 +26,7 @@ export function Pagination({ page, lastPage, basePath, params = {} }: Props) {
     return qs ? `${basePath}?${qs}` : basePath;
   };
 
-  const item = "grid h-10 min-w-10 place-items-center rounded-full border px-3 text-sm font-bold";
+  const item = "grid h-11 min-w-11 place-items-center rounded-full border px-3 text-sm font-bold";
 
   return (
     <nav aria-label="Pagination" className="mt-8 flex flex-wrap items-center justify-center gap-2">

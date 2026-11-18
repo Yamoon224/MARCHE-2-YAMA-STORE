@@ -9,8 +9,8 @@ export const metadata = { title: "Mes commandes - Marché de Yama" };
 
 export default function CommandesPage() {
   return (
-    <main className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="mb-6 text-3xl font-bold">Mes commandes</h1>
+    <main className="mx-auto w-[min(768px,calc(100%-28px))] py-5 sm:py-8">
+      <h1 className="mb-5 text-[26px] font-extrabold sm:mb-6 sm:text-[32px]">Mes commandes</h1>
       <Suspense fallback={<p className="text-black/60">Chargement de vos commandes…</p>}>
         <OrderList />
       </Suspense>
@@ -44,8 +44,8 @@ async function OrderList() {
     <ul className="divide-y divide-black/10 rounded-xl border border-black/10">
       {orders.map((order) => (
         <li key={order.id}>
-          <Link href={`/orders/${order.id}`} className="flex items-center justify-between gap-3 p-4 hover:bg-black/5">
-            <span className="font-medium">{order.number ?? `Commande ${order.id}`}</span>
+          <Link href={`/orders/${order.id}`} className="flex min-h-14 flex-wrap items-center justify-between gap-x-3 gap-y-1 p-4 hover:bg-black/5">
+            <span className="min-w-0 font-medium [overflow-wrap:anywhere]">{order.number ?? `Commande ${order.id}`}</span>
             <StatusBadge status={order.status} />
             <span className="font-semibold">{formatMoney(order.total_minor)}</span>
           </Link>

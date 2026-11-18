@@ -7,7 +7,7 @@ type SearchParams = Promise<{ next?: string | string[] }>;
 
 export default function ConnexionPage({ searchParams }: { searchParams: SearchParams }) {
   return (
-    <main className="px-4 py-12">
+    <main className="px-4 py-8 sm:py-12">
       <Suspense fallback={<p className="text-center text-black/60">Chargement…</p>}>
         <Form searchParams={searchParams} />
       </Suspense>

@@ -28,7 +28,7 @@ export function MarkAllRead() {
   return (
     <span className="flex items-center gap-3">
       {error && <span role="alert" className="text-sm text-brand-red">Impossible pour le moment. Réessayez.</span>}
-      <button type="button" onClick={markAll} disabled={busy} className="rounded-full border border-black/20 px-4 py-1.5 text-sm hover:bg-black/5 disabled:opacity-60">
+      <button type="button" onClick={markAll} disabled={busy} className="min-h-11 rounded-full border border-black/20 px-4 text-sm hover:bg-black/5 disabled:opacity-60">
         {busy ? "Un instant…" : "Tout marquer comme lu"}
       </button>
     </span>

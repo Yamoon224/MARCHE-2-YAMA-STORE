@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { DM_Sans, Manrope } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -28,13 +28,19 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: "Marché de Yama", description: DESCRIPTION },
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#bd0019",
+};
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="fr" className={`${dmSans.variable} ${manrope.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
         <CartProvider>
           <Header />
-          <div className="flex-1">{children}</div>
+          <div className="min-w-0 flex-1">{children}</div>
           <Footer />
         </CartProvider>
       </body>

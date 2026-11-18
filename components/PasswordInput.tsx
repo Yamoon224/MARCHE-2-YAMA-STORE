@@ -10,13 +10,13 @@ export function PasswordInput({ className = "", ...props }: Props) {
 
   return (
     <span className="relative mt-1 block">
-      <input {...props} type={visible ? "text" : "password"} className={`${className} !mt-0 pr-11`} />
+      <input {...props} type={visible ? "text" : "password"} className={`${className} !mt-0 pr-12`} />
       <button
         type="button"
         onClick={() => setVisible((v) => !v)}
         aria-label={visible ? "Masquer le mot de passe" : "Afficher le mot de passe"}
         aria-pressed={visible}
-        className="absolute inset-y-0 right-0 grid w-11 place-items-center text-black/60 hover:text-black"
+        className="absolute inset-y-0 right-0 grid w-12 place-items-center text-black/60 hover:text-black"
       >
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           {visible ? (

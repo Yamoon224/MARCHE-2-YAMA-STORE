@@ -10,9 +10,10 @@ export function CartLink() {
   return (
     <Link
       href="/cart"
-      className="relative flex items-center gap-2 rounded-full border border-white/30 bg-white/20 px-4 py-2.5 text-sm font-bold text-white hover:bg-white/30"
+      aria-label="Panier"
+      className="relative flex h-11 min-w-11 items-center justify-center gap-2 rounded-full border border-white/30 bg-white/20 px-3 text-sm font-bold text-white hover:bg-white/30 md:px-4"
     >
-      <CartIcon className="h-[18px] w-[18px]" /> Panier
+      <CartIcon className="h-5 w-5 md:h-[18px] md:w-[18px]" /> <span className="hidden md:inline">Panier</span>
       {ready && itemCount > 0 && (
         <span
           aria-label={`${itemCount} article${itemCount > 1 ? "s" : ""} dans le panier`}

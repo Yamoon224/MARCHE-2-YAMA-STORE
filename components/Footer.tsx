@@ -12,19 +12,19 @@ export function Footer() {
         </div>
         <nav aria-label="La boutique">
           <h3 className="mb-2 text-[15px] font-extrabold text-white">La boutique</h3>
-          <ul className="grid text-sm leading-8 text-[#b7c7b9]">
-            <li><Link href="/#categories" className="hover:text-white">Nos catégories</Link></li>
-            <li><Link href="/#combos" className="hover:text-white">Combos africains</Link></li>
-            <li><Link href="/aisles" className="hover:text-white">Tous les produits</Link></li>
-            <li><Link href="/cart" className="hover:text-white">Mon panier</Link></li>
-            <li><Link href="/tracking" className="hover:text-white">Suivre ma commande</Link></li>
+          <ul className="grid text-sm text-[#b7c7b9]">
+            <li><Link href="/#categories" className="block py-2.5 hover:text-white">Nos catégories</Link></li>
+            <li><Link href="/#combos" className="block py-2.5 hover:text-white">Combos africains</Link></li>
+            <li><Link href="/aisles" className="block py-2.5 hover:text-white">Tous les produits</Link></li>
+            <li><Link href="/cart" className="block py-2.5 hover:text-white">Mon panier</Link></li>
+            <li><Link href="/tracking" className="block py-2.5 hover:text-white">Suivre ma commande</Link></li>
           </ul>
         </nav>
         <nav aria-label="Mon compte">
           <h3 className="mb-2 text-[15px] font-extrabold text-white">Mon compte</h3>
-          <ul className="grid text-sm leading-8 text-[#b7c7b9]">
-            <li><Link href="/login" className="hover:text-white">Connexion</Link></li>
-            <li><Link href="/orders" className="hover:text-white">Mes commandes</Link></li>
+          <ul className="grid text-sm text-[#b7c7b9]">
+            <li><Link href="/login" className="block py-2.5 hover:text-white">Connexion</Link></li>
+            <li><Link href="/orders" className="block py-2.5 hover:text-white">Mes commandes</Link></li>
           </ul>
         </nav>
         <div>
@@ -34,7 +34,7 @@ export function Footer() {
           </p>
         </div>
       </div>
-      <p className="mx-auto mt-6 flex w-[min(1200px,calc(100%-28px))] flex-wrap justify-between gap-2 border-t border-white/20 pt-4 text-[11px] text-[#9eb0a1]">
+      <p className="mx-auto mt-6 flex w-[min(1200px,calc(100%-28px))] flex-wrap justify-between gap-2 border-t border-white/20 pt-4 text-xs text-[#9eb0a1]">
         <span>© 2026 Marché de Yama. Tous droits réservés.</span>
         <span>Les saveurs de chez nous, près de chez vous.</span>
       </p>
