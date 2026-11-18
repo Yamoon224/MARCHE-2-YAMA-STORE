@@ -21,6 +21,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/audit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Journal d'audit des actions du personnel (permission audit.view) */
+        get: operations["e6e5db2ce965b4b834e9a79cb0222a53"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/audit/verify": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Vérifier l'intégrité de la chaîne de hachage du journal */
+        get: operations["3a49f2039ee2eb1dac3dd8028eced41a"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/catalog/banners": {
         parameters: {
             query?: never;
@@ -120,7 +154,8 @@ export interface paths {
         /** Tous les produits (actifs ou non) */
         get: operations["c8e1cbf07f837777b8f3f44970de2c44"];
         put?: never;
-        post?: never;
+        /** Créer un produit */
+        post: operations["02c4b6197db0f817d1b3ad5b54a7f33e"];
         delete?: never;
         options?: never;
         head?: never;
@@ -134,11 +169,98 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
-        /** Modifier un produit (prix, promotion, image, visibilité) */
+        /** Détails d'un produit (même supprimé) avec sa galerie */
+        get: operations["8cbf5c06795b028ae0c6d799760a44da"];
+        /** Modifier un produit (prix, promotion, visibilité…) */
         put: operations["9acd1a7f306b624ff8e264322874fa57"];
         post?: never;
+        /** Supprimer un produit (suppression douce, restaurable) */
+        delete: operations["1bf1f2e96e6fadb9f5a530930ccdbf87"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/catalog/products/{product}/restore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Restaurer un produit supprimé */
+        post: operations["bce585b91eae1c4d91b743c2ea21fd84"];
         delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/catalog/products/{product}/images": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Ajouter des images (10 au plus par produit ; la première devient la couverture) */
+        post: operations["f7201acfb2a06cecaa32831b0d87c6ce"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/catalog/products/{product}/images/order": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Réordonner la galerie */
+        put: operations["cff9925896ca6ca70e3b10e379618d8e"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/catalog/products/{product}/images/{image}/cover": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Choisir l'image de couverture */
+        post: operations["21f66a9c2418d8c233b4f30dd9685e38"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/catalog/products/{product}/images/{image}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Supprimer une image (le fichier est effacé) */
+        delete: operations["1b6fdde6e7b61edf03f095d12e9e4fb8"];
         options?: never;
         head?: never;
         patch?: never;
@@ -829,6 +951,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/auth/forgot-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Envoie un lien de réinitialisation du mot de passe (compte du personnel). Réponse identique que le compte existe ou non. */
+        post: operations["50441dbc71a84e665875004625bb2f87"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/reset-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Choisit un nouveau mot de passe avec le jeton reçu par e-mail (usage unique, durée limitée) */
+        post: operations["e523547708dc838974145a2cff3a2563"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/auth/me": {
         parameters: {
             query?: never;
@@ -857,6 +1013,111 @@ export interface paths {
         put?: never;
         /** Déconnexion */
         post: operations["3885c90334138be966c2e718f4ae8a09"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/customers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Liste des clients avec nombre de commandes et total dépensé (permission customers.view) */
+        get: operations["60afd4f4e69f1f0d96839a26298370b5"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/customers/{user}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Fiche d'un client */
+        get: operations["3afa2e485b51c34d2a548ac1b614bbfe"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/roles": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Rôles attribuables au personnel, avec libellé et permissions (permission users.manage) */
+        get: operations["bd9dbee3943915034bb9d078f9399e4b"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/staff": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Liste du personnel (permission users.manage) */
+        get: operations["e8b0ab8283a622a19265b9cf6511f14d"];
+        put?: never;
+        /** Créer un compte du personnel */
+        post: operations["df0f0cc5e9fa145703ecbf174c611612"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/staff/{user}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Détail d'un membre du personnel */
+        get: operations["da1cdb69f4e0d3aeca046fabee06c492"];
+        /** Modifier un membre du personnel (nom, contacts, rôle, mot de passe) */
+        put: operations["b58004fc77babdc3adc850ed554d4c9d"];
+        post?: never;
+        /** Désactiver un compte (connexion impossible, jetons révoqués ; pas de suppression) */
+        delete: operations["aef0946fc4bcf8b0e3a71f8116741c91"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/staff/{user}/reactivate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Réactiver un compte désactivé */
+        post: operations["5e5e59c8b59380d6bc0b5db5264209f9"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1008,7 +1269,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Détail d'une commande avec lignes et historique */
+        /** Détail d'une commande : lignes, historique et, pour le personnel, client, paiements, remboursements et livraison */
         get: operations["c74a658d8b9d269ab6b1c98c37253955"];
         put?: never;
         post?: never;
@@ -1190,10 +1451,156 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/promotions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Codes promotionnels (permission promotions.manage) */
+        get: operations["a193e04cc3381e6c278153504c6071c4"];
+        put?: never;
+        /** Créer un code promotionnel */
+        post: operations["26897e9af39601c0c7a9b0e90ed347da"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/promotions/{promotion}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Détail d'un code */
+        get: operations["78f781554ac4e327be286ff81814c879"];
+        /** Modifier un code */
+        put: operations["9befcc76dfa97d2b54a2ee53d5c3401b"];
+        post?: never;
+        /** Supprimer un code jamais utilisé */
+        delete: operations["535c67c8a0320bc37f7d65159c003eb5"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/promotions/{promotion}/activate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Activer un code */
+        post: operations["4507efeb2e62ffe763612a8a5c453644"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/promotions/{promotion}/deactivate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Désactiver un code */
+        post: operations["3f021e67149c0221bda1f26f3de70b14"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/promotions/validate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Contrôler un code pour un sous-total et obtenir la remise (n'incrémente pas l'usage) */
+        post: operations["1f4486731e5c9fcb90045f5cc3e628d9"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/reports/dashboard": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Tableau de bord : CA, commandes, panier moyen, ventes par jour, meilleurs produits, alertes (permission reports.view) */
+        get: operations["deedd372c0f08de22ea751fed0801ea6"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/reports/sales": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ventes regroupées par jour, produit ou catégorie, en JSON ou en CSV (permission reports.view) */
+        get: operations["d5727b331e87557130ccf08314da8058"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        AuditLog: {
+            id: number;
+            user_id: number;
+            method: string;
+            path: string;
+            status: number;
+            ip?: string | null;
+            /** @description Données envoyées, secrets masqués */
+            payload: {
+                [key: string]: unknown;
+            };
+            /** Format: date-time */
+            created_at: string;
+            hash: string;
+        };
+        AuditLogPage: {
+            data: components["schemas"]["AuditLog"][];
+            meta: {
+                current_page?: number;
+                last_page?: number;
+                per_page?: number;
+                total?: number;
+            };
+        };
         CategoryInput: {
             name: string;
             slug: string;
@@ -1279,7 +1686,11 @@ export interface components {
             is_weight_variable?: boolean;
             /** @description Prix en centimes (EUR) */
             price_minor: number;
+            /** @description URL de la couverture (compatibilité : équivaut à cover) */
             image_url?: string | null;
+            /** @description URL de la couverture */
+            cover?: string | null;
+            images?: components["schemas"]["ProductImage"][];
             /** @description Ancien prix (promotion) ou null */
             compare_at_price_minor?: number | null;
             /** @description Produit mis en avant (best seller) */
@@ -1288,6 +1699,14 @@ export interface components {
             vat_rate_bp?: number;
             perishable?: boolean;
             is_active?: boolean;
+            /** @description Date de suppression douce (null : produit en ligne) */
+            deleted_at?: string | null;
+        };
+        ProductImage: {
+            id: number;
+            url: string;
+            position: number;
+            is_cover: boolean;
         };
         ProductPage: {
             data: components["schemas"]["Product"][];
@@ -1438,6 +1857,56 @@ export interface components {
             picker_id?: number | null;
             lines: components["schemas"]["PickLine"][];
         };
+        Customer: {
+            id: number;
+            name: string;
+            email?: string | null;
+            phone?: string | null;
+            is_guest: boolean;
+            is_active: boolean;
+            orders_count: number;
+            /** @description Total des commandes aboutties, en centimes */
+            total_spent_minor: number;
+            /** Format: date-time */
+            created_at?: string | null;
+        };
+        CustomerResponse: {
+            data: components["schemas"]["Customer"];
+        };
+        CustomerPage: {
+            data: components["schemas"]["Customer"][];
+            meta: {
+                current_page?: number;
+                last_page?: number;
+                per_page?: number;
+                total?: number;
+            };
+        };
+        StaffMember: {
+            id: number;
+            name: string;
+            email?: string | null;
+            phone?: string | null;
+            role: string;
+            role_label: string;
+            is_active: boolean;
+            /** Format: date-time */
+            deactivated_at?: string | null;
+            /** Format: date-time */
+            created_at?: string | null;
+        };
+        StaffMemberResponse: {
+            data: components["schemas"]["StaffMember"];
+        };
+        StaffPage: {
+            data: components["schemas"]["StaffMember"][];
+            meta: {
+                current_page?: number;
+                last_page?: number;
+                per_page?: number;
+                total?: number;
+            };
+        };
         User: {
             id: number;
             name: string;
@@ -1521,6 +1990,40 @@ export interface components {
             read: boolean;
             created_at: string;
         };
+        /** @description Commande + détails pour le personnel (client, paiements et remboursements, livraison) */
+        OrderDetail: components["schemas"]["Order"] & {
+            customer?: {
+                id?: number;
+                name?: string;
+                email?: string | null;
+                phone?: string | null;
+            } | null;
+            payments?: {
+                reference?: string;
+                method?: string;
+                status?: string;
+                amount_minor?: number;
+                currency?: string;
+                needs_refund?: boolean;
+                created_at?: string | null;
+                refunds?: {
+                    reference?: string;
+                    amount_minor?: number;
+                    status?: string;
+                    kind?: string;
+                    reason?: string | null;
+                    created_at?: string | null;
+                }[];
+            }[];
+            delivery?: {
+                status?: string;
+                courier_name?: string | null;
+                cash_collected_minor?: number | null;
+                failure_reason?: string | null;
+                assigned_at?: string | null;
+                delivered_at?: string | null;
+            } | null;
+        } & components["schemas"]["OrderPage"];
         OrderLine: {
             /** @description Identifiant de la ligne (nécessaire pour déclarer une réclamation) */
             id: number;
@@ -1560,6 +2063,12 @@ export interface components {
             /** @enum {string} */
             fulfillment?: "pickup" | "delivery";
             delivery_slot_id?: number | null;
+            /** @description online ou pos (vente en caisse) */
+            channel?: string | null;
+            contact_phone?: string | null;
+            /** @description Adresse de livraison (quartier, repère, coordonnées) */
+            delivery_address?: Record<string, never> | null;
+            created_at?: string | null;
             lines?: components["schemas"]["OrderLine"][];
             history?: components["schemas"]["OrderHistoryEntry"][];
         };
@@ -1636,6 +2145,77 @@ export interface components {
             lines: components["schemas"]["PosReceiptLine"][];
             created_at: string;
         };
+        Promotion: {
+            id: number;
+            code: string;
+            description?: string | null;
+            /** @enum {string} */
+            type: "percent" | "fixed";
+            /** @description Pourcentage (1-100) ou centimes selon le type */
+            value: number;
+            min_order_minor?: number;
+            max_uses?: number | null;
+            used_count: number;
+            /** Format: date-time */
+            starts_at?: string | null;
+            /** Format: date-time */
+            ends_at?: string | null;
+            is_active: boolean;
+            /** @enum {string} */
+            state: "active" | "scheduled" | "expired" | "exhausted" | "disabled";
+        };
+        PromotionResponse: {
+            data: components["schemas"]["Promotion"];
+        };
+        PromotionPage: {
+            data: components["schemas"]["Promotion"][];
+            meta: {
+                current_page?: number;
+                last_page?: number;
+                per_page?: number;
+                total?: number;
+            };
+        };
+        Dashboard: {
+            period: {
+                /** Format: date */
+                from: string;
+                /** Format: date */
+                to: string;
+            };
+            /** @example EUR */
+            currency: string;
+            /** @description Chiffre d'affaires TTC des commandes aboutissantes, en centimes */
+            revenue_minor: number;
+            /** @description Commandes comptées comme ventes */
+            orders_count: number;
+            average_basket_minor: number;
+            orders_by_status: {
+                status: string;
+                count: number;
+            }[];
+            /** @description Un point par jour de la période */
+            sales_by_day: {
+                /** Format: date */
+                date: string;
+                orders_count: number;
+                revenue_minor: number;
+            }[];
+            top_products: {
+                product_id: number;
+                name: string;
+                /** @description Unité de base : pièces, grammes ou millilitres */
+                quantity: number;
+                revenue_minor: number;
+            }[];
+            alerts: {
+                expiring_lots: number;
+                expiring_lots_days: number;
+                out_of_stock_products: number;
+                open_claims: number;
+                late_deliveries: number;
+            };
+        };
     };
     responses: never;
     parameters: never;
@@ -1680,6 +2260,72 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    e6e5db2ce965b4b834e9a79cb0222a53: {
+        parameters: {
+            query?: {
+                user_id?: number;
+                method?: "POST" | "PUT" | "PATCH" | "DELETE";
+                /** @description Fragment du chemin */
+                path?: string;
+                /** @description true : réponses en erreur (>= 400) seulement */
+                failed?: boolean;
+                from?: string;
+                to?: string;
+                per_page?: number;
+                page?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Entrées, les plus récentes d'abord */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuditLogPage"];
+                };
+            };
+            /** @description Interdit */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "3a49f2039ee2eb1dac3dd8028eced41a": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Résultat du contrôle */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: {
+                            valid: boolean;
+                            /** @description Entrées contrôlées avec succès */
+                            checked: number;
+                            /** @description Première entrée altérée */
+                            broken_at_id?: number | null;
+                        };
+                    };
+                };
             };
         };
     };
@@ -1950,6 +2596,8 @@ export interface operations {
         parameters: {
             query?: {
                 q?: string;
+                /** @description with : y compris supprimés ; only : uniquement les supprimés */
+                trashed?: "with" | "only";
                 page?: number;
                 /** @description 1 à 200 (30 par défaut) */
                 per_page?: number;
@@ -1968,6 +2616,70 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["ProductPage"];
                 };
+            };
+        };
+    };
+    "02c4b6197db0f817d1b3ad5b54a7f33e": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProductUpdate"];
+            };
+        };
+        responses: {
+            /** @description Produit créé */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Product"];
+                    };
+                };
+            };
+            /** @description Validation */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "8cbf5c06795b028ae0c6d799760a44da": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                product: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Produit */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Product"];
+                    };
+                };
+            };
+            /** @description Introuvable */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -1999,6 +2711,203 @@ export interface operations {
             };
             /** @description Validation */
             422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "1bf1f2e96e6fadb9f5a530930ccdbf87": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                product: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Supprimé : il disparaît du catalogue, les commandes passées le conservent */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Introuvable */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    bce585b91eae1c4d91b743c2ea21fd84: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                product: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Produit restauré */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Product"];
+                    };
+                };
+            };
+            /** @description Introuvable */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    f7201acfb2a06cecaa32831b0d87c6ce: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                product: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": {
+                    images: string[];
+                };
+            };
+        };
+        responses: {
+            /** @description Produit avec sa galerie */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Product"];
+                    };
+                };
+            };
+            /** @description Fichier refusé ou trop d'images */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    cff9925896ca6ca70e3b10e379618d8e: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                product: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description Toutes les images du produit, dans le nouvel ordre */
+                    ids: number[];
+                };
+            };
+        };
+        responses: {
+            /** @description Produit avec sa galerie */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Product"];
+                    };
+                };
+            };
+            /** @description Liste incomplète */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "21f66a9c2418d8c233b4f30dd9685e38": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                product: number;
+                image: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Produit avec sa galerie */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Product"];
+                    };
+                };
+            };
+            /** @description Image introuvable pour ce produit */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "1b6fdde6e7b61edf03f095d12e9e4fb8": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                product: number;
+                image: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Produit avec sa galerie */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Product"];
+                    };
+                };
+            };
+            /** @description Image introuvable pour ce produit */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -3510,6 +4419,72 @@ export interface operations {
             };
         };
     };
+    "50441dbc71a84e665875004625bb2f87": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @example agent@example.com */
+                    email: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Demande enregistrée */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    e523547708dc838974145a2cff3a2563: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    token: string;
+                    email: string;
+                    password: string;
+                    password_confirmation: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Mot de passe changé */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Lien invalide ou expiré, ou mot de passe refusé */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     a69e035abcffe1bdd422bcb2883473d6: {
         parameters: {
             query?: never;
@@ -3550,6 +4525,315 @@ export interface operations {
         responses: {
             /** @description Jeton révoqué */
             204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "60afd4f4e69f1f0d96839a26298370b5": {
+        parameters: {
+            query?: {
+                /** @description Recherche nom, e-mail ou téléphone */
+                q?: string;
+                /** @description true : invités seulement ; false : comptes seulement */
+                guest?: boolean;
+                per_page?: number;
+                page?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Clients paginés */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CustomerPage"];
+                };
+            };
+            /** @description Interdit */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "3afa2e485b51c34d2a548ac1b614bbfe": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Client */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CustomerResponse"];
+                };
+            };
+            /** @description Introuvable */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    bd9dbee3943915034bb9d078f9399e4b: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Rôles */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: {
+                            value: string;
+                            label: string;
+                            /** @description « * » : toutes les permissions */
+                            permissions: string[];
+                        }[];
+                    };
+                };
+            };
+        };
+    };
+    e8b0ab8283a622a19265b9cf6511f14d: {
+        parameters: {
+            query?: {
+                /** @description Recherche nom, e-mail ou téléphone */
+                q?: string;
+                role?: string;
+                active?: boolean;
+                per_page?: number;
+                page?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Personnel paginé */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StaffPage"];
+                };
+            };
+            /** @description Interdit */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    df0f0cc5e9fa145703ecbf174c611612: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    name: string;
+                    email: string;
+                    phone?: string | null;
+                    /** @example picker */
+                    role: string;
+                    password: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Compte créé */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StaffMemberResponse"];
+                };
+            };
+            /** @description Interdit */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    da1cdb69f4e0d3aeca046fabee06c492: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Membre */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StaffMemberResponse"];
+                };
+            };
+            /** @description Introuvable */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    b58004fc77babdc3adc850ed554d4c9d: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    name?: string;
+                    email?: string;
+                    phone?: string | null;
+                    role?: string;
+                    password?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Compte mis à jour */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StaffMemberResponse"];
+                };
+            };
+            /** @description Introuvable */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation, ou changement de rôle interdit (son propre rôle, dernier administrateur) */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    aef0946fc4bcf8b0e3a71f8116741c91: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Compte désactivé */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StaffMemberResponse"];
+                };
+            };
+            /** @description Introuvable */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Son propre compte ou dernier administrateur */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "5e5e59c8b59380d6bc0b5db5264209f9": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Compte réactivé */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StaffMemberResponse"];
+                };
+            };
+            /** @description Introuvable */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -3916,14 +5200,14 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Commande */
+            /** @description Commande (schéma OrderDetail pour le personnel) */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Order"];
+                        data?: components["schemas"]["OrderDetail"];
                     };
                 };
             };
@@ -4410,6 +5694,368 @@ export interface operations {
             };
             /** @description Introuvable (ou vente d'un autre caissier) */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    a193e04cc3381e6c278153504c6071c4: {
+        parameters: {
+            query?: {
+                q?: string;
+                state?: "active" | "scheduled" | "expired" | "exhausted" | "disabled";
+                per_page?: number;
+                page?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Codes paginés */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PromotionPage"];
+                };
+            };
+        };
+    };
+    "26897e9af39601c0c7a9b0e90ed347da": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @example BIENVENUE10 */
+                    code: string;
+                    description?: string | null;
+                    /** @enum {string} */
+                    type: "percent" | "fixed";
+                    value: number;
+                    min_order_minor?: number;
+                    max_uses?: number | null;
+                    /** Format: date-time */
+                    starts_at?: string | null;
+                    /** Format: date-time */
+                    ends_at?: string | null;
+                    is_active?: boolean;
+                };
+            };
+        };
+        responses: {
+            /** @description Code créé */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PromotionResponse"];
+                };
+            };
+            /** @description Validation */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "78f781554ac4e327be286ff81814c879": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                promotion: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Code */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PromotionResponse"];
+                };
+            };
+            /** @description Introuvable */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "9befcc76dfa97d2b54a2ee53d5c3401b": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                promotion: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    code?: string;
+                    description?: string | null;
+                    /** @enum {string} */
+                    type?: "percent" | "fixed";
+                    value?: number;
+                    min_order_minor?: number;
+                    max_uses?: number | null;
+                    /** Format: date-time */
+                    starts_at?: string | null;
+                    /** Format: date-time */
+                    ends_at?: string | null;
+                    is_active?: boolean;
+                };
+            };
+        };
+        responses: {
+            /** @description Code mis à jour */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PromotionResponse"];
+                };
+            };
+            /** @description Validation */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "535c67c8a0320bc37f7d65159c003eb5": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                promotion: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Supprimé */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Code déjà utilisé : le désactiver plutôt */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "4507efeb2e62ffe763612a8a5c453644": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                promotion: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Code */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PromotionResponse"];
+                };
+            };
+        };
+    };
+    "3f021e67149c0221bda1f26f3de70b14": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                promotion: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Code */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PromotionResponse"];
+                };
+            };
+        };
+    };
+    "1f4486731e5c9fcb90045f5cc3e628d9": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    code: string;
+                    /** @description Sous-total du panier en centimes */
+                    subtotal: number;
+                };
+            };
+        };
+        responses: {
+            /** @description Code valable */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: {
+                            code: string;
+                            type: string;
+                            discount_minor: number;
+                            total_after_discount_minor: number;
+                        };
+                    };
+                };
+            };
+            /** @description Code inconnu, inactif, expiré, épuisé ou minimum non atteint */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    deedd372c0f08de22ea751fed0801ea6: {
+        parameters: {
+            query?: {
+                /** @description AAAA-MM-JJ, défaut : il y a 29 jours */
+                from?: string;
+                /** @description AAAA-MM-JJ inclus, défaut : aujourd'hui */
+                to?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Indicateurs */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["Dashboard"];
+                    };
+                };
+            };
+            /** @description Interdit */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Période invalide */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    d5727b331e87557130ccf08314da8058: {
+        parameters: {
+            query?: {
+                from?: string;
+                to?: string;
+                group?: "day" | "product" | "category";
+                /** @description csv : téléchargement */
+                format?: "json" | "csv";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Lignes de ventes (ou fichier CSV) */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: {
+                            period: {
+                                /** Format: date */
+                                from?: string;
+                                /** Format: date */
+                                to?: string;
+                            };
+                            currency: string;
+                            group: string;
+                            rows: {
+                                key: string;
+                                label: string;
+                                /** @description Renseigné pour group=day */
+                                orders_count?: number | null;
+                                /** @description Renseigné pour group=product|category */
+                                quantity?: number | null;
+                                revenue_minor: number;
+                            }[];
+                            totals: {
+                                revenue_minor?: number;
+                            };
+                        };
+                    };
+                };
+            };
+            /** @description Interdit */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Paramètres invalides */
+            422: {
                 headers: {
                     [name: string]: unknown;
                 };

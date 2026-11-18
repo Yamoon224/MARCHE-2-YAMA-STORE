@@ -14,7 +14,20 @@ describe("fetchProducts", () => {
     const client = clientWith(async () => Response.json({ data: [apiProduct] }));
 
     expect(await fetchProducts(undefined, client)).toEqual([
-      { id: 7, slug: "tomates", name: "Tomates", imageUrl: null, description: null, categoryId: 1, priceMinor: 900, oldPriceMinor: undefined, unit: "le kg", saleUnit: "kg" },
+      { id: 7, slug: "tomates", name: "Tomates", imageUrl: null, images: [], description: null, categoryId: 1, priceMinor: 900, oldPriceMinor: undefined, unit: "le kg", saleUnit: "kg" },
+    ]);
+  });
+
+  it("range la galerie avec la couverture en premier et la photo de couverture sur les cartes", async () => {
+    const images = [
+      { id: 1, url: "http://img/a.jpg", position: 0, is_cover: false },
+      { id: 3, url: "http://img/c.jpg", position: 2, is_cover: false },
+      { id: 2, url: "http://img/b.jpg", position: 1, is_cover: true },
+    ];
+    const client = clientWith(async () => Response.json({ data: [{ ...apiProduct, image_url: "http://img/b.jpg", cover: "http://img/b.jpg", images }] }));
+
+    expect(await fetchProducts(undefined, client)).toMatchObject([
+      { imageUrl: "http://img/b.jpg", images: ["http://img/b.jpg", "http://img/a.jpg", "http://img/c.jpg"] },
     ]);
   });
 

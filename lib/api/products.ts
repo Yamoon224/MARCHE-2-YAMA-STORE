@@ -10,12 +10,21 @@ const UNIT_LABEL: Record<ApiProduct["sale_unit"], string> = {
   l: "le litre",
 };
 
+/** URLs de la galerie : couverture en premier, puis l'ordre choisi dans le backoffice. */
+function galleryUrls(p: ApiProduct): string[] {
+  return [...(p.images ?? [])]
+    .sort((a, b) => Number(b.is_cover) - Number(a.is_cover) || a.position - b.position)
+    .map((image) => image.url)
+    .filter(Boolean);
+}
+
 function toProduct(p: ApiProduct): Product {
   return {
     id: p.id,
     slug: p.slug,
     name: p.name,
-    imageUrl: p.image_url ?? null,
+    imageUrl: p.cover ?? p.image_url ?? null,
+    images: galleryUrls(p),
     description: p.description ?? null,
     categoryId: p.category_id,
     priceMinor: p.price_minor,
