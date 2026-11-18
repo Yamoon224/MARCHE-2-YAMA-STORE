@@ -6,6 +6,7 @@ import { CartLink } from "./cart/CartLink";
 import { MainNav } from "./MainNav";
 import { MobileMenu } from "./MobileMenu";
 import { SearchForm } from "./SearchForm";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function Header() {
   return (
@@ -38,6 +39,7 @@ export function Header() {
             <SearchForm />
           </Suspense>
           <div className="flex items-center gap-2 justify-self-end">
+            <ThemeToggle className="hidden md:grid" />
             <Suspense fallback={<span className="hidden w-24 md:block" aria-hidden="true" />}>
               <AccountMenu />
             </Suspense>

@@ -11,6 +11,11 @@
   --muted: #6a716a;
   --line: #eceee9;
   --shadow-soft: 0 12px 34px #20351b18;
+  /* Couleur active de la vitrine (barres de défilement) : le rouge de la marque. */
+  --active: var(--brand-red);
+  --active-fade: color-mix(in srgb, var(--active) 22%, transparent);
+  --surface: #fff;
+  --surface-soft: #f4f0e8;
 }
 
 @theme inline {
@@ -95,4 +100,121 @@ h3 {
     animation: none !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ---------------------------------------------------------------------------------------------
+ * Barres de défilement fines, comme dans le backoffice : pouce en dégradé de la couleur active vers
+ * le transparent, piste invisible. Les rangées .scroll-row (rayons, vignettes) restent sans barre.
+ * ------------------------------------------------------------------------------------------- */
+@supports selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: auto;
+  }
+
+  *::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+  }
+
+  *::-webkit-scrollbar-track,
+  *::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background: linear-gradient(to bottom, var(--active), var(--active-fade));
+  }
+
+  *::-webkit-scrollbar-thumb:horizontal {
+    background: linear-gradient(to right, var(--active), var(--active-fade));
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: var(--active);
+  }
+}
+
+/* Firefox : pas de dégradé possible, couleur active unie sur piste transparente. */
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--active) transparent;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------
+ * Thème sombre. <html data-theme="dark"> est posé avant l'affichage par un script du <head> (clair, sombre,
+ * ou automatique d'après l'appareil). Plutôt que de modifier chaque composant, on remplace ici les
+ * variables de la charte et les quelques classes Tailwind écrites en dur (surfaces blanches, texte noir
+ * translucide, pastilles beiges). Les bandeaux de marque (en-tête rouge, héros, rayons, livraison, pied
+ * de page) gardent leurs couleurs.
+ * ------------------------------------------------------------------------------------------- */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #0f1310;
+  --foreground: #e6ebe4;
+  --muted: #9ba59a;
+  --line: #283028;
+  --shadow-soft: 0 12px 34px #00000066;
+  --active: #ff5a6b;
+  --surface: #181d19;
+  --surface-soft: #222922;
+  /* Le texte et les filets « noirs translucides » (text-black/60, border-black/10, bg-black/5…) deviennent clairs. */
+  --color-black: #e6ebe4;
+}
+
+:root[data-theme="dark"] .bg-white {
+  background-color: var(--surface);
+}
+
+/* L'en-tête reste rouge : sa recherche garde un fond blanc. */
+:root[data-theme="dark"] header form[role="search"] {
+  background-color: #fff;
+}
+
+:root[data-theme="dark"] header form[role="search"] input {
+  color: #20251f;
+}
+
+/* Fonds noirs réels (voile du tiroir, pastille « Épuisé », compteur de photos) : on les garde noirs. */
+:root[data-theme="dark"] .bg-black {
+  background-color: #000;
+}
+
+:root[data-theme="dark"] .bg-black\/50 {
+  background-color: rgb(0 0 0 / 0.65);
+}
+
+:root[data-theme="dark"] .bg-black\/55 {
+  background-color: rgb(0 0 0 / 0.7);
+}
+
+:root[data-theme="dark"] .bg-\[\#f4ecd9\],
+:root[data-theme="dark"] .bg-\[\#f4f0e8\] {
+  background-color: var(--surface-soft);
+}
+
+:root[data-theme="dark"] .border-\[\#edf0eb\] {
+  border-color: var(--line);
+}
+
+:root[data-theme="dark"] .text-\[\#444b44\] {
+  color: #c3cbc2;
+}
+
+:root[data-theme="dark"] .text-brand-red {
+  color: #ff6b7a;
+}
+
+:root[data-theme="dark"] .text-brand-green {
+  color: #3fcf74;
+}
+
+:root[data-theme="dark"] footer.bg-\[\#17251b\] {
+  background-color: #0b100c;
+}
+
+:root[data-theme="dark"] img {
+  filter: brightness(0.94);
 }

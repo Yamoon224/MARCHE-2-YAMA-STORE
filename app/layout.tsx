@@ -3,6 +3,7 @@ import { DM_Sans, Manrope } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { CartProvider } from "@/lib/cart/CartProvider";
+import { themeInitScript } from "@/lib/theme/theme";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -36,7 +37,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="fr" className={`${dmSans.variable} ${manrope.variable} h-full antialiased`}>
+    // suppressHydrationWarning : le script du <head> pose data-theme avant l'hydratation, le serveur ne peut pas le connaître.
+    <html lang="fr" suppressHydrationWarning className={`${dmSans.variable} ${manrope.variable} h-full antialiased`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript() }} />
+      </head>
       <body className="flex min-h-full flex-col">
         <CartProvider>
           <Header />
