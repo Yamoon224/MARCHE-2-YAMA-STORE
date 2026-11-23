@@ -5,7 +5,7 @@ export type ThemePreference = "light" | "auto";
 // export type ThemePreference = "light" | "dark" | "auto";
 export type ResolvedTheme = "light" | "dark";
 
-export const THEME_PREFERENCES: readonly ThemePreference[] = ["light", "dark", "auto"];
+export const THEME_PREFERENCES: readonly ThemePreference[] = ["light", "auto"];
 
 export const THEME_LABEL: Record<ThemePreference, string> = {
   light: "Clair",
@@ -22,8 +22,8 @@ export function parseTheme(value: unknown): ThemePreference {
 }
 
 export function resolveTheme(preference: ThemePreference, systemDark: boolean): ResolvedTheme {
-  if (preference === "auto") return systemDark ? "light" : "light";
-  return preference;
+  // if (preference === "auto") return systemDark ? "light" : "light";
+  return "light";
 }
 
 /** Ordre du bouton à bascule : clair, sombre, automatique, puis retour au clair. */
