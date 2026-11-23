@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
 import { GuestAccountPrompt } from "@/components/account/GuestAccountPrompt";
 import { PayByCardButton } from "@/components/orders/PayByCardButton";
+import { PayByCashButton } from "@/components/orders/PayByCashButton";
 import { CancelOrderButton } from "@/components/orders/CancelOrderButton";
 import { StatusBadge } from "@/components/orders/StatusBadge";
 import { TrackingPanel } from "@/components/orders/TrackingPanel";
@@ -20,7 +21,7 @@ const dateTime = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long", timeStyle
 const PAYMENT_NOTICE: Record<string, string> = {
   card: "Votre paiement par carte est en cours de confirmation.",
   cash_on_delivery: "Commande enregistrée. Un conseiller la valide rapidement ; vous réglerez en espèces à la livraison ou au retrait en magasin (prévoyez l'appoint si possible).",
-  annule: "Paiement annulé. Votre commande est enregistrée : vous pouvez payer par carte maintenant ou plus tard depuis cette page.",
+  annule: "Paiement annulé. Votre commande est enregistrée : vous pouvez payer par carte ou en espèces maintenant, ou plus tard depuis cette page.",
   erreur: "Votre commande est enregistrée, mais le paiement n'a pas pu démarrer. Vous pouvez réessayer depuis cette page.",
 };
 
@@ -145,10 +146,13 @@ async function OrderDetail({ params, searchParams }: Props) {
       </section>
 
       <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center [&_button]:min-h-11 [&>a]:inline-flex [&>a]:min-h-11 [&>a]:items-center">
-        {canPay(order.status) && (
+        {canPay(order.status) && paiement !== "cash_on_delivery" && (
           <div className="flex flex-col gap-3">
             <p className="text-sm text-black/70">Paiement en attente : votre commande est réservée quelques minutes.</p>
-            <PayByCardButton orderId={order.id} />
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <PayByCardButton orderId={order.id} />
+              <PayByCashButton orderId={order.id} delivery={order.fulfillment === "delivery"} />
+            </div>
           </div>
         )}
         {canCancel(order.status) && <CancelOrderButton orderId={order.id} />}
