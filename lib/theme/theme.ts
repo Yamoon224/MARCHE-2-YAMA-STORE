@@ -1,26 +1,28 @@
 export const THEME_STORAGE_KEY = "yama-theme";
 export const THEME_CHANGE_EVENT = "yama-theme-change";
 
-export type ThemePreference = "light" | "dark" | "auto";
+export type ThemePreference = "light" | "auto";
+// export type ThemePreference = "light" | "dark" | "auto";
 export type ResolvedTheme = "light" | "dark";
 
 export const THEME_PREFERENCES: readonly ThemePreference[] = ["light", "dark", "auto"];
 
 export const THEME_LABEL: Record<ThemePreference, string> = {
   light: "Clair",
-  dark: "Sombre",
+  // dark: "Sombre",
   auto: "Automatique",
 };
 
 /** Une valeur inconnue (ou absente) revient à « automatique » : on suit le réglage de l'appareil. */
 export function parseTheme(value: unknown): ThemePreference {
-  return value === "light" || value === "dark" || value === "auto"
-    ? value
-    : "light";
+  return value === "light" ? "light" : "light";
+    // return value === "light" || value === "dark" || value === "auto"
+    // ? value
+    // : "light";
 }
 
 export function resolveTheme(preference: ThemePreference, systemDark: boolean): ResolvedTheme {
-  if (preference === "auto") return systemDark ? "dark" : "light";
+  if (preference === "auto") return systemDark ? "light" : "light";
   return preference;
 }
 
