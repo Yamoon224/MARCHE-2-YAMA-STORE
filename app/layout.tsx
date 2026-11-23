@@ -38,7 +38,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     // suppressHydrationWarning : le script du <head> pose data-theme avant l'hydratation, le serveur ne peut pas le connaître.
-    <html lang="fr" suppressHydrationWarning className={`${dmSans.variable} ${manrope.variable} h-full antialiased`}>
+    <html lang="fr" suppressHydrationWarning className={`${dmSans.variable} ${manrope.variable} h-full antialiased`} style={{ colorScheme: "only light" }}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript() }} />
       </head>
