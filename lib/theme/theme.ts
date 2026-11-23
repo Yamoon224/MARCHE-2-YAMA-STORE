@@ -14,7 +14,9 @@ export const THEME_LABEL: Record<ThemePreference, string> = {
 
 /** Une valeur inconnue (ou absente) revient à « automatique » : on suit le réglage de l'appareil. */
 export function parseTheme(value: unknown): ThemePreference {
-  return value === "light" || value === "dark" ? value : "auto";
+  return value === "light" || value === "dark" || value === "auto"
+    ? value
+    : "light";
 }
 
 export function resolveTheme(preference: ThemePreference, systemDark: boolean): ResolvedTheme {
