@@ -2,7 +2,8 @@ import type { Banner, Category, Recipe } from "@/lib/catalog/types";
 import { api, type ApiClient } from "./client";
 
 const TIMEOUT_MS = 3000;
-const REQUEST = { next: { revalidate: 60 } } as const;
+// Pas de cache de données : une modification du backoffice (image, titre, prix) apparaît dès le rechargement de la vitrine.
+const REQUEST = { cache: "no-store" } as const;
 const signal = () => AbortSignal.timeout(TIMEOUT_MS);
 
 /** Rayons actifs, ou `null` si l'API est injoignable. */

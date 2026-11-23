@@ -12,7 +12,7 @@ type Tracking = {
 };
 
 /** Suivi de livraison : interroge le serveur à intervalle adapté, et s'arrête quand la livraison est terminée. */
-export function TrackingPanel({ orderId }: { orderId: number }) {
+export function TrackingPanel({ orderId }: { orderId: string }) {
   const api = useMemo(() => browserApi(), []);
   const [tracking, setTracking] = useState<Tracking | null>(null);
   const [unavailable, setUnavailable] = useState(false);

@@ -104,7 +104,7 @@ export function CheckoutView() {
       });
 
       if (order.error || !order.data) return setError(extractApiError(order.error));
-      const orderId = order.data.data?.id as number;
+      const orderId = order.data.data?.id as string;
 
       const payment = await api.POST("/api/v1/orders/{orderId}/payments", {
         params: { path: { orderId }, header: { "Idempotency-Key": `${key}-pay` } },

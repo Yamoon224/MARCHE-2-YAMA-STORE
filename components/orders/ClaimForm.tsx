@@ -11,7 +11,7 @@ export type ClaimableLine = { id: number; name: string; sale_unit?: string | nul
 
 const field = "min-h-11 rounded-lg border border-black/20 bg-white px-3 py-2 text-sm outline-none focus:border-brand-green";
 
-export function ClaimForm({ orderId, lines }: { orderId: number; lines: ClaimableLine[] }) {
+export function ClaimForm({ orderId, lines }: { orderId: string; lines: ClaimableLine[] }) {
   const router = useRouter();
   const [draft, setDraft] = useState<DraftLine[]>(() =>
     lines.map((l) => ({

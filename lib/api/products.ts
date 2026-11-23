@@ -64,7 +64,7 @@ export async function fetchProductPage(query?: ProductQuery, client: ApiClient =
           per_page: query?.perPage,
         },
       },
-      next: { revalidate: 60 },
+      cache: "no-store",
       // Une API lente ne doit jamais bloquer le rendu ni le build.
       signal: AbortSignal.timeout(CATALOG_TIMEOUT_MS),
     });
@@ -90,7 +90,7 @@ export async function fetchProduct(slug: string, client: ApiClient = api): Promi
   try {
     const { data, error } = await client.GET("/api/v1/products/{slug}", {
       params: { path: { slug } },
-      next: { revalidate: 60 },
+      cache: "no-store",
       signal: AbortSignal.timeout(CATALOG_TIMEOUT_MS),
     });
     return error || !data?.data ? null : toProduct(data.data);

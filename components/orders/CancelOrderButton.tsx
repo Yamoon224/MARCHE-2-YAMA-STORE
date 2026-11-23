@@ -5,7 +5,7 @@ import { useState } from "react";
 import { browserApi } from "@/lib/api/client";
 import { extractApiError } from "@/lib/checkout/checkout";
 
-export function CancelOrderButton({ orderId }: { orderId: number }) {
+export function CancelOrderButton({ orderId }: { orderId: string }) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);

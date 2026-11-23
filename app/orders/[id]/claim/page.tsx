@@ -21,11 +21,11 @@ export default function ReclamationPage(props: Props) {
 
 async function Content({ params }: Props) {
   const { id } = await params;
-  if (!/^\d+$/.test(id)) notFound();
+  if (!/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(id)) notFound();
 
   const api = await serverApi();
   const [order, claims] = await Promise.all([
-    api.GET("/api/v1/orders/{order}", { params: { path: { order: Number(id) } } }).catch(() => null),
+    api.GET("/api/v1/orders/{order}", { params: { path: { order: id } } }).catch(() => null),
     api.GET("/api/v1/claims").catch(() => null),
   ]);
 

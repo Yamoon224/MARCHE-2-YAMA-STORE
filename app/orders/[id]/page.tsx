@@ -40,11 +40,11 @@ async function OrderDetail({ params, searchParams }: Props) {
   const { id } = await params;
   const { paiement, reclamation } = await searchParams;
   const reclamationOk = reclamation === "ok";
-  if (!/^\d+$/.test(id)) notFound();
+  if (!/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(id)) notFound();
 
   const api = await serverApi();
   const [result, claimsResult] = await Promise.all([
-    api.GET("/api/v1/orders/{order}", { params: { path: { order: Number(id) } } }).catch(() => null),
+    api.GET("/api/v1/orders/{order}", { params: { path: { order: id } } }).catch(() => null),
     api.GET("/api/v1/claims").catch(() => null),
   ]);
 
@@ -62,7 +62,7 @@ async function OrderDetail({ params, searchParams }: Props) {
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-[26px] font-extrabold sm:text-[32px]">{order.number ?? `Commande ${order.id}`}</h1>
+        <h1 className="text-[26px] font-extrabold sm:text-[32px]">{order.number ?? `Commande ${order.id.slice(0, 8)}`}</h1>
           <p className="mt-1 text-sm text-black/60">
             Conservez ce numéro : avec l&apos;e-mail de votre commande, il permet de la suivre à tout moment sur{" "}
             <Link href="/tracking" className="text-brand-red underline">la page de suivi</Link>, même sans compte.

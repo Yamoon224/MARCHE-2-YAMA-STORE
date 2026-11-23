@@ -5,7 +5,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { badgeLabel } from "@/lib/notifications/notifications";
 import { NAV } from "./nav-items";
-import { ThemeToggle } from "./ThemeToggle";
 
 type User = { name: string } | null;
 
@@ -130,12 +129,7 @@ export function MobileMenu() {
               </ul>
             </nav>
 
-            <div className="mt-auto border-t border-line px-3 pb-1 pt-3">
-              <p className="mb-1.5 px-1 text-xs font-bold text-muted">Apparence</p>
-              <ThemeToggle variant="segmented" />
-            </div>
-
-            <nav aria-label="Mon compte" className="p-3">
+            <nav aria-label="Mon compte" className="mt-auto border-t border-line p-3">
               {user === undefined ? (
                 <p className="px-3 py-2 text-sm text-muted">Chargement…</p>
               ) : user === null ? (

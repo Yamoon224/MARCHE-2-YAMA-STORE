@@ -5,7 +5,7 @@ import { browserApi } from "@/lib/api/client";
 import { extractApiError } from "@/lib/checkout/checkout";
 
 /** Reprend ou démarre le paiement par carte (page sécurisée Stripe) d'une commande encore à payer. */
-export function PayByCardButton({ orderId }: { orderId: number }) {
+export function PayByCardButton({ orderId }: { orderId: string }) {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   // Une clé par clic : un double clic ne crée pas deux paiements.

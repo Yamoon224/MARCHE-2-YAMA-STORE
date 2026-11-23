@@ -994,8 +994,26 @@ export interface paths {
         };
         /** Utilisateur courant */
         get: operations["a69e035abcffe1bdd422bcb2883473d6"];
-        put?: never;
+        /** Modifier mon profil (nom, téléphone) */
+        put: operations["23c522a04a89d7a85e268e358b65e71f"];
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/change-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Changer mon mot de passe (les autres sessions sont fermées) */
+        post: operations["fc38b3f8e2f374b4f4403a8ab8fe4067"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1645,6 +1663,7 @@ export interface components {
             price_minor?: number;
             compare_at_price_minor?: number | null;
             is_featured?: boolean;
+            track_stock?: boolean;
             is_active?: boolean;
         };
         MediaUpload: {
@@ -1698,6 +1717,8 @@ export interface components {
             /** @description Taux de TVA en points de base */
             vat_rate_bp?: number;
             perishable?: boolean;
+            /** @description Faux : le produit se commande sans gestion de stock */
+            track_stock?: boolean;
             is_active?: boolean;
             /** @description Date de suppression douce (null : produit en ligne) */
             deleted_at?: string | null;
@@ -1758,7 +1779,8 @@ export interface components {
         };
         Claim: {
             id: number;
-            order_id: number;
+            /** Format: uuid */
+            order_id: string;
             /** @enum {string} */
             status: "open" | "accepted" | "rejected";
             description?: string | null;
@@ -1797,7 +1819,8 @@ export interface components {
         };
         Delivery: {
             id: number;
-            order_id: number;
+            /** Format: uuid */
+            order_id: string;
             /** @enum {string} */
             status: "pending" | "assigned" | "out_for_delivery" | "delivered" | "failed" | "returned";
             courier_id?: number | null;
@@ -1851,7 +1874,8 @@ export interface components {
         };
         PickList: {
             id: number;
-            order_id: number;
+            /** Format: uuid */
+            order_id: string;
             /** @enum {string} */
             status: "open" | "in_progress" | "completed";
             picker_id?: number | null;
@@ -1960,7 +1984,8 @@ export interface components {
         Invoice: {
             /** @example FAC-2026-000001 */
             number: string;
-            order_id: number;
+            /** Format: uuid */
+            order_id: string;
             issued_at?: string;
             currency?: string;
             /** @description Total TTC */
@@ -2046,7 +2071,11 @@ export interface components {
             created_at?: string | null;
         };
         Order: {
-            id: number;
+            /**
+             * Format: uuid
+             * @description Identifiant public (UUID)
+             */
+            id: string;
             number?: string | null;
             /** @enum {string} */
             status: "draft" | "awaiting_payment" | "payment_failed" | "paid" | "under_review" | "confirmed" | "preparing" | "ready" | "assigned" | "out_for_delivery" | "delivery_failed" | "delivered" | "completed" | "claim" | "refunded" | "returned" | "cancelled";
@@ -2084,7 +2113,8 @@ export interface components {
         Payment: {
             id: number;
             reference: string;
-            order_id: number;
+            /** Format: uuid */
+            order_id: string;
             /** @enum {string} */
             method: "mobile_money" | "card" | "cash_on_delivery";
             /** @enum {string} */
@@ -2098,7 +2128,8 @@ export interface components {
         Refund: {
             id: number;
             reference: string;
-            order_id: number;
+            /** Format: uuid */
+            order_id: string;
             amount_minor: number;
             /** @example EUR */
             currency: string;
@@ -2135,7 +2166,8 @@ export interface components {
         };
         PosSale: {
             id: number;
-            order_id: number;
+            /** Format: uuid */
+            order_id: string;
             order_number: string;
             /** @enum {string} */
             tender: "cash" | "mobile_money" | "card";
@@ -3197,7 +3229,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                orderId: number;
+                orderId: string;
             };
             cookie?: never;
         };
@@ -4016,7 +4048,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                orderId: number;
+                orderId: string;
             };
             cookie?: never;
         };
@@ -4514,6 +4546,91 @@ export interface operations {
             };
         };
     };
+    "23c522a04a89d7a85e268e358b65e71f": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @example Awa Koné */
+                    name: string;
+                    /** @example +33612345678 */
+                    phone?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description Profil mis à jour */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["User"];
+                    };
+                };
+            };
+            /** @description Non authentifié */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    fc38b3f8e2f374b4f4403a8ab8fe4067: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    current_password: string;
+                    password: string;
+                    password_confirmation: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Mot de passe changé */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Non authentifié */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Mot de passe actuel incorrect ou nouveau mot de passe refusé */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     "3885c90334138be966c2e718f4ae8a09": {
         parameters: {
             query?: never;
@@ -4944,7 +5061,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                orderId: number;
+                orderId: string;
             };
             cookie?: never;
         };
@@ -5194,7 +5311,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                order: number;
+                order: string;
             };
             cookie?: never;
         };
@@ -5232,7 +5349,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                order: number;
+                order: string;
             };
             cookie?: never;
         };
@@ -5281,7 +5398,7 @@ export interface operations {
                 "Idempotency-Key"?: string;
             };
             path: {
-                orderId: number;
+                orderId: string;
             };
             cookie?: never;
         };
@@ -5371,7 +5488,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                orderId: number;
+                orderId: string;
             };
             cookie?: never;
         };
@@ -5408,7 +5525,7 @@ export interface operations {
                 "Idempotency-Key"?: string;
             };
             path: {
-                orderId: number;
+                orderId: string;
             };
             cookie?: never;
         };
